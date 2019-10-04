@@ -1,19 +1,24 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
 <head>
-<title> Login</title>
+    <title> Login</title>
 </head>
 <body>
-<form style="text-align: center; margin-top: 20%" th:action="@{/login/{username}/{password}(username = ${username}, password = ${password})}" method="get">
+<form style="text-align: center; margin-top: 20%">
     Login
     <br>
-    <input type="text" th:field="*{username}"/>
+    <input type="text" th:field="${username}"/>
     <br>
     Password
     <br>
-    <input type="password" th:field="*{password}"/>
+    <input type="password" th:field="${password}"/>
     <br>
     <br>
-    <input type="submit" value="Sign in"/>
+    <input type="submit" onclick="GoTo()" value="Sign in"/>
 </form>
+<script th:inline="javascript">
+    function GoTo() {
+        window.location.href = "/index";
+    }
+</script>
 </body>
 </html>
