@@ -36,6 +36,6 @@ public class MainController {
     public String printLogin(Model model, @RequestParam String username, @RequestParam String password) {
         System.out.println("username: " + username);
         System.out.println("password: " + password);
-        return getLogin(model);
+        return "redirect:userpage";
     }
 }
