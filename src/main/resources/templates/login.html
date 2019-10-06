@@ -3,22 +3,21 @@
     <title> Login</title>
 </head>
 <body>
-<form style="text-align: center; margin-top: 20%">
-    Login
+<form id="login__form" method="post">
+    login
     <br>
-    <input type="text" th:field="${username}"/>
+    <input type="text" name="username" id="username__input"/>
     <br>
-    Password
+    password
     <br>
-    <input type="password" th:field="${password}"/>
+    <input name="password" type="password" id="password__input"/>
     <br>
     <br>
-    <input type="submit" onclick="GoTo()" value="Sign in"/>
+    <input type="submit" id="submit__button" value="Click Me"/>
 </form>
-<script th:inline="javascript">
-    function GoTo() {
-        window.location.href = "/index";
-    }
-</script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
+<!--<script th:inline="javascript">-->
+<!--   -->
+<!--</script>-->
 </body>
 </html>
