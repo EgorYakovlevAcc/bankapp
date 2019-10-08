@@ -38,4 +38,11 @@ public class MainController {
         System.out.println("password: " + password);
         return "redirect:userpage";
     }
+
+    @PostMapping("/registration")
+    public String printRegistration(Model model, @RequestParam String username, @RequestParam String password) {
+        System.out.println("username: " + username);
+        System.out.println("password: " + password);
+        return "redirect:userpage";
+    }
 }
