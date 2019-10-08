@@ -21,6 +21,7 @@
     function validateLoginForm() {
         let login = $("#username__input").val();
         let pass = $("#password__input").val();
+
         if (login.search(/[~!#$%^&*()_+=:;'"]+/i) != -1)
         {
             alert("Incorrect characters in login");
