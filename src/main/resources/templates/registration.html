@@ -2,43 +2,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="application/json" src="../static/formValidator.js"></script>
 </head>
 <body>
-    <a href="/userpage">userpage</a>
+<a href="/userpage">userpage</a>
 
-    <form method="get" th:action="@{/login/{username}/{password} (username = ${username}, password = ${password})}">
-        <label>
-            User name
-            <input type="text" th:value="${username}"/>
-        </label>
-        <br/>
-        <label>
-            Date of birth
-            <input type="date"/>
-        </label>
-        <br/>
-        <label>
-            Seria
-            <input type="text"/>
-        </label>
-        <label>
-            Passport No
-            <input type="text"/>
-        </label>
-        <br/>
-        <label>
-            Password
-            <input type="password" th:value="${password}"/>
-        </label>
-        <br/>
-        <label>
-            Confirm password
-            <input type="password"/>
-        </label>
-        <br/>
-        <button>
-            <input type="submit"/>
-        </button>
-    </form>
+<form id="signup__form" method="post" onsubmit="validateFormData(this)" class="start__form">
+    <label>
+        User name
+        <input type="text" name="username" id="username__signup"/>
+    </label>
+    <br/>
+    <label>
+        Date of birth
+        <input type="date" id="birthday__signup"/>
+    </label>
+    <br/>
+    <label>
+        Seria
+        <input type="text" id="seria__signup"/>
+    </label>
+    <label>
+        Passport No
+        <input type="text" id="passport__signup"/>
+    </label>
+    <br/>
+    <label>
+        Password
+        <input type="password" name="password" id="password__one__signup"/>
+    </label>
+    <br/>
+    <label>
+        Confirm password
+        <input type="password" id="password__second__signup"/>
+    </label>
+    <br/>
+    <button>
+        <input type="submit"/>
+    </button>
+</form>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script th:inline="javascript">
+    //example of function that validate content of inputs
+    //todo: another validations if necessary for bank client
+    function validateFormData(formObject) {
+        //find ("input, textArea") as example...
+        //in our case we need only input
+        let pass1 = $("#password__one__signup").val();
+        let pass2 = $("#password__second__signup").val();
+        if (pass1 != pass2) {
+            alert("passwords are not equal");
+            return false;
+        }
+
+        let seria = "";
+        seria = $("#seria__signup").val();
+        let passportNum = "";
+        passportNum = $("#passport__signup").val();
+        // if (seria.length != 4 || passportNum.length != 6) {
+        //     alert("check passport data");
+        //     return false;
+        // }
+
+        if (!validation(formObject)) {
+            alert("Validation problems.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
 </html>
