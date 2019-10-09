@@ -1,13 +1,18 @@
 package com.presentation.demo.controller;
 
+import com.presentation.demo.model.User;
+import com.presentation.demo.repository.UserRepository;
+import com.presentation.demo.service.UserSevice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MainController {
+    @Autowired
+    private UserSevice userSevice;
+
     @GetMapping(value = {"/", "/index"})
     public String getIndex() {
         return "index";
@@ -44,5 +49,13 @@ public class MainController {
         System.out.println("username: " + username);
         System.out.println("password: " + password);
         return "redirect:userpage";
+    }
+
+    @GetMapping("/deleteuser/{id}")
+    @ResponseBody
+    public String deleteUser(@PathVariable("id") Integer id) {
+        User user = userSevice.findUserById(id);
+        userSevice.delete(user);
+        return "delete success";
     }
 }
