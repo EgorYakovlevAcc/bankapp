@@ -6,7 +6,9 @@ import com.presentation.demo.service.UserSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
@@ -15,22 +17,23 @@ public class MainController {
 
     @GetMapping(value = {"/", "/index"})
     public String getIndex() {
-        return "index";
-    }
 
-    @GetMapping("/login")
-    public String getLogin(Model model) {
+       return "index";
+   }
+
+   @GetMapping("/login")
+    public String getLogin(Model model){
         model.addAttribute("username", "");
         model.addAttribute("password", "");
         return "login";
-    }
+   }
 
-    @GetMapping("/registration")
-    public String getRegistration() {
-        return "registration";
-    }
+   @GetMapping("/registration")
+    public String getRegistration(){
+        return ("registration");
+   }
 
-    @GetMapping("/userpage")
+   @GetMapping("/userpage")
     public String getUserpage() {
         return "userpage";
     }
