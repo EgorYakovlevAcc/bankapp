@@ -2,18 +2,16 @@ package com.presentation.demo.controller;
 
 import com.presentation.demo.model.User;
 import com.presentation.demo.repository.UserRepository;
-import com.presentation.demo.service.UserSevice;
+import com.presentation.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MainController {
     @Autowired
-    private UserSevice userSevice;
+    private UserService userService;
 
     @GetMapping(value = {"/", "/index"})
     public String getIndex() {
@@ -57,8 +55,8 @@ public class MainController {
     @GetMapping("/deleteuser/{id}")
     @ResponseBody
     public String deleteUser(@PathVariable("id") Integer id) {
-        User user = userSevice.findUserById(id);
-        userSevice.delete(user);
+        User user = userService.findUserById(id);
+        userService.delete(user);
         return "delete success";
     }
 }
