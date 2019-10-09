@@ -1,0 +1,89 @@
+package com.presentation.demo.model;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
+import java.math.BigInteger;
+import java.util.Date;
+
+@Entity
+@Table(name = "bills")
+public class Bill {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    private String number;
+
+    private BigInteger balance;
+
+    private Date due;
+
+    private Date lastTransaction;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "holder_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User holder;
+
+    public User getHolder() {
+        return holder;
+    }
+
+    public void setHolder(User holder) {
+        this.holder = holder;
+    }
+
+    public Bill() {
+    }
+
+    public Bill(String number, BigInteger balance, Date due, Date lastTransaction,User holder) {
+        this.number = number;
+        this.balance = balance;
+        this.due = due;
+        this.lastTransaction = lastTransaction;
+        this.holder = holder;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public BigInteger getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigInteger balance) {
+        this.balance = balance;
+    }
+
+    public Date getDue() {
+        return due;
+    }
+
+    public void setDue(Date due) {
+        this.due = due;
+    }
+
+    public Date getLastTransaction() {
+        return lastTransaction;
+    }
+
+    public void setLastTransaction(Date lastTransaction) {
+        this.lastTransaction = lastTransaction;
+    }
+}

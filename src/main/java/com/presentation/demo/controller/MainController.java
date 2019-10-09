@@ -1,8 +1,7 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.model.User;
-import com.presentation.demo.repository.UserRepository;
-import com.presentation.demo.service.UserService;
+import com.presentation.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,9 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
 <html>
 <head>
     <title> HELLO!</title>
 </head>
-<body style="text-align: center">
-    <a href="/login">login</a>
+<body>
+<div style="text-align: center">
+    <a href="/login" >login</a>
 <a href="/registration">registration</a>
+</div>
+    <ul>
+    <li th:each="user : ${users}">
+        <p> [[${user.getUsername()}]] </p>
+    </li>
+</ul>
 </body>
 </html>

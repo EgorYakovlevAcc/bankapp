@@ -4,6 +4,7 @@ import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Table (name = "users")
@@ -23,14 +24,26 @@ public class User {
 
     private String  passwordConfirmation;
 
+    @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL)
+    private List<Bill> bills;
+
     public User() {
     }
 
-    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordConfirmation) {
+    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordConfirmation,List<Bill> bills) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
+        this.bills = bills;
+    }
+
+    public List<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
     }
 
     public Integer getId() {

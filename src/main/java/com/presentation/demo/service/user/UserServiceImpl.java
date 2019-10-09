@@ -1,9 +1,11 @@
-package com.presentation.demo.service;
+package com.presentation.demo.service.user;
 
 import com.presentation.demo.model.User;
 import com.presentation.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,5 +29,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(Integer id) {
         return userRepository.findUserById(id);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }
