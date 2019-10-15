@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MainController {
+
     @Autowired
     private UserService userService;
 
@@ -30,10 +31,10 @@ public class MainController {
         return ("registration");
    }
 
-   @GetMapping("/userpage")
-    public String getUserpage() {
-        return "userpage";
-    }
+//   @GetMapping("/userpage")
+//    public String getUserpage() {
+//        return "userpage";
+//    }
 
     @PostMapping("/login")
     //@RequestParam(required = false, defaultValue = "someValue", value="someAttr") String someAttr

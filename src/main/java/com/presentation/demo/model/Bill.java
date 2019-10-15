@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "bills")
@@ -16,16 +17,20 @@ public class Bill {
 
     private String number;
 
-    private BigInteger balance;
+    private BigInteger balance = BigInteger.ZERO;
 
     private Date due;
 
     private Date lastTransaction;
 
+    @OneToMany(mappedBy = "targetBill", cascade = CascadeType.ALL)
+    private List<DateBalanceHistory> balanceHistory;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "holder_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+
     private User holder;
 
     public User getHolder() {
@@ -85,5 +90,13 @@ public class Bill {
 
     public void setLastTransaction(Date lastTransaction) {
         this.lastTransaction = lastTransaction;
+    }
+
+    public List<DateBalanceHistory> getBalanceHistory() {
+        return balanceHistory;
+    }
+
+    public void setBalanceHistory(List<DateBalanceHistory> balanceHistory) {
+        this.balanceHistory = balanceHistory;
     }
 }

@@ -1,18 +1,21 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.model.Bill;
+import com.presentation.demo.model.DateBalanceHistory;
 import com.presentation.demo.model.User;
 import com.presentation.demo.service.bill.BillService;
+import com.presentation.demo.service.datebalancehistory.DateBalanceHistoryService;
 import com.presentation.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigInteger;
-import java.util.Calendar;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class BillController {
@@ -23,6 +26,9 @@ public class BillController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private DateBalanceHistoryService dateBalanceHistoryService;
+
     @GetMapping("/createbill/{id}")
     @ResponseBody
     public String createBill(@PathVariable("id") Integer id){
@@ -31,7 +37,7 @@ public class BillController {
         Bill bill = new Bill();
         User user = userService.findUserById(id);
         bill.setHolder(user);
-        bill.setBalance(new BigInteger(String.valueOf(Math.abs(rand.nextInt()))));
+//        bill.setBalance(new BigInteger(String.valueOf(Math.abs(rand.nextInt()))));
         bill.setNumber(String.valueOf(Math.abs(rand.nextInt())));
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 4);
@@ -47,4 +53,40 @@ public class BillController {
         billService.delete(bill);
         return "Delete success!";
     }
+
+    @GetMapping("/add")
+    @ResponseBody
+    public String increaseBillBalance(@RequestParam("billid") Integer billId, @RequestParam("amount") BigInteger amount){
+        Bill bill = billService.findBillById(billId);
+        bill.setBalance(bill.getBalance().add(amount));
+        billService.save(bill);
+        dateBalanceHistoryService.createNewDateBalanceHistory(bill);
+        return "Increase success!";
+    }
+
+    @GetMapping("/dec")
+    @ResponseBody
+    public String decreaseBillBalance(@RequestParam("billid") Integer billId, @RequestParam("amount") BigInteger amount){
+        Bill bill = billService.findBillById(billId);
+        bill.setBalance(bill.getBalance().subtract(amount));
+        billService.save(bill);
+        dateBalanceHistoryService.createNewDateBalanceHistory(bill);
+        return "Decreased success!";
+    }
+
+    @GetMapping("/bill")
+    public String getBill(@RequestParam("billid") Integer billId, Model model){
+        Bill bill = billService.findBillById(billId);
+        model.addAttribute("billId",bill.getId());
+        model.addAttribute("holderId",bill.getHolder().getId());
+        Map<Date, BigInteger> dateBigIntegerMap = new TreeMap<>();
+        List<DateBalanceHistory> dateBalanceHistories = dateBalanceHistoryService.findDateBalanceHistoryByBill(bill);
+        for (DateBalanceHistory dateBalanceHistory: dateBalanceHistories) {
+            dateBigIntegerMap.put(dateBalanceHistory.getDate(), dateBalanceHistory.getBalance());
+        }
+        model.addAttribute("map", dateBigIntegerMap);
+        return "bill";
+    }
+
+
 }

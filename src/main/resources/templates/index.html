@@ -9,9 +9,15 @@
 <a href="/registration">registration</a>
 </div>
     <ul>
-    <li th:each="user : ${users}">
+        <li th:each="user : ${users}">
         <p> [[${user.getUsername()}]] </p>
-    </li>
-</ul>
+            <ul>
+                <li th:each="bill : ${user.getBills()}">
+                    <p> [[${bill.getId()}]] </p>
+                    <p> [[${bill.getBalance()}]]</p>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </body>
 </html>

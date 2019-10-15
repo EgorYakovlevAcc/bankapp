@@ -1,30 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
 <head>
     <meta charset="UTF-8">
-<<<<<<< HEAD
     <title>Title</title>
 </head>
-<body>
     <a href="/index">index</a>
-=======
-    <title> Userpage </title>
+=======    <title> Userpage </title>
 </head>
 <body>
     <a href="index"> Go to index </a>
     <br/>
     <br/>
-    <label> Hello, username!</label>
+    <label>
+        <li>
+            <p>Hello, [[${userName}]]!</p>
+            <p>ID: [[${userId}]]</p>
+        </li>
     <br/>
-    <label> Card 1 : account  </label>
-    <button> Fill </button>
-    <br/>
-    <label> Card 2 : account  </label>
-    <button> Fill </button>
-    <br/>
-    <label> Card 3 : account  </label>
-<!--    <input type="submit" onclick="Print()" value="Fill"/>-->
+    <ul>
+        <li th:each="bill : ${bills}">
+            <p> [[${bill.getId()}]] </p>
+            <p> [[${bill.getBalance()}]] </p>
+        </li>
+    </ul>
 
->>>>>>> origin/master
+
+<!--    <label> Card 1 : account  </label>-->
+<!--    <button> Fill </button>-->
+<!--    <br/>-->
+<!--    <label> Card 2 : account  </label>-->
+<!--    <button> Fill </button>-->
+<!--    <br/>-->
+<!--    <label> Card 3 : account  </label>-->
+<!--    <button> Fill </button>-->
+<!--    <input type="submit" onclick="Print()" value="Fill"/>-->
 </body>
 </html>

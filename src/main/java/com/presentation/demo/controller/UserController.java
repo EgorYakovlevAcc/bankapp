@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -38,5 +39,14 @@ public class UserController {
 //        return userService.findAll().stream()
 //                .map(user -> user.getUsername())
 //                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/userpage")
+    public String getUserPage(@RequestParam("userid") Integer userId,Model model){
+        User user = userService.findUserById(userId);
+        model.addAttribute("userId",user.getId());
+        model.addAttribute("userName",user.getUsername());
+        model.addAttribute("bills",user.getBills());
+        return "userpage";
     }
 }
