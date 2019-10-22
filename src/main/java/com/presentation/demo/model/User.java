@@ -24,18 +24,30 @@ public class User {
 
     private String  passwordConfirmation;
 
+    @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
+    private List<Card> cards;
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
     @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL)
     private List<Bill> bills;
 
     public User() {
     }
 
-    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordConfirmation,List<Bill> bills) {
+    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordConfirmation,List<Bill> bills, List<Card> cards) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
         this.bills = bills;
+        this.cards = cards;
     }
 
     public List<Bill> getBills() {

@@ -26,16 +26,20 @@ public class Card {
 
     private String cvv;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "user_id", nullable = true)
     private User cardHolder;
 
     public Card() {
     }
 
-    public Card(String cardNum, Bill bill, Date expirDate, String cvv) {
+    public Card(String cardNum, Bill bill, Date expirDate, String cvv, User cardHolder) {
         this.cardNum = cardNum;
         this.bill = bill;
         this.expirDate = expirDate;
         this.cvv = cvv;
+        this.cardHolder = cardHolder;
     }
 
     public User getCardHolder() {
