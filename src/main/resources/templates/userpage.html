@@ -1,35 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <a href="/index">Go to index</a>
 </head>
+<link rel="stylesheet" th:href="@{../css/userpage.css}">
+
 <body>
-    <a href="index"> Go to index </a>
-    <br/>
-    <br/>
+
+<div class='main'>
     <label>
         <li>
-            <p>Hello, [[${userName}]]!</p>
-            <p>ID: [[${userId}]]</p>
+            <p>Hello, [[${user.getUsername()}]]!</p>
+            <p>ID: [[${user.getId()}]]</p>
         </li>
-    <br/>
-    <ul>
-        <li th:each="bill : ${bills}">
-            <p> [[${bill.getId()}]] </p>
-            <p> [[${bill.getBalance()}]] </p>
-        </li>
-    </ul>
+         <ul>
+             <li th:each="bill : ${bills}">
+                 <p> [[${bill.getId()}]] </p>
+                 <p> [[${bill.getBalance()}]] </p>
+                 <p th:text="${#dates.format(bill.getLastTransaction(), 'dd-MM-yyyy HH:mm:ss')}"></p>
+                 <label class="btn" for="modal-1">More info</label>
+            </li>
+        </ul>
+    </label>
+</div>
 
+<input class="modal-state" id="modal-1" type="checkbox" />
+<div class="modal">
+    <label class="modal__bg" for="modal-1"></label>
+    <div class="modal__inner">
+        <label class="modal__close" for="modal-1"></label>
+        <h2>Bill info</h2>
+        <p> Last transaction date: </p>
+    </div>
+</div>
 
-<!--    <label> Card 1 : account  </label>-->
-<!--    <button> Fill </button>-->
-<!--    <br/>-->
-<!--    <label> Card 2 : account  </label>-->
-<!--    <button> Fill </button>-->
-<!--    <br/>-->
-<!--    <label> Card 3 : account  </label>-->
-<!--    <button> Fill </button>-->
-<!--    <input type="submit" onclick="Print()" value="Fill"/>-->
 </body>
 </html>
