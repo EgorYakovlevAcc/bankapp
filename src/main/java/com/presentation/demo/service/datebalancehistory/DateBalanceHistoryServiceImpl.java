@@ -23,7 +23,7 @@ public class DateBalanceHistoryServiceImpl implements DateBalanceHistoryService 
     }
 
     @Override
-    public List<DateBalanceHistory> findDateBalanceHistoryByBill(Bill bill) {
+    public List<DateBalanceHistory> findDateBalanceHistoriesByBill(Bill bill) {
         return dateBalanceHistoryRepository.findDateBalanceHistoriesByTargetBill(bill);
     }
 
@@ -35,7 +35,6 @@ public class DateBalanceHistoryServiceImpl implements DateBalanceHistoryService 
         dateBalanceHistory.setBalance(bill.getBalance());
         dateBalanceHistory.setDate(new Date());
         save(dateBalanceHistory);
-
     }
 
     @Override

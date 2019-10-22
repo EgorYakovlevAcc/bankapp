@@ -59,8 +59,10 @@ public class BillController {
     public String increaseBillBalance(@RequestParam("billid") Integer billId, @RequestParam("amount") BigInteger amount){
         Bill bill = billService.findBillById(billId);
         bill.setBalance(bill.getBalance().add(amount));
-        billService.save(bill);
         dateBalanceHistoryService.createNewDateBalanceHistory(bill);
+        int size = dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill).size();
+        bill.setLastTransaction(dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill).get(size - 1).getDate());
+        billService.save(bill);
         return "Increase success!";
     }
 
@@ -69,8 +71,10 @@ public class BillController {
     public String decreaseBillBalance(@RequestParam("billid") Integer billId, @RequestParam("amount") BigInteger amount){
         Bill bill = billService.findBillById(billId);
         bill.setBalance(bill.getBalance().subtract(amount));
-        billService.save(bill);
         dateBalanceHistoryService.createNewDateBalanceHistory(bill);
+        int size = dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill).size();
+        bill.setLastTransaction(dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill).get(size - 1).getDate());
+        billService.save(bill);
         return "Decreased success!";
     }
 
@@ -80,7 +84,7 @@ public class BillController {
         model.addAttribute("billId",bill.getId());
         model.addAttribute("holderId",bill.getHolder().getId());
         Map<Date, BigInteger> dateBigIntegerMap = new TreeMap<>();
-        List<DateBalanceHistory> dateBalanceHistories = dateBalanceHistoryService.findDateBalanceHistoryByBill(bill);
+        List<DateBalanceHistory> dateBalanceHistories = dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill);
         for (DateBalanceHistory dateBalanceHistory: dateBalanceHistories) {
             dateBigIntegerMap.put(dateBalanceHistory.getDate(), dateBalanceHistory.getBalance());
         }
