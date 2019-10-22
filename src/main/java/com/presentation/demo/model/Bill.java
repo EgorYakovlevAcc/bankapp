@@ -33,6 +33,9 @@ public class Bill {
 
     private User holder;
 
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
+    private List<Card> cards;
+
     public User getHolder() {
         return holder;
     }

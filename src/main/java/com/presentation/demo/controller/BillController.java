@@ -1,9 +1,11 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.model.Bill;
+import com.presentation.demo.model.Card;
 import com.presentation.demo.model.DateBalanceHistory;
 import com.presentation.demo.model.User;
 import com.presentation.demo.service.bill.BillService;
+import com.presentation.demo.service.card.CardService;
 import com.presentation.demo.service.datebalancehistory.DateBalanceHistoryService;
 import com.presentation.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class BillController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CardService cardService;
 
     @Autowired
     private DateBalanceHistoryService dateBalanceHistoryService;
@@ -92,5 +97,18 @@ public class BillController {
         return "bill";
     }
 
+    @GetMapping("/cards")
+    public String getCards(@RequestParam("billid") Integer billid, Model model) {
+        Bill bill = billService.findBillById(billid);
+        model.addAttribute("billid", bill.getId());
+        model.addAttribute("holderid", bill.getHolder().getId());
+        List<Card> cards = cardService.findCardsByBill(bill);
+        Map<String, Integer> cardsMap = new TreeMap<>();
+        for (Card card : cards) {
+            cardsMap.put(card.getCardNum(), card.getBalance());
+        }
+        model.addAttribute("map", cardsMap);
+        return "cards";
+    }
 
 }
