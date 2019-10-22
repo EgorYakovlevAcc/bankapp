@@ -38,6 +38,14 @@ public class Card {
         this.cvv = cvv;
     }
 
+    public User getCardHolder() {
+        return cardHolder;
+    }
+
+    public void setCardHolder(User cardHolder) {
+        this.cardHolder = cardHolder;
+    }
+
     public Integer getId() {
         return id;
     }

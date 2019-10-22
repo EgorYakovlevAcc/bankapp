@@ -30,6 +30,7 @@ public class CardController {
         Card card = new Card();
         Bill bill = billService.findBillById(id);
         card.setBill(bill);
+        card.setCardHolder(bill.getHolder());
         card.setCardNum(String.valueOf(Math.abs(random.nextInt())));
         card.setCvv(String.valueOf(Math.abs(random.nextInt())));
         Calendar calendar = Calendar.getInstance();
