@@ -36,7 +36,7 @@ public class BillController {
 
     @GetMapping("/createbill/{id}")
     @ResponseBody
-    public String createBill(@PathVariable("id") Integer id){
+    public String createBill(@PathVariable("id") Integer id) {
 
         Random rand = new Random();
         Bill bill = new Bill();
@@ -57,30 +57,6 @@ public class BillController {
         Bill bill = billService.findBillById(id);
         billService.delete(bill);
         return "Delete success!";
-    }
-
-    @GetMapping("/add")
-    @ResponseBody
-    public String increaseBillBalance(@RequestParam("billid") Integer billId, @RequestParam("amount") BigInteger amount){
-        Bill bill = billService.findBillById(billId);
-        bill.setBalance(bill.getBalance().add(amount));
-        dateBalanceHistoryService.createNewDateBalanceHistory(bill);
-        int size = dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill).size();
-        bill.setLastTransaction(dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill).get(size - 1).getDate());
-        billService.save(bill);
-        return "Increase success!";
-    }
-
-    @GetMapping("/dec")
-    @ResponseBody
-    public String decreaseBillBalance(@RequestParam("billid") Integer billId, @RequestParam("amount") BigInteger amount){
-        Bill bill = billService.findBillById(billId);
-        bill.setBalance(bill.getBalance().subtract(amount));
-        dateBalanceHistoryService.createNewDateBalanceHistory(bill);
-        int size = dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill).size();
-        bill.setLastTransaction(dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill).get(size - 1).getDate());
-        billService.save(bill);
-        return "Decreased success!";
     }
 
     @GetMapping("/bill")
