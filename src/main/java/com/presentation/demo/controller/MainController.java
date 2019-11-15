@@ -1,14 +1,29 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.model.User;
+import com.presentation.demo.service.security.SecurityService;
 import com.presentation.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+
 @Controller
 public class MainController {
+
+    @Autowired
+    private SecurityService securityService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private UserService userService;
@@ -21,35 +36,35 @@ public class MainController {
 
    @GetMapping("/login")
     public String getLogin(Model model){
-        model.addAttribute("username", "");
-        model.addAttribute("password", "");
+        model.addAttribute("user", new User());
         return "login";
    }
 
    @GetMapping("/registration")
-    public String getRegistration(){
+    public String getRegistration(Model model){
+        model.addAttribute("user", new User());
         return ("registration");
    }
 
-//   @GetMapping("/userpage")
-//    public String getUserpage() {
-//        return "userpage";
-//    }
-
     @PostMapping("/login")
-    //@RequestParam(required = false, defaultValue = "someValue", value="someAttr") String someAttr
-    //http://something.com/1?someAttr=someValue
-    public String printLogin(Model model, @RequestParam String username, @RequestParam String password) {
-        System.out.println("username: " + username);
-        System.out.println("password: " + password);
+    public String login(@ModelAttribute("user") User user, Model model, HttpServletRequest request) {
+        UsernamePasswordAuthenticationToken authReq
+                = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
+        Authentication auth = authenticationManager.authenticate(authReq);
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(auth);
         return "redirect:userpage";
     }
 
     @PostMapping("/registration")
-    public String printRegistration(Model model, @RequestParam String username, @RequestParam String password) {
-        System.out.println("username: " + username);
-        System.out.println("password: " + password);
-        return "redirect:userpage";
+    public String registration(@ModelAttribute("user") User user,
+                               Model model,
+                               HttpServletRequest request) throws Exception {
+        String password = user.getPassword();
+        String username = user.getUsername();
+        userService.save(user);
+        securityService.autologin(username, password);
+        return "redirect:/index";
     }
 
     @GetMapping("/deleteuser/{id}")

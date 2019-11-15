@@ -3,17 +3,20 @@
     <title> Login</title>
 </head>
 <body>
-<form id="login__form" method="post"  onsubmit="validateLoginForm()">
-    login
-    <br>
-    <input type="text" name="username" id="username__input"/>
-    <br>
-    password
-    <br>
-    <input name="password" type="password" id="password__input"/>
-    <br>
-    <br>
-    <input type="submit" id="submit__button" value="Click Me"/>
+<form th:userDto="${user}" th:action="@{/login}" method="post">
+    <h1>Please sign in</h1>
+
+    <label for="inputLogin">Login</label>
+    <input type="text" id="inputLogin" placeholder="Login" required autofocus th:field="*{user.username}">
+
+    <label for="inputPassword">Password</label>
+    <input type="password" id="inputPassword" placeholder="Password" required th:field="*{user.password}">
+    <button>Sign in</button>
+    <div align="center">
+        <a href="/login/google">Войти через Google</a>
+    </div>
+    <p><a href="registartion.html">Not registered yet? Click here</a></p>
+    <p>&copy; 2019</p>
 </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script th:inline="javascript">

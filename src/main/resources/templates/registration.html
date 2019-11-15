@@ -7,48 +7,29 @@
 <body>
 <a href="/userpage">userpage</a>
 
-<form id="signup__form" method="post" onsubmit="validateFormData(this)" class="start__form">
-    <label>
-        User name
-        <input type="text" name="username" id="username__signup"/>
-    </label>
-    <br/>
-    <label>
-        Date of birth
-        <input type="date" id="birthday__signup"/>
-    </label>
-    <br/>
-    <label>
-        Seria
-        <input type="text" id="seria__signup"/>
-    </label>
-    <label>
-        Passport No
-        <input type="text" id="passport__signup"/>
-    </label>
-    <br/>
-    <label>
-        Password
-        <input type="password" name="password" id="password__one__signup"/>
-    </label>
-    <br/>
-    <label>
-        Confirm password
-        <input type="password" id="password__second__signup"/>
-    </label>
-    <br/>
-    <button>
-        <input type="submit"/>
-    </button>
+<form th:userDto="${user}" th:action="@{/registration}"  method="post">
+    <h1>Sign up form</h1>
+
+    <label for="inputLogin">Login</label>
+    <input type="text" id="inputLogin" placeholder="Login" required autofocus
+           th:field="*{user.username}">
+
+    <label for="inputEmail">Email address</label>
+    <input type="email" id="inputEmail" placeholder="Email address" required
+           th:field="*{user.email}">
+
+    <label for="inputPassword">Password</label>
+    <input type="password" id="inputPassword" placeholder="Password" required th:field="*{user.password}">
+
+    <button>Sign up</button>
+
+    <p>&copy; 2019</p>
+
 </form>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script th:inline="javascript">
-    //example of function that validate content of inputs
-    //todo: another validations if necessary for bank client
     function validateFormData(formObject) {
-        //find ("input, textArea") as example...
-        //in our case we need only input
         let pass1 = $("#password__one__signup").val();
         let pass2 = $("#password__second__signup").val();
         if (pass1 != pass2) {
@@ -60,10 +41,6 @@
         seria = $("#seria__signup").val();
         let passportNum = "";
         passportNum = $("#passport__signup").val();
-        // if (seria.length != 4 || passportNum.length != 6) {
-        //     alert("check passport data");
-        //     return false;
-        // }
 
         if (!validation(formObject)) {
             alert("Validation problems.");
