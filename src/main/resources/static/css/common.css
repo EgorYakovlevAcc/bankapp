@@ -1,0 +1,9 @@
+.main {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 14px;
+    padding-left: 24px;
+    padding-top: 12px;
+    background-clip: border-box;
+    background-color: #e4fff1;
+}
+html {background-color: #e4fff1}

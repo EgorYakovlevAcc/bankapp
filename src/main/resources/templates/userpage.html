@@ -1,41 +1,61 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
-
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <a href="/index">Go to index</a>
+    <title>Full Width/Height Modal</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/userpage.css}"/>
 </head>
-<link rel="stylesheet" th:href="@{../css/userpage.css}">
 
 <body>
 
-<div class='main'>
-    <label>
-        <li>
-            <p>Hello, [[${user.getUsername()}]]!</p>
-            <p>ID: [[${user.getId()}]]</p>
-        </li>
-         <ul>
-             <li th:each="bill : ${bills}">
-                 <p> [[${bill.getId()}]] </p>
-                 <p> [[${bill.getBalance()}]] </p>
-                 <p th:text="${#dates.format(bill.getLastTransaction(), 'dd-MM-yyyy HH:mm:ss')}"></p>
-                 <label class="btn" for="modal-1">More info</label>
-            </li>
-        </ul>
-    </label>
-</div>
+    <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
 
-<input class="modal-state" id="modal-1" type="checkbox" />
-<div class="modal">
-    <label class="modal__bg" for="modal-1"></label>
-    <div class="modal__inner">
-        <label class="modal__close" for="modal-1"></label>
-        <h2>Bill info</h2>
-        <p> Last transaction date: </p>
+    <div class='main'>
+        <h4>Hello, [[${user.getUsername()}]]!</h4>
+        <label>
+            Your ID is: [[${user.getId()}]]
+            <ul th:each="bill : ${bills}">
+                <li>Bill ID: [[${bill.getId()}]] </li>
+                Bill balance: [[${bill.getBalance()}]]
+                    <div class="container">
+                        <button type="button" class="btn-btn-info-btn-lg" data-toggle="modal" data-target="#myModal">More</button>
+
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog modal-xl">
+
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p th:text="${#dates.format(bill.getLastTransaction(), 'dd-MM-yyyy HH:mm:ss')}"></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <ul th:each="card : ${bill.getCards()}">
+                    <li>Card balance: [[${card.getBalance()}]] </li>
+                        Card ID: [[${card.getId()}]]
+                </ul>
+            </ul>
+        </label>
+
+        <p>
+            <input type="button" class="goto" onclick="parent.location='index'" value="Go to main page"/>
+        </p>
+
+        <p style="color: crimson">
+            All rights reserved &copy; 2019
+        </p>
     </div>
-</div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 </body>
 </html>

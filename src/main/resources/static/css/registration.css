@@ -1,0 +1,13 @@
+@import "common.css";
+.confirm{
+    background-color: #2980b9;
+    color: #fdfdff;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 10px;
+    padding: .5em 1em;
+}
+.confirm:hover,
+.confirm:focus {
+    background: #647aff
+}

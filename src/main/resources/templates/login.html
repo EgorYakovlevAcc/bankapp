@@ -1,20 +1,40 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
 <head>
     <title> Login</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<form id="login__form" method="post"  onsubmit="validateLoginForm()">
-    login
-    <br>
-    <input type="text" name="username" id="username__input"/>
-    <br>
-    password
-    <br>
-    <input name="password" type="password" id="password__input"/>
-    <br>
-    <br>
-    <input type="submit" id="submit__button" value="Click Me"/>
-</form>
+
+    <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
+
+
+    <div class="main">
+        <form  th:userDto="${user}" th:action="@{/login}" method="post">
+            <h4>Please sign in</h4>
+            <p>
+                <label> Login </label>
+                <input type="text" id="inputLogin" placeholder="Login" required autofocus th:field="*{user.username}">
+            </p>
+
+            <p>
+                <label for="inputPassword">Password</label>
+                <input type="password" id="inputPassword"   placeholder="Password" required th:field="*{user.password}">
+            </p>
+
+            <p>
+                <button class="confirm"> Sign in</button>
+            </p>
+
+            <p>
+                <a href="registration">Not registered yet? Click here</a>
+            </p>
+        </form>
+        <p style="color: crimson">
+            All rights reserved &copy; 2019
+        </p>
+    </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script th:inline="javascript">
 //todo: validations for forem if it is necessary
@@ -42,9 +62,10 @@
             window.location.replace("/login");
             return false;
         }
-        // window.location.replace("/userpage");
         return true;
     }
 </script>
+
+
 </body>
 </html>

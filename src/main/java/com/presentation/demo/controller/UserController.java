@@ -1,9 +1,6 @@
 package com.presentation.demo.controller;
 
-import com.presentation.demo.model.Bill;
-import com.presentation.demo.model.DateBalanceHistory;
 import com.presentation.demo.model.User;
-import com.presentation.demo.service.bill.BillService;
 import com.presentation.demo.service.datebalancehistory.DateBalanceHistoryService;
 import com.presentation.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigInteger;
-import java.util.Calendar;
 import java.util.Random;
-import java.util.Date;
-import java.util.List;
-
-import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
-
-//    @Autowired
-//    private BillService billService;
 
     @Autowired
     private UserService userService;
@@ -57,6 +45,7 @@ public class UserController {
         User user = userService.findUserById(userId);
         model.addAttribute("user",user);
         model.addAttribute("bills",user.getBills());
+        model.addAttribute("cards",user.getCards());
         return "userpage";
     }
 

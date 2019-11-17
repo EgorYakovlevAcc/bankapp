@@ -1,4 +1,4 @@
-package com.presentation.demo.constance;
+package com.presentation.demo.constants;
 
 public final class Constant {
     public static final long tenDays = 36000000;

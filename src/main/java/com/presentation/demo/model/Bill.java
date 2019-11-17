@@ -26,15 +26,14 @@ public class Bill {
     @OneToMany(mappedBy = "targetBill", cascade = CascadeType.ALL)
     private List<DateBalanceHistory> balanceHistory;
 
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
+    private List<Card> cards;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "holder_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-
     private User holder;
 
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
-    private List<Card> cards;
 
     public User getHolder() {
         return holder;
@@ -77,6 +76,14 @@ public class Bill {
 
     public void setBalance(BigInteger balance) {
         this.balance = balance;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
     }
 
     public Date getDue() {
