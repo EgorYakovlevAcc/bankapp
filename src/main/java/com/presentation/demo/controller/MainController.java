@@ -39,6 +39,12 @@ public class MainController {
         return "login";
    }
 
+    @GetMapping("/error")//give data to server through forms
+    @ResponseBody
+    public String getLogin(){
+        return "error";
+    }
+
    @GetMapping("/registration")
     public String getRegistration(Model model){
         model.addAttribute("user",new User());
@@ -55,10 +61,9 @@ public class MainController {
         UsernamePasswordAuthenticationToken authReq
                 = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
         Authentication auth = authenticationManager.authenticate(authReq);
-
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
-        return "redirect:/userpage";
+        return "redirect:about";
     }
 //todo: userpage wants userid, so we have to give it to him after login
 
@@ -68,7 +73,7 @@ public class MainController {
         String username = user.getUsername();
         userService.save(user);
         securityService.autoLogin(username,password);
-        return "redirect:/index";
+        return "redirect:index";
     }
 
     @GetMapping("/deleteuser/{id}")

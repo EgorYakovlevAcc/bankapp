@@ -5,7 +5,7 @@
     padding: .10em 2.5em;
 }
 .goto{
-    background-color: #2980b9;
+    background-color: #0046d5;
     color: #fdfdff;
     cursor: pointer;
     display: inline-block;
@@ -15,7 +15,7 @@
 
 .goto:hover,
 .goto:focus {
-    background: #647aff;
+    background: #0046d5;
     box-shadow: 0 1px 2px rgba(0,0,0, .2) inset;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .btn-btn-info-btn-lg{
-    background-color: #ca0074;
+    background-color: #ea0c5b;
     color: #ffffff;
     cursor: pointer;
     display: inline-block;
@@ -45,9 +45,18 @@
 
 .btn-btn-info-btn-lg:hover,
 .btn-btn-info-btn-lg:focus {
-    background: #b00063;
+    background: #ea0c5b;
     color: #ffffff;
     box-shadow: 0 1px 2px rgba(0,0,0, .2) inset;
+}
+
+.logout{
+    background-color: #ca0074;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 10px;
+    padding: .3em 3em;
 }
 
 

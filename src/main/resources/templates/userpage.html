@@ -9,7 +9,7 @@
 
 <body>
 
-    <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
+    <div th:insert="common :: header (First = 'Log Out',Second = 'Sign Up',Third = 'About')"></div>
 
     <div class='main'>
         <h4>Hello, [[${user.getUsername()}]]!</h4>
@@ -43,6 +43,10 @@
                         Card ID: [[${card.getId()}]]
                 </ul>
             </ul>
+<!--            <form action="/logout" method="post">-->
+<!--                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>-->
+<!--                <input class="logout" type="submit" value="Logout"/>-->
+<!--            </form>-->
         </label>
 
         <p>

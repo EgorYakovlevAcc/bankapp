@@ -1,6 +1,6 @@
 @import "common.css";
 .confirm{
-    background-color: #2980b9;
+    background-color: #0046d5;
     color: #fdfdff;
     cursor: pointer;
     display: inline-block;
@@ -9,5 +9,5 @@
 }
 .confirm:hover,
 .confirm:focus {
-    background: #647aff
+    background: #0046d5
 }

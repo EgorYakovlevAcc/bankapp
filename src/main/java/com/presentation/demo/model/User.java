@@ -52,6 +52,10 @@ public class User implements UserDetails {
 
     private String  password;
 
+    private String vkUsername;
+
+    private String vkPassword;
+
     private String  passwordConfirmation;
 
     @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
@@ -118,6 +122,22 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getVkUsername() {
+        return vkUsername;
+    }
+
+    public void setVkUsername(String vkUsername) {
+        this.vkUsername = vkUsername;
+    }
+
+    public String getVkPassword() {
+        return vkPassword;
+    }
+
+    public void setVkPassword(String vkPassword) {
+        this.vkPassword = vkPassword;
     }
 
     public String getPasswordConfirmation() {
