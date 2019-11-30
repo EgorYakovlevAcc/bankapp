@@ -66,13 +66,19 @@
     margin-top: 0px;
 }
 
-.notfound a {
+.notfound input{
     background-color: #0046d5;
     color: #fdfdff;
     cursor: pointer;
     display: inline-block;
     border-radius: 10px;
     padding: .5em 1em;
+    height: 50px;
+    width: 100px;;
+}
+.notfound input:hover,
+.notfound input:focus {
+    background: #0007f4
 }
 
 

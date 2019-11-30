@@ -52,10 +52,6 @@ public class User implements UserDetails {
 
     private String  password;
 
-    private String vkUsername;
-
-    private String vkPassword;
-
     private String  passwordConfirmation;
 
     @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
@@ -124,27 +120,25 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getVkUsername() {
-        return vkUsername;
-    }
-
-    public void setVkUsername(String vkUsername) {
-        this.vkUsername = vkUsername;
-    }
-
-    public String getVkPassword() {
-        return vkPassword;
-    }
-
-    public void setVkPassword(String vkPassword) {
-        this.vkPassword = vkPassword;
-    }
-
     public String getPasswordConfirmation() {
         return passwordConfirmation;
     }
 
     public void setPasswordConfirmation(String passwordConfirmation) {
         this.passwordConfirmation = passwordConfirmation;
+    }
+
+    @Override
+    public String toString() {
+        return "id:" + id + "\nusername:" + username;
+    }
+
+    @Override
+    public boolean equals(Object user) {
+        if (user instanceof User) {
+            return id.equals(((User) user).getId());
+        } else {
+            return false;
+        }
     }
 }

@@ -1,12 +1,18 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.model.User;
+import com.presentation.demo.repository.AuthenticatedUserRepository;
+import com.presentation.demo.repository.UserRepository;
 import com.presentation.demo.service.datebalancehistory.DateBalanceHistoryService;
 import com.presentation.demo.service.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,7 +25,12 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private DateBalanceHistoryService dateBalanceHistoryService;
+
+    private Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/createuser")
     @ResponseBody
@@ -37,17 +48,21 @@ public class UserController {
     @GetMapping("/allusers")
     public String getAllUsers(Model model){
         model.addAttribute("users",userService.findAll());
-        return "index";
+        return "allusers";
     }
 
     @GetMapping("/userpage")
-    public String getUserPage(@RequestParam("userid") Integer userId,Model model){
-        User user = userService.findUserById(userId);
+    public String getUserPage(@AuthenticationPrincipal User user, Model model){
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("getUserPage: user = {}", user);
+        }
         model.addAttribute("user",user);
         model.addAttribute("bills",user.getBills());
         model.addAttribute("cards",user.getCards());
-        return "userpage";
+        Integer id = user.getId();
+        return "id";
     }
+
 
 //    @GetMapping("/userpage")
 //    public String getUserPage(@RequestParam("userid") Integer userId,Model model){
