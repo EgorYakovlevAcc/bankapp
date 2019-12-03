@@ -1,7 +1,6 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.model.User;
-import com.presentation.demo.repository.AuthenticatedUserRepository;
 import com.presentation.demo.repository.UserRepository;
 import com.presentation.demo.service.datebalancehistory.DateBalanceHistoryService;
 import com.presentation.demo.service.user.UserService;
@@ -12,9 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Random;
 
@@ -51,16 +49,15 @@ public class UserController {
         return "allusers";
     }
 
-    @GetMapping("/userpage")
-    public String getUserPage(@AuthenticationPrincipal User user, Model model){
+    @GetMapping(value = {"/userpage"})
+    public RedirectView getUserPage(@AuthenticationPrincipal User user, Model model){
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("getUserPage: user = {}", user);
         }
-        model.addAttribute("user",user);
-        model.addAttribute("bills",user.getBills());
-        model.addAttribute("cards",user.getCards());
         Long id = user.getId();
-        return "id";
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("redirect:/userpage/" + id);
+        return redirectView;
     }
 
 
