@@ -14,7 +14,7 @@ public class AuthenticatedUsersServiceImpl implements AuthenticatedUsersService 
     private AuthenticatedUserRepository authenticatedUserRepository;
 
     @Override
-    public User findAuthenticatedUserByID(Integer id) {
+    public User findAuthenticatedUserByID(Long id) {
         return authenticatedUserRepository.findAuthenticatedUserById(id);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @Controller
 public class MainController {
@@ -29,65 +31,65 @@ public class MainController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @GetMapping("/index")
-    public String getIndex() {
-       return "index";
-   }
+    @GetMapping(value = {"/index", "/"})
+    public String getIndex(Model model, @AuthenticationPrincipal User user) {
+        String userName = Objects.nonNull(user) ? user.getUsername() : "none";
+        System.out.println("Here you can see your name: " + userName);
+        model.addAttribute("user_name", userName);
+        return "index";
+    }
 
     @GetMapping("/error")
     @ResponseBody
-    public String getError(){
+    public String getError() {
         return "error";
     }
 
     @GetMapping("/about")
-    public String getAbout(){
+    public String getAbout() {
         return "about";
     }
 
-   @GetMapping("/registration")
-    public String getRegistration(Model model){
-        model.addAttribute("user",new User());
+    @GetMapping("/registration")
+    public String getRegistration(Model model) {
+        model.addAttribute("user", new User());
         return "registration";
-   }
+    }
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute("user") User user) throws Exception {
         String password = user.getPassword();
         String username = user.getUsername();
         userService.save(user);
-        securityService.autoLogin(username,password);
+        securityService.autoLogin(username, password);
         return "redirect:index";
     }
 
-    @GetMapping("/login")//give data to server through forms
-    public String getLogin(Model model){
-        model.addAttribute("user",new User());
+    //give data to server through forms
+    @GetMapping("/login")
+    public String getLogin(Model model) {
+        model.addAttribute("user", new User());
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("user") User user) {
+    public String setLogin(@ModelAttribute("user") User user, Model model, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentAuthenticatedUser = (User)authentication.getPrincipal();
-
-        if (currentAuthenticatedUser.equals(user)){
-            return "redirect:about";
-        }
-        else{
-            UsernamePasswordAuthenticationToken authReq
-                    = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
-            Authentication auth = authenticationManager.authenticate(authReq);
-            SecurityContext sc = SecurityContextHolder.getContext();
-            sc.setAuthentication(auth);
-            return "redirect:index";
-        }
+        String currentAuthenticatedUser = authentication.getPrincipal().toString();
+        System.out.println("currentAuthenticatedUser: " + currentAuthenticatedUser);
+        System.out.println("user: " + user.getUsername());
+        UsernamePasswordAuthenticationToken authReq
+                = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
+        Authentication auth = authenticationManager.authenticate(authReq);
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(auth);
+        return "redirect:/userpage";
     }
 //  todo: userpage wants userid, so we have to give it to him after login
 
     @GetMapping("/deleteuser/{id}")
     @ResponseBody
-    public String deleteUser(@PathVariable("id") Integer id) {
+    public String deleteUser(@PathVariable("id") Long id) {
         User user = userService.findUserById(id);
         userService.delete(user);
         return "Delete success!";

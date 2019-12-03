@@ -59,7 +59,7 @@ public class UserController {
         model.addAttribute("user",user);
         model.addAttribute("bills",user.getBills());
         model.addAttribute("cards",user.getCards());
-        Integer id = user.getId();
+        Long id = user.getId();
         return "id";
     }
 

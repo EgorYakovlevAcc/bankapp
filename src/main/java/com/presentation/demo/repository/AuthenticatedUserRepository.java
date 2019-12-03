@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AuthenticatedUserRepository extends JpaRepository<User,Integer> {
-    User findAuthenticatedUserById(Integer id);
+public interface AuthenticatedUserRepository extends JpaRepository<User,Long> {
+    User findAuthenticatedUserById(Long id);
     User findAuthenticatedUserByUsername(String username);
 }

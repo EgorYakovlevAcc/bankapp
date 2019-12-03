@@ -1,6 +1,5 @@
 package com.presentation.demo.model;
 
-import org.hibernate.annotations.GeneratorType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -41,7 +40,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @NotEmpty(message = "Username can't be empty")
     private String  username;
@@ -88,11 +87,11 @@ public class User implements UserDetails {
         this.bills = bills;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

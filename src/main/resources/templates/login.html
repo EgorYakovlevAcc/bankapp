@@ -10,7 +10,7 @@
 
 
     <div class="main">
-        <form  th:userDto="${user}" th:action="@{/login}" method="post">
+        <form  th:userDto="${user}" th:action="@{/login}" th:method="post">
             <h4>Please sign in</h4>
             <p>
                 <label> Login </label>
@@ -23,7 +23,7 @@
             </p>
 
             <p>
-                <button class="confirm"> Sign in</button>
+                <button> Sign in</button>
             </p>
 
             <p>
