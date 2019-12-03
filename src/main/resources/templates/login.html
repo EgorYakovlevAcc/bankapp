@@ -1,8 +1,14 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title> Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
+
 <body>
+<div th:insert="common :: header"></div>
+<form th:loginError="${loginError}"></form>
 <form th:userDto="${user}" th:action="@{/login}" method="post">
     <h1>Please sign in</h1>
 
@@ -20,27 +26,24 @@
 </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script th:inline="javascript">
-//todo: validations for forem if it is necessary
+    //todo: validations for forem if it is necessary
     function validateLoginForm() {
         let login = $("#username__input").val();
         let pass = $("#password__input").val();
 
-        if (login.search(/[~!#$%^&*()_+=:;'"]+/i) != -1)
-        {
+        if (login.search(/[~!#$%^&*()_+=:;'"]+/i) != -1) {
             alert("Incorrect characters in login");
             window.location.replace("/login");
             return false;
         }
 
-        if (login.length < 7)
-        {
+        if (login.length < 7) {
             alert("Login so small");
             window.location.replace("/login");
             return false;
         }
 
-        if (pass.length < 8)
-        {
+        if (pass.length < 8) {
             alert("Password so small");
             window.location.replace("/login");
             return false;
@@ -49,5 +52,6 @@
         return true;
     }
 </script>
+<div th:insert="common :: footer"></div>
 </body>
 </html>

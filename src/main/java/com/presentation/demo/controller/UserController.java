@@ -1,25 +1,18 @@
 package com.presentation.demo.controller;
 
-import com.presentation.demo.model.Bill;
-import com.presentation.demo.model.DateBalanceHistory;
 import com.presentation.demo.model.User;
-import com.presentation.demo.service.bill.BillService;
 import com.presentation.demo.service.datebalancehistory.DateBalanceHistoryService;
 import com.presentation.demo.service.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
-import java.math.BigInteger;
-import java.util.Calendar;
 import java.util.Random;
-import java.util.Date;
-import java.util.List;
-
-import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -33,6 +26,8 @@ public class UserController {
     @Autowired
     private DateBalanceHistoryService dateBalanceHistoryService;
 
+    private Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
     @GetMapping("/createuser")
     @ResponseBody
     public String createUser(){
@@ -41,7 +36,7 @@ public class UserController {
         user.setEmail("a@a"+ Math.abs(rand.nextInt()) +".com");
         user.setUsername("A" + Math.abs(rand.nextInt()));
         user.setPassword("123");
-        user.setPasswordConfirmation("123");
+        user.setPasswordGoogle("123");
         userService.save(user);
         return user.getId().toString();
     }
@@ -53,7 +48,16 @@ public class UserController {
     }
 
     @GetMapping("/userpage")
-    public String getUserPage(@RequestParam("userid") Integer userId,Model model){
+    public String getUserPage(@AuthenticationPrincipal User user, Model model){
+//        User user = userService.findUserById(userId);
+        model.addAttribute("user",user);
+        model.addAttribute("bills",user.getBills());
+        Integer userId = user.getId();
+        return "redirect:/userpage/" + userId;
+    }
+
+    @GetMapping("/userpage/{userid}")
+    public String PostUserPage(@PathVariable("userid") Integer userId, Model model){
         User user = userService.findUserById(userId);
         model.addAttribute("user",user);
         model.addAttribute("bills",user.getBills());

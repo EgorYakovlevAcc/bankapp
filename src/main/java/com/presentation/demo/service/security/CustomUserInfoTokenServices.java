@@ -57,7 +57,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
 
             user.setUsername(googleName);
             user.setEmail(googleEmail);
-            user.setPassword(passwordEncoder.encode("oauth2user"));
+            user.setPasswordGoogle(passwordEncoder.encode("oauth2user"));
 
             userRepository.save(user);
         }

@@ -1,6 +1,5 @@
 package com.presentation.demo.model;
 
-import org.hibernate.annotations.GeneratorType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,7 +24,7 @@ public class User implements UserDetails {
 
     private String  password;
 
-    private String  passwordConfirmation;
+    private String passwordGoogle;
 
     @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
     private List<Card> cards;
@@ -44,11 +43,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordConfirmation,List<Bill> bills, List<Card> cards) {
+    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordGoogle, List<Bill> bills, List<Card> cards) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.passwordConfirmation = passwordConfirmation;
+        this.passwordGoogle = passwordGoogle;
         this.bills = bills;
         this.cards = cards;
     }
@@ -118,11 +117,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
+    public String getPasswordGoogle() {
+        return passwordGoogle;
     }
 
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
+    public void setPasswordGoogle(String passwordGoogle) {
+        this.passwordGoogle = passwordGoogle;
     }
 }

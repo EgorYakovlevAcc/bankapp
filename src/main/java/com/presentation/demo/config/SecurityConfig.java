@@ -65,12 +65,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(
-                        "/registration",
-                        "/login", "/index", "/static/**", "/src/**", "/styles/**").permitAll()
+                        "/","/registration",
+                        "/login**","/about", "/index", "/static/**", "/src/**", "/styles/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login.html")
                 .permitAll()
                 .and()
                 .logout()
