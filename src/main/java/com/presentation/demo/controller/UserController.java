@@ -50,14 +50,14 @@ public class UserController {
     }
 
     @GetMapping(value = {"/userpage"})
-    public RedirectView getUserPage(@AuthenticationPrincipal User user, Model model){
+    public String getUserPage(@AuthenticationPrincipal User user, Model model){
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("getUserPage: user = {}", user);
         }
         Long id = user.getId();
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("redirect:/userpage/" + id);
-        return redirectView;
+        return "redirect:/userpage/" + id;
     }
 
 
