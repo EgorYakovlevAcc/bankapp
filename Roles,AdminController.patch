@@ -1,0 +1,507 @@
+Index: src/main/java/com/presentation/demo/config/SecurityConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/presentation/demo/config/SecurityConfig.java	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/java/com/presentation/demo/config/SecurityConfig.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -4,6 +4,7 @@
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
++import org.springframework.security.access.prepost.PreAuthorize;
+ import org.springframework.security.authentication.AuthenticationManager;
+ import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+@@ -14,8 +15,11 @@
+ import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+ 
++import static com.presentation.demo.constants.enums.ROLES.ADMIN;
++
+ @Configuration
+ //@EnableOAuth2Client
++
+ @EnableWebSecurity
+ public class SecurityConfig extends WebSecurityConfigurerAdapter {
+ 
+@@ -83,18 +87,25 @@
+ //        return filter;
+ //    }
+ 
++    //todo:special matchers for admin
+     @Override
+     protected void configure(HttpSecurity http) throws Exception {
+         http
++                .csrf()
++                .and()
+                 .authorizeRequests()
+                 .antMatchers(
+                         "/registration","/about","/index","/","allusers",
+                         "/login", "/static/**", "/src/**", "/styles/**","/css/**","/js/**")
+                 .permitAll()
+                 .anyRequest().authenticated()
++                .antMatchers("/admin/**")
++                .hasRole(ADMIN.getName())
++                .anyRequest()
++                .authenticated()
+                 .and()
+                 .formLogin()
+-                .loginPage("/login.html")
++                .loginPage("/login")
+ //                .successHandler(authenticationSuccessHandler)
+                 .permitAll()
+                 .and()
+@@ -105,7 +116,7 @@
+                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                 .logoutSuccessUrl("/login?logout")
+                 .permitAll();
+-    }
++}
+ 
+     @Override
+     @Bean
+Index: src/main/java/com/presentation/demo/constants/Constant.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/presentation/demo/constants/Constant.java	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/java/com/presentation/demo/constants/Constant.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -3,6 +3,7 @@
+ public final class Constant {
+     public static final long tenDays = 36000000;
+     public static final long oneMinute = 60000;
++    public static final int randomPasswordLength = 30;
+     private Constant() {}
+ 
+ }
+Index: src/main/java/com/presentation/demo/constants/enums/ROLES.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/presentation/demo/constants/enums/ROLES.java	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/java/com/presentation/demo/constants/enums/ROLES.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -3,6 +3,7 @@
+ public enum ROLES {
+     USER("USER"),
+     ADMIN("ADMIN");
++
+     String name;
+ 
+     ROLES (String name) {
+Index: src/main/java/com/presentation/demo/controller/AdminController.java
+===================================================================
+--- src/main/java/com/presentation/demo/controller/AdminController.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
++++ src/main/java/com/presentation/demo/controller/AdminController.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -0,0 +1,33 @@
++package com.presentation.demo.controller;
++
++import com.presentation.demo.model.User;
++import com.presentation.demo.service.user.UserService;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.security.core.annotation.AuthenticationPrincipal;
++import org.springframework.stereotype.Controller;
++import org.springframework.ui.Model;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.RequestMapping;
++import org.springframework.web.bind.annotation.ResponseBody;
++
++@RequestMapping
++@Controller
++public class AdminController {
++
++    @Autowired
++    private UserService userService;
++
++    @GetMapping("/admin")
++    public String getAdminPage(Model model, @AuthenticationPrincipal User user) {
++        model.addAttribute("user", user);
++        return "/admin/admin";
++    }
++
++    @GetMapping("/admin/showpassword")
++    @ResponseBody
++    public String showPassword(@AuthenticationPrincipal User user){
++        return user.getPassword();//comes from another service
++    }
++
++
++}
+Index: src/main/java/com/presentation/demo/controller/MainController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/presentation/demo/controller/MainController.java	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/java/com/presentation/demo/controller/MainController.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -19,6 +19,8 @@
+ import javax.servlet.http.HttpSession;
+ import java.util.Objects;
+ 
++import static com.presentation.demo.constants.enums.ROLES.USER;
++
+ @Controller
+ public class MainController {
+ 
+@@ -60,6 +62,7 @@
+     public String registration(@ModelAttribute("user") User user) throws Exception {
+         String password = user.getPassword();
+         String username = user.getUsername();
++        user.setRole(USER);
+         userService.save(user);
+         securityService.autoLogin(username, password);
+         return "redirect:index";
+@@ -75,9 +78,6 @@
+     @PostMapping("/login")
+     public String setLogin(@ModelAttribute("user") User user, Model model, HttpServletRequest request) {
+         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+-        String currentAuthenticatedUser = authentication.getPrincipal().toString();
+-        System.out.println("currentAuthenticatedUser: " + currentAuthenticatedUser);
+-        System.out.println("user: " + user.getUsername());
+         UsernamePasswordAuthenticationToken authReq
+                 = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
+         Authentication auth = authenticationManager.authenticate(authReq);
+@@ -85,7 +85,6 @@
+         sc.setAuthentication(auth);
+         return "redirect:/userpage";
+     }
+-//  todo: userpage wants userid, so we have to give it to him after login
+ 
+     @GetMapping("/deleteuser/{id}")
+     @ResponseBody
+Index: src/main/java/com/presentation/demo/controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/presentation/demo/controller/UserController.java	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/java/com/presentation/demo/controller/UserController.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -16,6 +16,8 @@
+ 
+ import java.util.Random;
+ 
++import static com.presentation.demo.constants.enums.ROLES.USER;
++
+ @Controller
+ public class UserController {
+ 
+@@ -39,6 +41,7 @@
+         user.setUsername("A" + Math.abs(rand.nextInt()));
+         user.setPassword("123");
+         user.setPasswordConfirmation("123");
++        user.setRole(USER);
+         userService.save(user);
+         return user.getId().toString();
+     }
+@@ -54,7 +57,10 @@
+         if (LOGGER.isDebugEnabled()) {
+             LOGGER.debug("getUserPage: user = {}", user);
+         }
++        //todo: if admin -> admin, if userpage -> userpage
+         Long id = user.getId();
++        model.addAttribute("bills",user.getBills());
++        model.addAttribute("cards",user.getCards());
+         RedirectView redirectView = new RedirectView();
+         redirectView.setUrl("redirect:/userpage/" + id);
+         return redirectView;
+Index: src/main/java/com/presentation/demo/model/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/presentation/demo/model/User.java	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/java/com/presentation/demo/model/User.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -1,20 +1,27 @@
+ package com.presentation.demo.model;
+ 
++import com.presentation.demo.constants.enums.ROLES;
+ import org.springframework.security.core.GrantedAuthority;
++import org.springframework.security.core.authority.SimpleGrantedAuthority;
+ import org.springframework.security.core.userdetails.UserDetails;
+ 
+ import javax.persistence.*;
+ import javax.validation.constraints.NotEmpty;
++import java.util.ArrayList;
+ import java.util.Collection;
+ import java.util.List;
+ 
++import static com.presentation.demo.constants.enums.ROLES.USER;
++
+ @Entity
+ @Table (name = "users")
+ public class User implements UserDetails {
+ 
+     @Override
+     public Collection<? extends GrantedAuthority> getAuthorities() {
+-        return null;
++        List<GrantedAuthority> authorities = new ArrayList<>();
++        authorities.add(new SimpleGrantedAuthority(this.getRole()));
++        return authorities;
+     }
+ 
+     @Override
+@@ -37,7 +44,6 @@
+         return true;
+     }
+ 
+-
+     @Id
+     @GeneratedValue (strategy = GenerationType.AUTO)
+     private Long id;
+@@ -53,6 +59,8 @@
+ 
+     private String  passwordConfirmation;
+ 
++    private String role;
++
+     @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
+     private List<Card> cards;
+ 
+@@ -70,13 +78,14 @@
+     public User() {
+     }
+ 
+-    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordConfirmation,List<Bill> bills, List<Card> cards) {
++    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordConfirmation,List<Bill> bills, List<Card> cards,@NotEmpty(message = "Role can't be empty")String role ) {
+         this.username = username;
+         this.email = email;
+         this.password = password;
+         this.passwordConfirmation = passwordConfirmation;
+         this.bills = bills;
+         this.cards = cards;
++        this.role = role;
+     }
+ 
+     public List<Bill> getBills() {
+@@ -127,6 +136,14 @@
+         this.passwordConfirmation = passwordConfirmation;
+     }
+ 
++    public String getRole() {
++        return role;
++    }
++
++    public void setRole(ROLES role) {
++        this.role = role.getName();
++    }
++
+     @Override
+     public String toString() {
+         return "id:" + id + "\nusername:" + username;
+Index: src/main/java/com/presentation/demo/repository/CardRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/presentation/demo/repository/CardRepository.java	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/java/com/presentation/demo/repository/CardRepository.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -3,6 +3,7 @@
+ import com.presentation.demo.model.Bill;
+ import com.presentation.demo.model.Card;
+ import com.presentation.demo.model.User;
++import org.springframework.context.annotation.Role;
+ import org.springframework.data.jpa.repository.JpaRepository;
+ import org.springframework.stereotype.Repository;
+ 
+Index: src/main/java/com/presentation/demo/repository/UserRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/presentation/demo/repository/UserRepository.java	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/java/com/presentation/demo/repository/UserRepository.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -1,5 +1,6 @@
+ package com.presentation.demo.repository;
+ 
++import com.presentation.demo.constants.enums.ROLES;
+ import com.presentation.demo.model.User;
+ import org.springframework.data.jpa.repository.JpaRepository;
+ import org.springframework.stereotype.Repository;
+@@ -10,4 +11,5 @@
+ public interface UserRepository extends JpaRepository<User, Integer> {
+     User findUserById(Long id);
+     User findUserByUsername(String username);
++    User findUserByRole(String role);
+ }
+Index: src/main/java/com/presentation/demo/service/appinit/InitObjects.java
+===================================================================
+--- src/main/java/com/presentation/demo/service/appinit/InitObjects.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
++++ src/main/java/com/presentation/demo/service/appinit/InitObjects.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -0,0 +1,45 @@
++package com.presentation.demo.service.appinit;
++
++import com.presentation.demo.model.User;
++import com.presentation.demo.service.user.UserService;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.boot.CommandLineRunner;
++import org.springframework.stereotype.Service;
++import org.springframework.transaction.annotation.Transactional;
++
++import static com.presentation.demo.constants.Constant.randomPasswordLength;
++import static com.presentation.demo.constants.enums.ROLES.ADMIN;
++
++@Service
++public class InitObjects implements CommandLineRunner {
++
++    private static final Logger onStartLogger =
++            LoggerFactory.getLogger(InitObjects.class);
++
++    @Autowired
++    private UserService userService;
++
++    @Override
++    @Transactional
++    public void run(String... args) throws Exception {
++        onStartLogger.info("Application started...");
++        User admin = userService.findUserByRole(ADMIN);
++        if (admin == null){
++            onStartLogger.info("Admin not found. Creating admin...");
++            admin = new User();
++            String adminPassword = userService.generateRandomPassword(randomPasswordLength);
++            admin.setPassword(adminPassword);
++            onStartLogger.info("SYSADMIN password:" + adminPassword);
++            admin.setRole(ADMIN);
++            admin.setUsername("SYSADMIN");
++            admin.setEmail("admin@mail.ru");//bad
++
++            userService.save(admin);
++        }
++        else{
++            onStartLogger.info("Admin found." + admin.getUsername());
++        }
++    }
++}
+Index: src/main/java/com/presentation/demo/service/user/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/presentation/demo/service/user/UserService.java	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/java/com/presentation/demo/service/user/UserService.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -1,5 +1,6 @@
+ package com.presentation.demo.service.user;
+ 
++import com.presentation.demo.constants.enums.ROLES;
+ import com.presentation.demo.model.User;
+ 
+ import java.util.List;
+@@ -7,7 +8,9 @@
+ public interface UserService {
+     User findUserById(Long id);
+     User findUserByUsername(String username);
++    User findUserByRole(ROLES role);
+     void delete(User user);
+     void save(User user);
+     List<User> findAll();
++    String generateRandomPassword(Integer length);
+ }
+Index: src/main/java/com/presentation/demo/service/user/UserServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/presentation/demo/service/user/UserServiceImpl.java	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/java/com/presentation/demo/service/user/UserServiceImpl.java	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -1,12 +1,18 @@
+ package com.presentation.demo.service.user;
+ 
++import com.presentation.demo.constants.enums.ROLES;
+ import com.presentation.demo.model.User;
+ import com.presentation.demo.repository.UserRepository;
++import net.bytebuddy.utility.RandomString;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.security.crypto.password.PasswordEncoder;
++import org.springframework.security.oauth2.common.util.RandomValueStringGenerator;
+ import org.springframework.stereotype.Service;
+ 
+ import java.util.List;
++import java.util.Random;
++
++import static com.presentation.demo.constants.Constant.randomPasswordLength;
+ 
+ @Service
+ public class UserServiceImpl implements UserService {
+@@ -38,8 +44,20 @@
+         return userRepository.findUserByUsername(username);
+     }
+ 
++    @Override
++    public User findUserByRole(ROLES role) {
++        return userRepository.findUserByRole(role.getName());
++    }
++
+     @Override
+     public List<User> findAll() {
+         return userRepository.findAll();
+     }
++
++    @Override
++    public String generateRandomPassword(Integer length) {
++        RandomValueStringGenerator randomValueStringGenerator = new RandomValueStringGenerator(length);
++        randomValueStringGenerator.setRandom(new Random());
++        return randomValueStringGenerator.generate();
++    }
+ }
+Index: src/main/resources/static/css/admin/admin.css
+===================================================================
+--- src/main/resources/static/css/admin/admin.css	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
++++ src/main/resources/static/css/admin/admin.css	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -0,0 +1,1 @@
++@import "css/common.css";
+\ No newline at end of file
+Index: src/main/resources/templates/admin/admin.html
+===================================================================
+--- src/main/resources/templates/admin/admin.html	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
++++ src/main/resources/templates/admin/admin.html	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -0,0 +1,11 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <link rel="stylesheet" type="text/css" href="/static/css/admin/admin.css">
++    <title>Title</title>
++</head>
++<body>
++    <input type="button" class="goto" onclick="parent.location='index'" value="Go to main page"/>
++</body>
++</html>
+\ No newline at end of file
+Index: src/main/resources/templates/login.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/templates/login.html	(revision 39556818ebd433f6394b36a3fa552e08ee25fd68)
++++ src/main/resources/templates/login.html	(revision 4e2feedc6d5a4cc67469c08e9d64bf4677e3acbf)
+@@ -23,7 +23,7 @@
+             </p>
+ 
+             <p>
+-                <button> Sign in</button>
++                <button class="confirm"> Sign in</button>
+             </p>
+ 
+             <p>
+@@ -35,14 +35,14 @@
+         </p>
+ 
+         <script type="javascript">
+-            var logout = function() {
+-                $.post("/logout", function() {
++            var logout = function () {
++                $.post("/logout", function () {
+                     $("#user").html('');
+                     $(".unauthenticated").show();
+                     $(".authenticated").hide();
+-                })
++                });
+                 return true;
+-            }
++            };
+         </script>
+ 
+         <div class="container unauthenticated">

@@ -9,7 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.presentation.demo.constants.Constant.randomPasswordLength;
+import static com.presentation.demo.constants.Constant.RANDOM_PASSWORD_LENGTH;
 import static com.presentation.demo.constants.enums.ROLES.ADMIN;
 
 @Service
@@ -29,10 +29,10 @@ public class InitObjects implements CommandLineRunner {
         if (admin == null){
             onStartLogger.info("Admin not found. Creating admin...");
             admin = new User();
-            String adminPassword = userService.generateRandomPassword(randomPasswordLength);
+            String adminPassword = userService.generateRandomPassword(RANDOM_PASSWORD_LENGTH);
             admin.setPassword(adminPassword);
             onStartLogger.info("SYSADMIN password:" + adminPassword);
-            admin.setRole(ADMIN);
+            admin.setRole(ADMIN.getName()   );
             admin.setUsername("SYSADMIN");
             admin.setEmail("admin@mail.ru");//bad
 

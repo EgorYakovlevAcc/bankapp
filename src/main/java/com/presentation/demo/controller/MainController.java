@@ -62,7 +62,7 @@ public class MainController {
     public String registration(@ModelAttribute("user") User user) throws Exception {
         String password = user.getPassword();
         String username = user.getUsername();
-        user.setRole(USER);
+        user.setRole(USER.getName());
         userService.save(user);
         securityService.autoLogin(username, password);
         return "redirect:index";

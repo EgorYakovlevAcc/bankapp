@@ -140,8 +140,8 @@ public class User implements UserDetails {
         return role;
     }
 
-    public void setRole(ROLES role) {
-        this.role = role.getName();
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override

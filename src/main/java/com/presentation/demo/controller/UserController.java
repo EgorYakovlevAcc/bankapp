@@ -41,7 +41,7 @@ public class UserController {
         user.setUsername("A" + Math.abs(rand.nextInt()));
         user.setPassword("123");
         user.setPasswordConfirmation("123");
-        user.setRole(USER);
+        user.setRole(USER.getName());
         userService.save(user);
         return user.getId().toString();
     }
