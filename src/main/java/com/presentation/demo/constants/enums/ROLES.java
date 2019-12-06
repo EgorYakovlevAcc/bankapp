@@ -3,6 +3,7 @@ package com.presentation.demo.constants.enums;
 public enum ROLES {
     USER("USER"),
     ADMIN("ADMIN");
+
     String name;
 
     ROLES (String name) {

@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
+import static com.presentation.demo.constants.enums.ROLES.USER;
+
 @Controller
 public class MainController {
 
@@ -60,6 +62,7 @@ public class MainController {
     public String registration(@ModelAttribute("user") User user) throws Exception {
         String password = user.getPassword();
         String username = user.getUsername();
+        user.setRole(USER);
         userService.save(user);
         securityService.autoLogin(username, password);
         return "redirect:index";
@@ -75,9 +78,6 @@ public class MainController {
     @PostMapping("/login")
     public String setLogin(@ModelAttribute("user") User user, Model model, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentAuthenticatedUser = authentication.getPrincipal().toString();
-        System.out.println("currentAuthenticatedUser: " + currentAuthenticatedUser);
-        System.out.println("user: " + user.getUsername());
         UsernamePasswordAuthenticationToken authReq
                 = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
         Authentication auth = authenticationManager.authenticate(authReq);
@@ -85,7 +85,6 @@ public class MainController {
         sc.setAuthentication(auth);
         return "redirect:/userpage";
     }
-//  todo: userpage wants userid, so we have to give it to him after login
 
     @GetMapping("/deleteuser/{id}")
     @ResponseBody
