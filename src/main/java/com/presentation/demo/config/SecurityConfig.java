@@ -4,6 +4,7 @@ import com.presentation.demo.service.user.userdetails.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,8 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import static com.presentation.demo.constants.enums.ROLES.ADMIN;
+
 @Configuration
 //@EnableOAuth2Client
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -83,18 +87,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        return filter;
 //    }
 
+    //todo:special matchers for admin
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf()
+                .and()
                 .authorizeRequests()
                 .antMatchers(
                         "/registration","/about","/index","/","allusers",
                         "/login", "/static/**", "/src/**", "/styles/**","/css/**","/js/**")
                 .permitAll()
                 .anyRequest().authenticated()
+                .antMatchers("/admin/**")
+                .hasRole(ADMIN.getName())
+                .anyRequest()
+                .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login.html")
+                .loginPage("/login")
 //                .successHandler(authenticationSuccessHandler)
                 .permitAll()
                 .and()
@@ -105,7 +116,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
                 .permitAll();
-    }
+}
 
     @Override
     @Bean

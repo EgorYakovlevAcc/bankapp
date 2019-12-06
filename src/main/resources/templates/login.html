@@ -23,7 +23,7 @@
             </p>
 
             <p>
-                <button> Sign in</button>
+                <button class="confirm"> Sign in</button>
             </p>
 
             <p>
@@ -35,14 +35,14 @@
         </p>
 
         <script type="javascript">
-            var logout = function() {
-                $.post("/logout", function() {
+            var logout = function () {
+                $.post("/logout", function () {
                     $("#user").html('');
                     $(".unauthenticated").show();
                     $(".authenticated").hide();
-                })
+                });
                 return true;
-            }
+            };
         </script>
 
         <div class="container unauthenticated">
