@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logged</title>
+    <link rel="stylesheet" type="text/css" href="/css/allusers.css">
+</head>
+<body>
+    Users registered in our system:
+    <div class="main">
+        <p>
+            <ul th:each="user: ${users}">
+                <li>
+                    [[${user.getUsername()}]]
+                </li>
+            </ul>
+        </p>
+    </div>
+</body>
+</html>

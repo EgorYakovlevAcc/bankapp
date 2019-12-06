@@ -2,10 +2,22 @@ package com.presentation.demo.controller;
 
 import com.presentation.demo.model.User;
 import com.presentation.demo.service.user.UserService;
+import com.presentation.demo.service.user.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @Controller
 public class MainController {
@@ -13,50 +25,74 @@ public class MainController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = {"/", "/index"})
-    public String getIndex() {
+    @Autowired
+    private SecurityService securityService;
 
-       return "index";
-   }
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-   @GetMapping("/login")
-    public String getLogin(Model model){
-        model.addAttribute("username", "");
-        model.addAttribute("password", "");
-        return "login";
-   }
+    @GetMapping(value = {"/index", "/"})
+    public String getIndex(Model model, @AuthenticationPrincipal User user) {
+        String userName = Objects.nonNull(user) ? user.getUsername() : "none";
+        System.out.println("Here you can see your name: " + userName);
+        model.addAttribute("user_name", userName);
+        return "index";
+    }
 
-   @GetMapping("/registration")
-    public String getRegistration(){
-        return ("registration");
-   }
+    @GetMapping("/error")
+    @ResponseBody
+    public String getError() {
+        return "error";
+    }
 
-//   @GetMapping("/userpage")
-//    public String getUserpage() {
-//        return "userpage";
-//    }
+    @GetMapping("/about")
+    public String getAbout() {
+        return "about";
+    }
 
-    @PostMapping("/login")
-    //@RequestParam(required = false, defaultValue = "someValue", value="someAttr") String someAttr
-    //http://something.com/1?someAttr=someValue
-    public String printLogin(Model model, @RequestParam String username, @RequestParam String password) {
-        System.out.println("username: " + username);
-        System.out.println("password: " + password);
-        return "redirect:userpage";
+    @GetMapping("/registration")
+    public String getRegistration(Model model) {
+        model.addAttribute("user", new User());
+        return "registration";
     }
 
     @PostMapping("/registration")
-    public String printRegistration(Model model, @RequestParam String username, @RequestParam String password) {
-        System.out.println("username: " + username);
-        System.out.println("password: " + password);
-        return "redirect:userpage";
+    public String registration(@ModelAttribute("user") User user) throws Exception {
+        String password = user.getPassword();
+        String username = user.getUsername();
+        userService.save(user);
+        securityService.autoLogin(username, password);
+        return "redirect:index";
     }
+
+    //give data to server through forms
+    @GetMapping("/login")
+    public String getLogin(Model model) {
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String setLogin(@ModelAttribute("user") User user, Model model, HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentAuthenticatedUser = authentication.getPrincipal().toString();
+        System.out.println("currentAuthenticatedUser: " + currentAuthenticatedUser);
+        System.out.println("user: " + user.getUsername());
+        UsernamePasswordAuthenticationToken authReq
+                = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
+        Authentication auth = authenticationManager.authenticate(authReq);
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(auth);
+        return "redirect:/userpage";
+    }
+//  todo: userpage wants userid, so we have to give it to him after login
 
     @GetMapping("/deleteuser/{id}")
     @ResponseBody
-    public String deleteUser(@PathVariable("id") Integer id) {
+    public String deleteUser(@PathVariable("id") Long id) {
         User user = userService.findUserById(id);
         userService.delete(user);
-        return "delete success";
+        return "Delete success!";
     }
+
 }

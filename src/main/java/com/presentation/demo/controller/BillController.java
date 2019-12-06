@@ -36,13 +36,12 @@ public class BillController {
 
     @GetMapping("/createbill/{id}")
     @ResponseBody
-    public String createBill(@PathVariable("id") Integer id) {
+    public String createBill(@PathVariable("id") Long id) {
 
         Random rand = new Random();
         Bill bill = new Bill();
         User user = userService.findUserById(id);
         bill.setHolder(user);
-//        bill.setBalance(new BigInteger(String.valueOf(Math.abs(rand.nextInt()))));
         bill.setNumber(String.valueOf(Math.abs(rand.nextInt())));
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 4);
