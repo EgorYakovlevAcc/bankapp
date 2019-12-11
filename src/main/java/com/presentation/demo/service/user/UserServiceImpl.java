@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByRole(ROLES role) {
-        return userRepository.findUserByRole(role.getName());
+        return userRepository.findUserByRole(role.getAuthority());
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.presentation.demo.constants.enums;
 
-public enum ROLES {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum ROLES implements GrantedAuthority {
     USER("USER"),
     ADMIN("ADMIN");
 
@@ -10,14 +12,18 @@ public enum ROLES {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
+//    public String getName() {
+//        return name;
+//    }
     @Override
     public String toString() {
         return "ROLES{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }

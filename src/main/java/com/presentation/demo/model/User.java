@@ -141,7 +141,7 @@ public class User implements UserDetails {
     }
 
     public void setRole(ROLES role) {
-        this.role = role.getName();
+        this.role = role.getAuthority();
     }
 
     @Override
