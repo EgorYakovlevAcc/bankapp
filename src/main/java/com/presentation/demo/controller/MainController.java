@@ -1,13 +1,15 @@
 package com.presentation.demo.controller;
 
+import com.presentation.demo.helpers.MapEntryImpl;
 import com.presentation.demo.model.User;
 import com.presentation.demo.service.user.UserService;
 import com.presentation.demo.service.user.security.SecurityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,10 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Objects;
+import java.util.*;
 
-import static com.presentation.demo.constants.enums.ROLES.USER;
+import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_USER;
 
 @Controller
 public class MainController {
@@ -33,11 +34,22 @@ public class MainController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    private Logger LOGGER = LoggerFactory.getLogger(MainController.class);
+
+
     @GetMapping(value = {"/index", "/"})
     public String getIndex(Model model, @AuthenticationPrincipal User user) {
         String userName = Objects.nonNull(user) ? user.getUsername() : "none";
-        System.out.println("Here you can see your name: " + userName);
         model.addAttribute("user_name", userName);
+
+        List<MapEntryImpl<String,String>> namesLinksList = new LinkedList<>();
+
+        namesLinksList.add(new MapEntryImpl<String,String>("Home","/index"));
+        namesLinksList.add(new MapEntryImpl<String,String>("Sign up","/registration"));
+        namesLinksList.add(new MapEntryImpl<String,String>("Sign in","/login"));
+        namesLinksList.add(new MapEntryImpl<String,String>("About","/about"));
+
+        model.addAttribute("namesLinksList",namesLinksList);
         return "index";
     }
 
@@ -62,7 +74,7 @@ public class MainController {
     public String registration(@ModelAttribute("user") User user) throws Exception {
         String password = user.getPassword();
         String username = user.getUsername();
-        user.setRole(USER.getName());
+        user.setAuthority(ROLE_USER);
         userService.save(user);
         securityService.autoLogin(username, password);
         return "redirect:index";
@@ -79,7 +91,7 @@ public class MainController {
     public String setLogin(@ModelAttribute("user") User user, Model model, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UsernamePasswordAuthenticationToken authReq
-                = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
+                = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
         Authentication auth = authenticationManager.authenticate(authReq);
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
