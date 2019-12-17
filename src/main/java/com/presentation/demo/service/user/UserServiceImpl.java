@@ -1,25 +1,26 @@
 package com.presentation.demo.service.user;
 
+import com.presentation.demo.constants.enums.ROLES;
 import com.presentation.demo.model.User;
 import com.presentation.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.util.RandomValueStringGenerator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
 
-    public UserServiceImpl() {
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void save(User user) {
@@ -33,13 +34,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+    public User findUserById(Long id) {
+        return userRepository.findUserById(id);
     }
 
     @Override
-    public User findUserById(Integer id) {
-        return userRepository.findUserById(id);
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
+
+    @Override
+    public User findUserByRole(ROLES role) {
+        return userRepository.findUserByRole(role.getName());
     }
 
     @Override
@@ -48,7 +54,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+    public String generateRandomPassword(Integer length) {
+        RandomValueStringGenerator randomValueStringGenerator = new RandomValueStringGenerator(length);
+        randomValueStringGenerator.setRandom(new Random());
+        return randomValueStringGenerator.generate();
     }
 }

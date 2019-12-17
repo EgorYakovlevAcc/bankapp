@@ -1,15 +1,16 @@
 package com.presentation.demo.service.user;
 
+import com.presentation.demo.constants.enums.ROLES;
 import com.presentation.demo.model.User;
 
-import javax.xml.transform.sax.SAXResult;
 import java.util.List;
 
 public interface UserService {
-    User findUserById(Integer id);
+    User findUserById(Long id);
     User findUserByUsername(String username);
-    User findUserByEmail(String email);
+    User findUserByRole(ROLES role);
     void delete(User user);
     void save(User user);
     List<User> findAll();
+    String generateRandomPassword(Integer length);
 }

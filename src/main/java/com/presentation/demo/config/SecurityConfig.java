@@ -1,130 +1,127 @@
 package com.presentation.demo.config;
 
-import com.presentation.demo.repository.UserRepository;
-import com.presentation.demo.service.security.CustomUserInfoTokenServices;
-import com.presentation.demo.service.user.userdetail.CustomUserDetailsService;
+import com.presentation.demo.service.user.userdetails.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.servlet.Filter;
+import static com.presentation.demo.constants.enums.ROLES.ADMIN;
 
 @Configuration
+//@EnableOAuth2Client
+
 @EnableWebSecurity
-@EnableOAuth2Client
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    private OAuth2ClientContext oAuth2ClientContext;
+    private LogoutSuccessHandler logoutSuccessHandler;
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Qualifier("oauth2ClientContext")
+//    @Autowired
+//    private OAuth2ClientContext oauth2ClientContext;
+//
+//    @Bean
+//    @ConfigurationProperties("facebook.client")
+//    public AuthorizationCodeResourceDetails facebook()
+//    {
+//        return new AuthorizationCodeResourceDetails();
+//    }
+//
+//    @Bean
+//    @ConfigurationProperties("facebook.resource")
+//    public ResourceServerProperties facebookResource()
+//    {
+//        return new ResourceServerProperties();
+//    }
+//
+//    @Bean
+//    public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter)
+//    {
+//        FilterRegistrationBean registration = new FilterRegistrationBean();
+//        registration.setFilter(oAuth2ClientContextFilter);
+//        registration.setOrder(-100);
+//        return registration;
+//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(bcryptPasswordEncoder());
 //        auth.inMemoryAuthentication()
-//                .withUser("username")
-//                .password(bcryptPasswordEncoder().encode("password123456"))
+//                .withUser("user")
+//                .password(bcryptPasswordEncoder().encode("password"))
 //                .roles("USER")
 //                .and()
 //                .withUser("admin")
 //                .password(bcryptPasswordEncoder().encode("password"))
 //                .roles("ADMIN");
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(bcryptPasswordEncoder());
     }
 
+
+//    private Filter ssoFilter()
+//    {
+//        CompositeFilter filter = new CompositeFilter();//some filters
+//        List<Filter> filters = new ArrayList<>();
+//
+//        OAuth2ClientAuthenticationProcessingFilter facebookFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/facebook");
+//        OAuth2RestTemplate facebookTemplate = new OAuth2RestTemplate(facebook(), oauth2ClientContext);
+//        facebookFilter.setRestTemplate(facebookTemplate);
+//        UserInfoTokenServices tokenServices = new UserInfoTokenServices(facebookResource().getUserInfoUri(), facebook().getClientId());
+//        tokenServices.setRestTemplate(facebookTemplate);
+//        facebookFilter.setTokenServices(tokenServices);
+//        filters.add(facebookFilter);
+//        filter.setFilters(filters);
+//        return filter;
+//    }
+
+    //todo:special matchers for admin
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class);
         http
+                .csrf()
+                .and()
                 .authorizeRequests()
                 .antMatchers(
-                        "/","/registration", "registartion.html",
-                        "/login**","/about", "/index", "/static/**", "/src/**", "/styles/**").permitAll()
-                .anyRequest().authenticated()
+                        "/registration","/about","/index","/","allusers",
+                        "/login", "/static/**", "/src/**", "/styles/**","/css/**","/js/**")
+                .permitAll()
+                .antMatchers("/admin/**")
+                .hasAnyRole(ADMIN.getName())
                 .and()
                 .formLogin()
-                .loginPage("/login.html")
+                .loginPage("/login")
+//                .successHandler(authenticationSuccessHandler)
                 .permitAll()
                 .and()
                 .logout()
+//                .logoutSuccessHandler(logoutSuccessHandler)
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
                 .permitAll();
-    }
-
-    @Bean
-    public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter)
-    {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(oAuth2ClientContextFilter);
-        registration.setOrder(-100);
-        return registration;
-    }
-
-    private Filter ssoFilter()
-    {
-        OAuth2ClientAuthenticationProcessingFilter googleFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/google");
-        OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google(), oAuth2ClientContext);
-        googleFilter.setRestTemplate(googleTemplate);
-        CustomUserInfoTokenServices tokenServices = new CustomUserInfoTokenServices(googleResource().getUserInfoUri(), google().getClientId());
-        tokenServices.setRestTemplate(googleTemplate);
-        googleFilter.setTokenServices(tokenServices);
-        tokenServices.setUserRepository(userRepository);
-        tokenServices.setPasswordEncoder(passwordEncoder);
-        return googleFilter;
-    }
-
-    @Bean
-    @ConfigurationProperties("google.client")
-    public AuthorizationCodeResourceDetails google()
-    {
-        return new AuthorizationCodeResourceDetails();
-    }
-
-    @Bean
-    @ConfigurationProperties("google.resource")
-    public ResourceServerProperties googleResource()
-    {
-        return new ResourceServerProperties();
-    }
-
-    @Bean
-    PasswordEncoder bcryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+}
 
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    PasswordEncoder bcryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

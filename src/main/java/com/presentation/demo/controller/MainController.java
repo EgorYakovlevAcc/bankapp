@@ -1,15 +1,14 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.model.User;
-import com.presentation.demo.service.admpasstimer.AdmPassTimerServiceImpl;
-import com.presentation.demo.service.security.SecurityService;
 import com.presentation.demo.service.user.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.presentation.demo.service.user.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,9 +16,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Objects;
+
+import static com.presentation.demo.constants.enums.ROLES.USER;
 
 @Controller
 public class MainController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private SecurityService securityService;
@@ -27,85 +33,65 @@ public class MainController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private AdmPassTimerServiceImpl admPassTimerService;
-
-    @Autowired
-    private UserService userService;
-
-    private Logger LOGGER = LoggerFactory.getLogger(MainController.class);
-
-    @GetMapping(value = {"/", "/index"})
-    public String getIndex() {
+    @GetMapping(value = {"/index", "/"})
+    public String getIndex(Model model, @AuthenticationPrincipal User user) {
+        String userName = Objects.nonNull(user) ? user.getUsername() : "none";
+        System.out.println("Here you can see your name: " + userName);
+        model.addAttribute("user_name", userName);
         return "index";
     }
 
-    @GetMapping(value = {"/login", "/login.html"})
-    public String getLogin(Model model, String error, String logout) {
-        System.out.println("get login mapping");
-        model.addAttribute("user", new User());
-        if (error != null) {
-            System.out.println("error login");
-            model.addAttribute("loginError", "Error with username or password");
-        } else if (logout != null) {
-            System.out.println("logout");
-            model.addAttribute("loginError", "Successful logout");
-        } else {
-            System.out.println("login new user");
-        }
-        return "login";
-    }
-
-    @GetMapping(value = {"/registration", "registartion.html"})
-    public String getRegistration(Model model) {
-        model.addAttribute("user", new User());
-        return ("registration");
+    @GetMapping("/error")
+    @ResponseBody
+    public String getError() {
+        return "error";
     }
 
     @GetMapping("/about")
-    public String about() {
-        return ("about");
+    public String getAbout() {
+        return "about";
     }
 
-    @PostMapping(value = "/login")
-    public String login(@ModelAttribute("user") User user) {
-        System.out.println("post login mapping");
+    @GetMapping("/registration")
+    public String getRegistration(Model model) {
+        model.addAttribute("user", new User());
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String registration(@ModelAttribute("user") User user) throws Exception {
+        String password = user.getPassword();
+        String username = user.getUsername();
+        user.setRole(USER.getName());
+        userService.save(user);
+        securityService.autoLogin(username, password);
+        return "redirect:index";
+    }
+
+    //give data to server through forms
+    @GetMapping("/login")
+    public String getLogin(Model model) {
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String setLogin(@ModelAttribute("user") User user, Model model, HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UsernamePasswordAuthenticationToken authReq
                 = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
         Authentication auth = authenticationManager.authenticate(authReq);
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
-        LOGGER.debug("login: user = {}", user.getUsername());
-//        int userId = user.getId();
-//        return "redirect:userpage?userid={userId}";
         return "redirect:/userpage";
-    }
-
-
-    @PostMapping("/registration")
-    public String registration(@ModelAttribute("user") User user,
-                               Model model,
-                               HttpServletRequest request) throws Exception {
-        System.out.println("AGAIN REGISTRATION");
-        String password = user.getPassword();
-        String email = user.getEmail();
-        String username = user.getUsername();
-        userService.save(user);
-        securityService.autologin(username, password);
-        return "redirect:/index";
-    }
-
-    @GetMapping("/getadminpass")
-    @ResponseBody
-    public String adminPass() {
-        return admPassTimerService.getAdminPassword() + "\n" + admPassTimerService.getLifetime();
     }
 
     @GetMapping("/deleteuser/{id}")
     @ResponseBody
-    public String deleteUser(@PathVariable("id") Integer id) {
+    public String deleteUser(@PathVariable("id") Long id) {
         User user = userService.findUserById(id);
         userService.delete(user);
-        return "delete success";
+        return "Delete success!";
     }
+
 }
