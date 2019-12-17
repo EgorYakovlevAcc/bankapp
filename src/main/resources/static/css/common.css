@@ -6,4 +6,7 @@
     background-clip: border-box;
     background-color: #e4fff1;
 }
-html {background-color: #e4fff1}
+
+body{
+    background-color: #e4fff1 !important;
+}

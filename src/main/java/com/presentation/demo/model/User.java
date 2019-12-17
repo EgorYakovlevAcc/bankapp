@@ -1,6 +1,6 @@
 package com.presentation.demo.model;
 
-import com.presentation.demo.constants.enums.ROLES;
+import com.presentation.demo.constants.enums.AUTHORITIES;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,17 +11,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.presentation.demo.constants.enums.ROLES.USER;
-
 @Entity
 @Table (name = "users")
 public class User implements UserDetails {
 
+    public void setAuthority(AUTHORITIES newAuthority){
+        authority = newAuthority.getAuthority();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(this.getRole()));
-        return authorities;
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(authority));
+        return grantedAuthorities;
     }
 
     @Override
@@ -59,7 +61,7 @@ public class User implements UserDetails {
 
     private String  passwordConfirmation;
 
-    private String role;
+    private String authority;
 
     @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
     private List<Card> cards;
@@ -78,14 +80,13 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordConfirmation,List<Bill> bills, List<Card> cards,@NotEmpty(message = "Role can't be empty")String role ) {
+    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordConfirmation,List<Bill> bills, List<Card> cards) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
         this.bills = bills;
         this.cards = cards;
-        this.role = role;
     }
 
     public List<Bill> getBills() {
@@ -135,15 +136,6 @@ public class User implements UserDetails {
     public void setPasswordConfirmation(String passwordConfirmation) {
         this.passwordConfirmation = passwordConfirmation;
     }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     @Override
     public String toString() {
         return "id:" + id + "\nusername:" + username;

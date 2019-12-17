@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.presentation.demo.constants.Constant.RANDOM_PASSWORD_LENGTH;
-import static com.presentation.demo.constants.enums.ROLES.ADMIN;
+import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_ADMIN;
 
 @Service
 public class InitObjects implements CommandLineRunner {
@@ -25,14 +25,14 @@ public class InitObjects implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         onStartLogger.info("Application started...");
-        User admin = userService.findUserByRole(ADMIN);
+        User admin = userService.findUserByAuthority(ROLE_ADMIN);
         if (admin == null){
             onStartLogger.info("Admin not found. Creating admin...");
             admin = new User();
             String adminPassword = userService.generateRandomPassword(RANDOM_PASSWORD_LENGTH);
             admin.setPassword(adminPassword);
             onStartLogger.info("SYSADMIN password:" + adminPassword);
-            admin.setRole(ADMIN.getName()   );
+            admin.setAuthority(ROLE_ADMIN);
             admin.setUsername("SYSADMIN");
             admin.setEmail("admin@mail.ru");//bad
 

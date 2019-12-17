@@ -1,6 +1,6 @@
 package com.presentation.demo.service.user;
 
-import com.presentation.demo.constants.enums.ROLES;
+import com.presentation.demo.constants.enums.AUTHORITIES;
 import com.presentation.demo.model.User;
 import com.presentation.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +44,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByRole(ROLES role) {
-        return userRepository.findUserByRole(role.getName());
+    public User findUserByAuthority(AUTHORITIES authority) {
+        return userRepository.findUserByAuthority(authority.getAuthority());
     }
 
     @Override
