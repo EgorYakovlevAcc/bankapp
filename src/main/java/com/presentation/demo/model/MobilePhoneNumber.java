@@ -21,12 +21,12 @@ public class MobilePhoneNumber {
     @JoinColumn(name = "user",nullable = true)
     private User owner;
 
-//    @PhoneNumber
-    private String mobilePhoneNumber;
+    @PhoneNumber
+    private String mobilePhoneNumberValue;
 
     public MobilePhoneNumber() {}
 
-    public MobilePhoneNumber(User owner) {
+    public MobilePhoneNumber(User owner, String mobilePhoneNumber) {
         this.owner = owner;
     }
 
@@ -38,12 +38,12 @@ public class MobilePhoneNumber {
         return owner;
     }
 
-    public void setMobilePhoneNumber(String mobilePhoneNumber) {
-        this.mobilePhoneNumber = mobilePhoneNumber;
+    public void setMobilePhoneNumberValue(String mobilePhoneNumber) {
+        this.mobilePhoneNumberValue = mobilePhoneNumber;
     }
 
-    public String getMobilePhoneNumber() {
-        return mobilePhoneNumber;
+    public String getMobilePhoneNumberValue() {
+        return mobilePhoneNumberValue;
     }
 
     public Integer getId() {

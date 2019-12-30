@@ -42,8 +42,9 @@ public class InitObjects implements CommandLineRunner {
             admin.setUsername(ADMIN_NAME);
             admin.setEmail(ADMIN_EMAIL);
 
-            MobilePhoneNumber adminMobilePhoneNumber = new MobilePhoneNumber(admin);
-            adminMobilePhoneNumber.setMobilePhoneNumber(ADMIN_MOBILE_PHONE_NUMBER);
+            MobilePhoneNumber adminMobilePhoneNumber = new MobilePhoneNumber();
+            adminMobilePhoneNumber.setOwner(admin);
+            adminMobilePhoneNumber.setMobilePhoneNumberValue(ADMIN_MOBILE_PHONE_NUMBER);
 
             userService.save(admin);
         }

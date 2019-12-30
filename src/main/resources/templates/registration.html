@@ -10,35 +10,35 @@
     <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
 
     <div class="main">
-        <form th:userDo="${abstractUser}" th:action="@{/registration}" method="post">
+        <form th:userDo="${user}" th:action="@{/registration}" method="post">
             <h3>Sign up</h3>
             <p>
                 <label for="inputLogin">Login:</label>
                 <input type="text" id="inputLogin" placeholder="Login" required autofocus
-                       th:field="*{abstractUser.user.username}">
+                       th:field="*{user.username}">
             </p>
 
             <p>
                 <label for="inputPassword"> Password:</label>
                 <input type="password" id="inputPassword" placeholder="Password" required
-                       th:field="*{abstractUser.user.password}">
+                       th:field="*{user.password}">
             </p>
 
             <p>
                 <label for="inputEmail">Email address:</label>
 
                 <input type="email" id="inputEmail" placeholder="Email address" required
-                       th:field="*{abstractUser.user.email}">
+                       th:field="*{user.email}">
             </p>
 
             <p>
                 <label for="inputPhoneNumber">Mobile phone number: </label>
 
                 <input id="inputPhoneNumber" placeholder="Mobile phone number" required
-                       th:field="*{abstractUser.mobilePhoneNumber.mobilePhoneNumber}">
+                       th:field="*{user.mobilePhoneNumber.mobilePhoneNumberValue}">
             </p>
 
-            <button class="confirm">Sign Up </button>
+            <button class="confirm"> Sign Up </button>
 
         </form>
         <p style="color: crimson">

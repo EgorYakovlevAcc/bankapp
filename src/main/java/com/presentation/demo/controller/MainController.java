@@ -1,7 +1,6 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.helpers.MapEntryImpl;
-import com.presentation.demo.helpers.UserWithMobilePhoneNumber;
 import com.presentation.demo.model.MobilePhoneNumber;
 import com.presentation.demo.model.User;
 import com.presentation.demo.service.mobilephonenumber.MobilePhoneNumberService;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
-import static com.presentation.demo.constants.enums.AUTHORITIES.ADMIN;
 import static com.presentation.demo.constants.enums.AUTHORITIES.USER;
 
 @Controller
@@ -77,34 +75,33 @@ public class MainController {
 
     @GetMapping("/registration")
     public String getRegistration(Model model) {
-        User newUser = new User();
         MobilePhoneNumber phoneNumber = new MobilePhoneNumber();
-        UserWithMobilePhoneNumber abstractUser = new UserWithMobilePhoneNumber(newUser,phoneNumber);
-        model.addAttribute("abstractUser", abstractUser);
+        User newUser = new User();
+        newUser.setMobilePhoneNumber(phoneNumber);
+        model.addAttribute("user", newUser);
         return "registration";
     }
 
     @Transactional
     @PostMapping("/registration")
-    public String postRegistration(@ModelAttribute("abstractUser") UserWithMobilePhoneNumber abstractUser) throws Exception {
-        User newUser = abstractUser.getUser();
-        MobilePhoneNumber newMobilePhoneNumber = abstractUser.getMobilePhoneNumber();
+    public String postRegistration(@ModelAttribute("user") User user) throws Exception {
+        MobilePhoneNumber userMobilePhoneNumber = user.getMobilePhoneNumber();
 
-        newUser.setAuthority(USER);
-        newMobilePhoneNumber.setOwner(newUser);
+        user.setAuthority(USER);
+        userMobilePhoneNumber.setOwner(user);
 
-        String newUserName = newUser.getUsername();
-        String newUserPassword = newUser.getPassword();
-        Collection<? extends GrantedAuthority> authorities = newUser.getAuthorities();
+        String newUserName = user.getUsername();
+        String newUserPassword = user.getPassword();
+        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
 
-        userService.save(newUser);
-        mobilePhoneNumberService.save(newMobilePhoneNumber);
+        userService.save(user);
+        mobilePhoneNumberService.save(userMobilePhoneNumber);
 
 
         LOGGER.info(newUserName);
         LOGGER.info(newUserPassword);
 
-        Integer id = mobilePhoneNumberService.findMobilePhoneNumberByOwner(newUser).getId();
+//        Integer id = mobilePhoneNumberService.findMobilePhoneNumberByOwner(user).getId();
 
         securityService.autoLogin(newUserName,newUserPassword,authorities);
         return "redirect:/index";
