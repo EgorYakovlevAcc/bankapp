@@ -6,6 +6,7 @@ import java.util.Calendar;
 @Entity
 @Table(name = "transactions")
 public class Transaction {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -58,10 +59,6 @@ public class Transaction {
 
     public void setDate(Calendar date) {
         this.date = date;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public boolean isCanceled() {

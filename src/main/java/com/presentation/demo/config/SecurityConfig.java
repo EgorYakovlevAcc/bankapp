@@ -14,7 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_ADMIN;
+import static com.presentation.demo.constants.enums.AUTHORITIES.ADMIN;
+import static com.presentation.demo.constants.enums.AUTHORITIES.USER;
 
 @Configuration
 //@EnableOAuth2Client
@@ -99,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/admin/**")
 //                .hasAnyRole(ADMIN.getName())
-                .hasAnyAuthority(ROLE_ADMIN.getAuthority())
+                .hasAnyAuthority(ADMIN.getAuthority())
                 .and()
                 .formLogin()
                 .loginPage("/login")

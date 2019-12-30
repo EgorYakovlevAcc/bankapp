@@ -15,6 +15,105 @@ import java.util.List;
 @Table (name = "users")
 public class User implements UserDetails {
 
+    @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
+    private Integer id;
+
+    @NotEmpty(message = "Username can't be empty")
+    private String username;
+
+    @Column (name = "e_mail")
+    @NotEmpty(message = "Email can't be empty")
+    private String email;
+
+    @OneToOne(mappedBy = "owner",cascade = CascadeType.ALL)
+    private MobilePhoneNumber mobilePhoneNumber;
+
+    private String  password;
+
+    private String  passwordConfirmation;
+
+    private String authority;
+
+    @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
+    private List<Card> cards;
+
+    @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL)
+    private List<Bill> bills;
+
+    public User() {
+    }
+
+    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email,@NotEmpty(message = "Phone number can't be empty") MobilePhoneNumber mobilePhoneNumber, String password, String passwordConfirmation,List<Bill> bills, List<Card> cards) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.passwordConfirmation = passwordConfirmation;
+        this.bills = bills;
+        this.cards = cards;
+        this.mobilePhoneNumber = mobilePhoneNumber;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public List<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public MobilePhoneNumber getMobilePhoneNumber() {
+        return mobilePhoneNumber;
+    }
+
+    public void setMobilePhoneNumber(MobilePhoneNumber mobilePhoneNumber) {
+        this.mobilePhoneNumber = mobilePhoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPasswordConfirmation() {
+        return passwordConfirmation;
+    }
+
+    public void setPasswordConfirmation(String passwordConfirmation) {
+        this.passwordConfirmation = passwordConfirmation;
+    }
+
     public void setAuthority(AUTHORITIES newAuthority){
         authority = newAuthority.getAuthority();
     }
@@ -46,96 +145,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    private Long id;
-
-    @NotEmpty(message = "Username can't be empty")
-    private String  username;
-
-    @Column (name = "e_mail")
-    @NotEmpty(message = "Email can't be empty")
-    private String  email;
-
-    private String  password;
-
-    private String  passwordConfirmation;
-
-    private String authority;
-
-    @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
-    private List<Card> cards;
-
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
-
-    @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL)
-    private List<Bill> bills;
-
-    public User() {
-    }
-
-    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email, String password, String passwordConfirmation,List<Bill> bills, List<Card> cards) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.passwordConfirmation = passwordConfirmation;
-        this.bills = bills;
-        this.cards = cards;
-    }
-
-    public List<Bill> getBills() {
-        return bills;
-    }
-
-    public void setBills(List<Bill> bills) {
-        this.bills = bills;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
-    }
-
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
-    }
     @Override
     public String toString() {
         return "id:" + id + "\nusername:" + username;

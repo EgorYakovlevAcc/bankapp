@@ -16,8 +16,8 @@ public class Card {
     private String cardNum;
 
     @ManyToOne(fetch =  FetchType.EAGER)
-    @JoinColumn(name = "bill_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "bill_id", nullable = true)
     private Bill bill;
 
     private Date expirDate;
@@ -52,10 +52,6 @@ public class Card {
 
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getBalance() {

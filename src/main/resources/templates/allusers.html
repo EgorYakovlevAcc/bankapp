@@ -12,6 +12,7 @@
             <ul th:each="user: ${users}">
                 <li>
                     [[${user.getUsername()}]]
+                    [[${user.getMobilePhoneNumber().getMobilePhoneNumber()}]]
                 </li>
             </ul>
         </p>

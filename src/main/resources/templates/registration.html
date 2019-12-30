@@ -2,7 +2,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
-    <script type="application/json" src="../static/formValidator.js"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -11,28 +10,35 @@
     <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
 
     <div class="main">
-        <form th:userDto="${user}" th:action="@{/registration}" method="post">
-            <h3>Sign up form</h3>
-
-            <p>
-            <label for="inputEmail">Email address:</label>
-
-            <input type="email" id="inputEmail" placeholder="Email address" required
-                   th:field="*{user.email}">
-            </p>
-
+        <form th:userDo="${abstractUser}" th:action="@{/registration}" method="post">
+            <h3>Sign up</h3>
             <p>
                 <label for="inputLogin">Login:</label>
                 <input type="text" id="inputLogin" placeholder="Login" required autofocus
-                       th:field="*{user.username}">
+                       th:field="*{abstractUser.user.username}">
             </p>
 
             <p>
                 <label for="inputPassword"> Password:</label>
-                <input type="password" id="inputPassword" placeholder="Password" required th:field="*{user.password}">
+                <input type="password" id="inputPassword" placeholder="Password" required
+                       th:field="*{abstractUser.user.password}">
             </p>
 
-            <button class="confirm">Sign up</button>
+            <p>
+                <label for="inputEmail">Email address:</label>
+
+                <input type="email" id="inputEmail" placeholder="Email address" required
+                       th:field="*{abstractUser.user.email}">
+            </p>
+
+            <p>
+                <label for="inputPhoneNumber">Mobile phone number: </label>
+
+                <input id="inputPhoneNumber" placeholder="Mobile phone number" required
+                       th:field="*{abstractUser.mobilePhoneNumber.mobilePhoneNumber}">
+            </p>
+
+            <button class="confirm">Sign Up </button>
 
         </form>
         <p style="color: crimson">
@@ -44,7 +50,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script th:inline="javascript">
     //example of function that validate content of inputs
-    //todo: another validations if necessary for bank client
     function validateFormData(formObject) {
         //find ("input, textArea") as example...
         //in our case we need only input

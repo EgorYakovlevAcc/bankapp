@@ -16,7 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Random;
 
-import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_USER;
+import static com.presentation.demo.constants.enums.AUTHORITIES.ADMIN;
 
 @Controller
 public class UserController {
@@ -41,7 +41,7 @@ public class UserController {
         user.setUsername("A" + Math.abs(rand.nextInt()));
         user.setPassword("123");
         user.setPasswordConfirmation("123");
-        user.setAuthority(ROLE_USER);
+        user.setAuthority(ADMIN);
         userService.save(user);
         return user.getId().toString();
     }
@@ -58,7 +58,7 @@ public class UserController {
             LOGGER.debug("getUserPage: user = {}", user);
         }
         //todo: if admin -> admin, if userpage -> userpage
-        Long id = user.getId();
+        Integer id = user.getId();
         model.addAttribute("bills",user.getBills());
         model.addAttribute("cards",user.getCards());
         RedirectView redirectView = new RedirectView();

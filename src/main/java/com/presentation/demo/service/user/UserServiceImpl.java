@@ -1,6 +1,7 @@
 package com.presentation.demo.service.user;
 
 import com.presentation.demo.constants.enums.AUTHORITIES;
+import com.presentation.demo.model.MobilePhoneNumber;
 import com.presentation.demo.model.User;
 import com.presentation.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(Long id) {
+    public User findUserById(Integer id) {
         return userRepository.findUserById(id);
     }
 
@@ -44,8 +45,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByAuthority(AUTHORITIES authority) {
-        return userRepository.findUserByAuthority(authority.getAuthority());
+    public User findUserByMobilePhoneNumber(MobilePhoneNumber mobilePhoneNumber) {
+        return userRepository.findUserByMobilePhoneNumber(mobilePhoneNumber);
     }
 
     @Override
