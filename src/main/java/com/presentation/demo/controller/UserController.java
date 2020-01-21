@@ -17,15 +17,13 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.Random;
 
 import static com.presentation.demo.constants.enums.AUTHORITIES.ADMIN;
+import static com.presentation.demo.constants.enums.AUTHORITIES.USER;
 
 @Controller
 public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private DateBalanceHistoryService dateBalanceHistoryService;
@@ -41,7 +39,7 @@ public class UserController {
         user.setUsername("A" + Math.abs(rand.nextInt()));
         user.setPassword("123");
         user.setPasswordConfirmation("123");
-        user.setAuthority(ADMIN);
+        user.setAuthority(USER);
         userService.save(user);
         return user.getId().toString();
     }
@@ -53,17 +51,15 @@ public class UserController {
     }
 
     @GetMapping(value = {"/userpage"})
-    public String getUserPage(@AuthenticationPrincipal User user, Model model){
+    public String getUserPage(@AuthenticationPrincipal User currentUser, Model model) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("getUserPage: user = {}", user);
+            LOGGER.debug("getUserPage: user = {}", currentUser);
         }
-        //todo: if admin -> admin, if userpage -> userpage
-        Integer id = user.getId();
-        model.addAttribute("bills",user.getBills());
-        model.addAttribute("cards",user.getCards());
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("redirect:/userpage/" + id);
-        return "redirect:/userpage/" + id;
+            User curUser = userService.findUserById(currentUser.getId());
+            model.addAttribute("user", curUser);
+            model.addAttribute("bills", curUser.getBills());
+            model.addAttribute("cards", curUser.getCards());
+            return "userpage";
     }
 
 

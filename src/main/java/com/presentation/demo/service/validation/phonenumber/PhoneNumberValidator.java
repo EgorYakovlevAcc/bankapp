@@ -1,19 +1,20 @@
-package com.presentation.demo.annotations;
+package com.presentation.demo.service.validation.phonenumber;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
-import static com.presentation.demo.constants.Constant.PHONE_NUMBER_PATTERN;
-
 public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber,String> {
+
+    private String phoneNumberPattern;
 
     @Override
     public void initialize(PhoneNumber phoneNumber) {
+        this.phoneNumberPattern = phoneNumber.pattern();
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext arg1) {
-        return Pattern.matches(PHONE_NUMBER_PATTERN,s);
+    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext){
+       return Pattern.matches(phoneNumberPattern,s);
     }
 }

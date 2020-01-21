@@ -7,5 +7,5 @@ public interface MobilePhoneNumberService {
     void save(MobilePhoneNumber mobilePhoneNumber);
     void delete(MobilePhoneNumber mobilePhoneNumber);
     MobilePhoneNumber findMobilePhoneNumberById(Integer id);
-    MobilePhoneNumber findMobilePhoneNumberByOwner(User owner);
+    MobilePhoneNumber findMobilePhoneNumberByMobilePhoneNumberValue(String mobilePhoneNumberValue);
 }

@@ -11,3 +11,6 @@
 .confirm:focus {
     background: #0046d5
 }
+.validation_message{
+    color: #ff342a;
+}

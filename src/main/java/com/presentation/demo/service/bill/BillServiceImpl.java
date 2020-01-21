@@ -1,6 +1,7 @@
 package com.presentation.demo.service.bill;
 
 import com.presentation.demo.model.Bill;
+import com.presentation.demo.model.User;
 import com.presentation.demo.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,10 @@ public class BillServiceImpl implements BillService{
     @Override
     public List<Bill> findBillsByLastTransaction(Date date) {
         return billRepository.findBillsByLastTransaction(date);
+    }
+
+    @Override
+    public List<Bill> findBillsByHolder(User holder) {
+        return billRepository.findBillByHolder(holder);
     }
 }

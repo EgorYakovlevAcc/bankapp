@@ -72,18 +72,4 @@ public class BillController {
         return "bill";
     }
 
-    @GetMapping("/cards")
-    public String getCards(@RequestParam("billid") Integer billid, Model model) {
-        Bill bill = billService.findBillById(billid);
-        model.addAttribute("billid", bill.getId());
-        model.addAttribute("holderid", bill.getHolder().getId());
-        List<Card> cards = cardService.findCardsByBill(bill);
-        Map<String, Integer> cardsMap = new TreeMap<>();
-        for (Card card : cards) {
-            cardsMap.put(card.getCardNum(), card.getBalance());
-        }
-        model.addAttribute("map", cardsMap);
-        return "cards";
-    }
-
 }

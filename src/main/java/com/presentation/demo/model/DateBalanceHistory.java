@@ -18,7 +18,6 @@ public class DateBalanceHistory {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bill_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-
     private Bill targetBill;
 
     private BigInteger balance;

@@ -40,8 +40,7 @@
                         </div>
                     </div>
                 <ul th:each="card : ${bill.getCards()}">
-                    <li>Card balance: [[${card.getBalance()}]] </li>
-                        Card ID: [[${card.getId()}]]
+                    <li> Card ID: [[${card.getId()}]] </li>
                 </ul>
             </ul>
 <!--            <form action="/logout" method="post">-->
@@ -51,7 +50,7 @@
         </label>
 
         <p>
-            <input type="button" class="goto" onclick="parent.location='index'" value="Go to main page"/>
+            <input type="button" class="goto" onclick="Location.href='index'" value="Go to main page"/>
         </p>
 
         <p style="color: crimson">

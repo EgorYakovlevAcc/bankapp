@@ -32,7 +32,7 @@ build/
 
 ### added by Maxkile ###
 test.js
+application.properties
 
 ### added by Egor ###
 pom.xml
-src/main/resources/application.properties

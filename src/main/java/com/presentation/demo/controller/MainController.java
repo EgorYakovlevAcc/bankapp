@@ -9,6 +9,7 @@ import com.presentation.demo.service.user.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,11 +18,19 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import java.util.*;
 
 import static com.presentation.demo.constants.enums.AUTHORITIES.USER;
@@ -40,9 +49,6 @@ public class MainController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    private Logger LOGGER = LoggerFactory.getLogger(MainController.class);
-
 
     @GetMapping(value = {"/index", "/"})
     public String getIndex(Model model, @AuthenticationPrincipal User user) {
@@ -75,39 +81,36 @@ public class MainController {
 
     @GetMapping("/registration")
     public String getRegistration(Model model) {
-        MobilePhoneNumber phoneNumber = new MobilePhoneNumber();
         User newUser = new User();
-        newUser.setMobilePhoneNumber(phoneNumber);
+        newUser.setMobilePhoneNumber(new MobilePhoneNumber());
         model.addAttribute("user", newUser);
         return "registration";
     }
 
-    @Transactional
     @PostMapping("/registration")
-    public String postRegistration(@ModelAttribute("user") User user) throws Exception {
-        MobilePhoneNumber userMobilePhoneNumber = user.getMobilePhoneNumber();
+    public String postRegistration(@Valid @ModelAttribute("user") User user,Model model) throws Exception {
 
+        MobilePhoneNumber userMobilePhoneNumber = user.getMobilePhoneNumber();
         user.setAuthority(USER);
-        userMobilePhoneNumber.setOwner(user);
 
         String newUserName = user.getUsername();
+
         String newUserPassword = user.getPassword();
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
 
-        userService.save(user);
-        mobilePhoneNumberService.save(userMobilePhoneNumber);
-
-
-        LOGGER.info(newUserName);
-        LOGGER.info(newUserPassword);
-
-//        Integer id = mobilePhoneNumberService.findMobilePhoneNumberByOwner(user).getId();
+        try{
+            userService.save(user);
+            mobilePhoneNumberService.save(userMobilePhoneNumber);
+        }
+        catch (PersistenceException exc){
+            model.addAttribute("validationMessage",exc.getMessage());
+            return "registration";
+        }
 
         securityService.autoLogin(newUserName,newUserPassword,authorities);
-        return "redirect:/index";
+        return "redirect:/userpage";
     }
 
-    //give data to server through forms
     @GetMapping("/login")
     public String getLogin(Model model, @AuthenticationPrincipal User authenticatedUser) {
         String authenticatedName = Objects.nonNull(authenticatedUser) ? authenticatedUser.getUsername() : null;
@@ -125,7 +128,7 @@ public class MainController {
         Authentication auth = authenticationManager.authenticate(authReq);
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
-        return "redirect:/userpage";
+        return "redirect:/index";
     }
 
     @GetMapping("/deleteuser/{id}")

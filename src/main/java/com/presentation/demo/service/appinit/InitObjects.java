@@ -2,6 +2,7 @@ package com.presentation.demo.service.appinit;
 
 import com.presentation.demo.model.MobilePhoneNumber;
 import com.presentation.demo.model.User;
+import com.presentation.demo.service.mobilephonenumber.MobilePhoneNumberService;
 import com.presentation.demo.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,10 @@ public class InitObjects implements CommandLineRunner {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MobilePhoneNumberService mobilePhoneNumberService;
+
+
     @Override
     @Transactional
     public void run(String... args) throws Exception {
@@ -32,21 +37,22 @@ public class InitObjects implements CommandLineRunner {
 
             onStartLogger.info("Admin not found. Creating admin...");
 
-            admin = new User();
+            MobilePhoneNumber adminMobilePhoneNumber = new MobilePhoneNumber();
+            adminMobilePhoneNumber.setMobilePhoneNumberValue(ADMIN_MOBILE_PHONE_NUMBER);
+
             String adminPassword = userService.generateRandomPassword(RANDOM_PASSWORD_LENGTH);
+
+            admin = new User();
             admin.setPassword(adminPassword);
-
-            onStartLogger.info("SYSADMIN password:" + adminPassword);
-
+            admin.setMobilePhoneNumber(adminMobilePhoneNumber);
             admin.setAuthority(ADMIN);
             admin.setUsername(ADMIN_NAME);
             admin.setEmail(ADMIN_EMAIL);
 
-            MobilePhoneNumber adminMobilePhoneNumber = new MobilePhoneNumber();
-            adminMobilePhoneNumber.setOwner(admin);
-            adminMobilePhoneNumber.setMobilePhoneNumberValue(ADMIN_MOBILE_PHONE_NUMBER);
+            onStartLogger.info("SYSADMIN password:" + adminPassword);
 
             userService.save(admin);
+            mobilePhoneNumberService.save(adminMobilePhoneNumber);
         }
         else{
             onStartLogger.info("Admin found." + admin.getUsername());

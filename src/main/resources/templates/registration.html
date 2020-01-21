@@ -29,6 +29,7 @@
 
                 <input type="email" id="inputEmail" placeholder="Email address" required
                        th:field="*{user.email}">
+
             </p>
 
             <p>
@@ -36,6 +37,7 @@
 
                 <input id="inputPhoneNumber" placeholder="Mobile phone number" required
                        th:field="*{user.mobilePhoneNumber.mobilePhoneNumberValue}">
+                <span class="validation_message" th:if="${validationMessage != null}"> [[${validationMessage}]]</span>
             </p>
 
             <button class="confirm"> Sign Up </button>

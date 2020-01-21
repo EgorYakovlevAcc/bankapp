@@ -1,6 +1,9 @@
 package com.presentation.demo.model;
 
 import com.presentation.demo.constants.enums.AUTHORITIES;
+import com.presentation.demo.service.validation.email.Email;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,21 +15,24 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table (name = "users")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
+    @Column(name = "user_id")
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer id;
 
     @NotEmpty(message = "Username can't be empty")
     private String username;
 
+//    @Email(pattern = "Wrong email format!")
     @Column (name = "e_mail")
-    @NotEmpty(message = "Email can't be empty")
     private String email;
 
-    @OneToOne(mappedBy = "owner",cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "mobile_phone_number_id",referencedColumnName ="id")
     private MobilePhoneNumber mobilePhoneNumber;
 
     private String  password;

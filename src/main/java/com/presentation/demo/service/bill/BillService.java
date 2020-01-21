@@ -1,6 +1,7 @@
 package com.presentation.demo.service.bill;
 
 import com.presentation.demo.model.Bill;
+import com.presentation.demo.model.User;
 
 import java.util.Date;
 import java.util.List;
@@ -14,4 +15,6 @@ public interface BillService {
     Bill findBillById(Integer id);
 
     List<Bill> findBillsByLastTransaction(Date date);
+
+    List<Bill> findBillsByHolder(User holder);
 }

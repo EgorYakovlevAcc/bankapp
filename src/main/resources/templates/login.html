@@ -34,7 +34,9 @@
 
         <p th:if="${authenticatedName != null}">
             Already logged in.
-            <button th:if="${authenticatedName != null}"  onClick="parent.location='/logout'" class="btn btn-primary"> Logout </button>
+        </p>
+        <p>
+            <button th:if="${authenticatedName != null}" onClick="Location.href='/logout'" class="btn btn-primary"> Logout </button>
         </p>
 
         <p style="color: crimson">

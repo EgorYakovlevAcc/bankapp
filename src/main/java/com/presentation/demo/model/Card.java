@@ -54,14 +54,6 @@ public class Card {
         return id;
     }
 
-    public Integer getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Integer balance) {
-        this.balance = balance;
-    }
-
     public String getCardNum() {
         return cardNum;
     }

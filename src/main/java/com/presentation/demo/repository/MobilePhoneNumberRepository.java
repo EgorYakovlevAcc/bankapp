@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MobilePhoneNumberRepository extends JpaRepository<MobilePhoneNumber,Integer> {
     MobilePhoneNumber findMobilePhoneNumberById(Integer id);
-    MobilePhoneNumber findMobilePhoneNumberByOwner(User owner);
+    MobilePhoneNumber findMobilePhoneNumberByMobilePhoneNumberValue(String mobilePhoneNumberValue);
 }
