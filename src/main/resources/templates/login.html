@@ -8,7 +8,7 @@
 
     <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
 
-    <div class="main">
+    <div class="body-container">
         <form th:if="${authenticatedName == null}" th:userDto="${user}" th:action="@{/login}" th:method="post">
             <h4>Please sign in</h4>
             <p>

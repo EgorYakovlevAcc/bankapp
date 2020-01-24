@@ -9,12 +9,17 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2980b9;">
+
+        <a class="navbar-logo" href="/index">
+            <img src="/images/logo.png"  height="48" alt="">
+        </a>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav ml-auto">
                 <div th:each="namesLinks : ${namesLinksList}">
                     <li class="nav-item active">
                         <a class="nav-link" th:href="${namesLinks.getValue()}">
@@ -26,12 +31,44 @@
         </div>
     </nav>
 
-    <div class="main">
+    <div class="wrapper">
+        <div class="slider" style="background-image:url(/images/background.png)"></div>
+    </div>
+
+    <div class="body-container">
+        <div class="info-blocks loaded-block">
+            <div class="container info-blocks__wrap">
+                <div class="currency-block">
+                    <h2 class="currency-block__title"> Exchange Rates </h2>
+                    <div class="currency-ibank currency-block__container">
+                        <div class="currency-block__container-wrapper">
+                            <div class="currency-block__row">
+                                <div class="title-block__description grey-color currency--head"> Currency </div>
+                                <div class="currency--name cn-value">USD</div>
+                                <div class="currency--name cn-value">EUR</div>
+                            </div>
+                            <div class="currency-block__row">
+                                <div class="title-block__description grey-color currency--head"> Buy </div>
+                                <div class="currency--name cn-data">60.78</div>
+                                <div class="currency--name cn-data">66.77</div>
+                            </div>
+                            <div class="currency-block__row">
+                                <div class="title-block__description grey-color currency--head"> Sell </div>
+                                <div class="currency--name cn-data">66.77</div>
+                                <div class="currency--name cn-data">66.77</div>
+                            </div>
+                        </div>
+                        <div class="b-block-row__item--error-list"> Actual since с 18:54 Moscow 24.01.2020</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <p th:if="${userName == null}"> You are not logged in yet! </p>
         <p th:if="${userName != null}"> Dear, [[${userName}]] </p>
         <p style="color: crimson">
-            All rights reserved &copy; 2019
+            All rights reserved &copy; 2019 - 2020
         </p>
     </div>
 </body>
 </html>
+

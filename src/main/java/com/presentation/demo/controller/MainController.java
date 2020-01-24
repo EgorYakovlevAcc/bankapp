@@ -1,5 +1,6 @@
 package com.presentation.demo.controller;
 
+import com.presentation.demo.errors.persistance.ConstraintViolationException;
 import com.presentation.demo.helpers.MapEntryImpl;
 import com.presentation.demo.model.MobilePhoneNumber;
 import com.presentation.demo.model.User;
@@ -29,7 +30,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -38,6 +38,7 @@ import static com.presentation.demo.constants.enums.AUTHORITIES.USER;
 @Controller
 public class MainController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
     @Autowired
     private UserService userService;
 
@@ -52,12 +53,15 @@ public class MainController {
 
     @GetMapping(value = {"/index", "/"})
     public String getIndex(Model model, @AuthenticationPrincipal User user) {
-        String userName =  Objects.nonNull(user) ? user.getUsername() : null;
+        boolean isAuthenticated = Objects.nonNull(user);
+        String userName =  isAuthenticated ? user.getUsername() : null;
         model.addAttribute("userName", userName);
 
 
         List<MapEntryImpl<String,String>> namesLinksList = new LinkedList<>();
-
+        if (isAuthenticated){
+            namesLinksList.add(new MapEntryImpl<String,String>("Userpage","/userpage"));
+        }
         namesLinksList.add(new MapEntryImpl<String,String>("Home","/index"));
         namesLinksList.add(new MapEntryImpl<String,String>("Sign up","/registration"));
         namesLinksList.add(new MapEntryImpl<String,String>("Sign in","/login"));
@@ -103,6 +107,7 @@ public class MainController {
             mobilePhoneNumberService.save(userMobilePhoneNumber);
         }
         catch (PersistenceException exc){
+            LOGGER.info("Invalid Mobile Phone Number = {}", exc.toString());
             model.addAttribute("validationMessage",exc.getMessage());
             return "registration";
         }

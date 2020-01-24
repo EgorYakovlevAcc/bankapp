@@ -1,6 +1,6 @@
 package com.presentation.demo.errors;
 
-public abstract class MessageException extends Exception {
+public abstract class MessageException extends RuntimeException {
 
     private String errorCode;
     private String errorMessage;

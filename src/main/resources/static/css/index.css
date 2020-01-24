@@ -1,1 +1,132 @@
 @import "common.css";
+.slider {
+    height: 315px;
+    overflow: hidden;
+    position: relative;
+    background-size: cover;
+    background-color: #e4fff1;
+    background-repeat: no-repeat;
+    background-position: 50% -1px;
+}
+
+.info-blocks {
+    font-size: 0;
+    margin: 7.5rem 0;
+}
+.info-blocks, .welcome-slider-2 {
+    transition: opacity 1.25s;
+    transition-delay: .2s;
+}
+body * {
+    box-sizing: border-box;
+}
+
+div {
+    display: block;
+}
+
+.info-blocks__wrap {
+    display: flex;
+}
+.container {
+    width: 73.125rem;
+    margin: 0 auto;
+    font-size: 0;
+}
+
+.currency-block {
+    position: relative;
+    margin-right: .9375rem;
+}
+.currency-block, .map-block {
+    font-size: 16px;
+    vertical-align: top;
+    width: calc(50% - .9375rem);
+    padding: 3.25rem 2.5rem 2.5rem;
+    display: inline-block;
+    background-color: #c2f4e0;
+    align-items: stretch;
+}
+
+.currency-block__title, .map-block__title {
+    font-size: 2.25rem;
+    font-style: italic;
+    font-family: sans-serif;
+    margin: 0 0 2.5rem;
+    padding: 0;
+    position: relative;
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+.currency-block__changer {
+    position: absolute;
+    right: 2.5rem;
+    top: 4.375rem;
+    z-index: 2;
+}
+
+.currency-block__container-wrapper {
+    display: table;
+    width: 100%;
+}
+
+.currency-block__row {
+    display: table-cell;
+}
+
+.currency-block__row:first-child {
+    width: 7.625rem;
+}
+
+.currency-block__row:nth-child(2), .currency-block__row:nth-child(3) {
+    width: 6.375rem;
+}
+
+.currency--head {
+    font-size: .875rem;
+    text-transform: uppercase;
+    letter-spacing: .05rem;
+    margin: 0;
+    padding-bottom: .875rem;
+    transform: translateY(-4px);
+}
+
+.grey-color {
+    color: #7f7f7f;
+}
+
+.cn-data, .cn-value {
+    padding: 1.9375rem 0 2.375rem;
+    box-shadow: 0 -1px 0 #f4f5f5;
+}
+
+.cn-value{
+    font-weight: bold;
+}
+.cn-data {
+    font-family: futura-book,Helvetica,sans-serif;
+    font-size: 16px;
+    color: #333;
+}
+
+.currency--name {
+    margin: 0;
+}
+
+.b-block-row__item--error-list {
+    width: auto;
+    display: table-cell;
+    vertical-align: top;
+    color: #7f7f7f;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+}
