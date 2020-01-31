@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(authority));
+        grantedAuthorities.add((new SimpleGrantedAuthority(AUTHORITIES.ROLE_ADMIN.getAuthority())));
         return grantedAuthorities;
     }
 
@@ -66,9 +66,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
     private List<Card> cards;
 
-    public List<Card> getCards() {
-        return cards;
-    }
+    public List<Card> getCards() { return cards; }
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
@@ -148,5 +146,8 @@ public class User implements UserDetails {
         } else {
             return false;
         }
+    }
+
+    public void setPasswordGoogle(String oauth2user) {
     }
 }

@@ -1,1 +1,6 @@
 @import "common.css";
+
+#index-signin {
+    border: 8px;
+    border-radius: 30px;
+}

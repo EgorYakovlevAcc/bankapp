@@ -8,26 +8,19 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2980b9;">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <div th:each="namesLinks : ${namesLinksList}">
-                    <li class="nav-item active">
-                        <a class="nav-link" th:href="${namesLinks.getValue()}">
-                            <span> [[${namesLinks.getKey()}]] </span>
-                        </a>
-                    </li>
-                </div>
-            </ul>
-        </div>
-    </nav>
 
-    <div class="main">
-      <p>Dear, [[${user_name}]]</p>
+<div class="jumbotron">
+    <h1 class="display-3">Welcome to NetcrackerBank!</h1>
+    <p class="lead">Information was here...</p>
+    <hr class="my-4">
+    <p>To receive service you need to log in.</p>
+    <p class="lead">
+        <a id="index-signin" class="btn btn-primary btn-lg" href="/login" role="button">Sign In</a>
+    </p>
+</div>
+<div class="main">
         <p style="color: crimson">
             All rights reserved &copy; 2019
         </p>

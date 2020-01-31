@@ -24,7 +24,6 @@ public class CardController {
     private BillService billService;
 
     @GetMapping("/createcard/{id}")
-    @ResponseBody
     public String createCard(@PathVariable("id") Integer id) {
         Random random = new Random();
         Card card = new Card();
@@ -36,15 +35,16 @@ public class CardController {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 4);
         card.setExpirDate(calendar.getTime());
+        card.setBalance(0);
         cardService.save(card);
-        return card.getId().toString();
+        return "redirect:/billdetails/" + id;
     }
 
     @GetMapping("/deletecard/{id}")
-    @ResponseBody
     public String deleteCard(@PathVariable("id") Integer id) {
         Card card = cardService.findCardById(id);
+        Integer billId = card.getBill().getId();
         cardService.delete(card);
-        return "Card deleted";
+        return "redirect:/billdetails/" + billId;
     }
 }

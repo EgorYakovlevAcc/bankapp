@@ -59,4 +59,9 @@ public class UserServiceImpl implements UserService {
         randomValueStringGenerator.setRandom(new Random());
         return randomValueStringGenerator.generate();
     }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
 }

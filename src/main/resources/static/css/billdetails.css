@@ -84,7 +84,7 @@
 }
 
 #card-block{
-    margin-left: 25%;
+    margin-left: 15%;
 }
 
 table {
@@ -124,4 +124,15 @@ td:nth-child(2){
 
 .cells {
     color: #0007f4;
+}
+
+.hide_show ul{
+    display: none;   // скрываем все дочерние списки
+}
+.hide_show:hover ul{
+    display: block;   // скрываем все дочерние списки
+position:relative;
+    width:100%;
+    height:0px;
+    margin-top:0;
 }

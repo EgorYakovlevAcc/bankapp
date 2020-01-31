@@ -71,7 +71,11 @@ public class Bill {
     }
 
     public BigInteger getBalance() {
-        return balance;
+        BigInteger result = BigInteger.valueOf(0);
+        for (Card card : this.getCards()) {
+            result = result.add(BigInteger.valueOf((long)card.getBalance()));
+        }
+        return result;
     }
 
     public void setBalance(BigInteger balance) {

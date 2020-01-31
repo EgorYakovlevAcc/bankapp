@@ -1,7 +1,10 @@
 package com.presentation.demo.controller;
 
+import com.presentation.demo.model.Bill;
+import com.presentation.demo.model.Card;
 import com.presentation.demo.model.User;
 import com.presentation.demo.repository.UserRepository;
+import com.presentation.demo.service.bill.BillService;
 import com.presentation.demo.service.datebalancehistory.DateBalanceHistoryService;
 import com.presentation.demo.service.user.UserService;
 import org.slf4j.Logger;
@@ -11,9 +14,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_USER;
@@ -23,6 +30,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BillService billService;
 
     @Autowired
     private UserRepository userRepository;
@@ -66,6 +76,27 @@ public class UserController {
         return "redirect:/userpage/" + id;
     }
 
+    @GetMapping("/billdetails/{billId}")
+    public String getBillsCards(@PathVariable("billId") int billId,
+                                @AuthenticationPrincipal User user,
+                                Model model){
+        Bill bill = billService.findBillById(billId);
+        List<Card> cards = bill.getCards();
+        model.addAttribute("cards", cards);
+        model.addAttribute("user", user);
+        model.addAttribute("bill", bill);
+        return "billdetails";
+    }
+
+    @GetMapping("/userpage/{userid}")
+    public String PostUserPage(@PathVariable("userid") long userId, Model model){
+        User user = userService.findUserById(userId);
+        model.addAttribute("user",user);
+        model.addAttribute("bills",user.getBills());
+        model.addAttribute("cards", user.getCards());
+        model.addAttribute("user_name", user.getUsername());
+        return "userpage";
+    }
 
 //    @GetMapping("/userpage")
 //    public String getUserPage(@RequestParam("userid") Integer userId,Model model){

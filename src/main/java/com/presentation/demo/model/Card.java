@@ -28,7 +28,7 @@ public class Card {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = true)
+    @JoinColumn(name = "user_id", nullable = false)
     private User cardHolder;
 
     public Card() {
@@ -97,4 +97,6 @@ public class Card {
     public void setCvv(String cvv) {
         this.cvv = cvv;
     }
+
+    public String getHiddenNum(){ return cardNum.substring(0, 4) + "****" + cardNum.substring(cardNum.length() - 4, cardNum.length()); }
 }

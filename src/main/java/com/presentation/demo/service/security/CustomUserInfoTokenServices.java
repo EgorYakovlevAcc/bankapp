@@ -149,4 +149,5 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
             return Collections.singletonMap("error", "Could not fetch user details");
         }
     }
+
 }

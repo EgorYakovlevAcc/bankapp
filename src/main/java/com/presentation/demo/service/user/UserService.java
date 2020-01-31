@@ -13,4 +13,5 @@ public interface UserService {
     void save(User user);
     List<User> findAll();
     String generateRandomPassword(Integer length);
+    User findUserByEmail(String email);
 }
