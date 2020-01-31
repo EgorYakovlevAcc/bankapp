@@ -10,9 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -26,7 +28,7 @@ public class User implements UserDetails {
     @NotEmpty(message = "Username can't be empty")
     private String username;
 
-//    @Email(pattern = "Wrong email format!")
+    @Email(message = "Wrong email format!")
     @Column (name = "e_mail")
     private String email;
 
@@ -157,11 +159,13 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean equals(Object user) {
-        if (user instanceof User) {
-            return id.equals(((User) user).getId());
-        } else {
-            return false;
-        }
+    public boolean equals(Object target) {
+        if (this == target) return true;
+        if (target == null || getClass() != target.getClass()) return false;
+        User user = (User) target;
+        return Objects.equals(username, user.username) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(mobilePhoneNumber, user.mobilePhoneNumber);
     }
+
 }

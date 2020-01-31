@@ -11,9 +11,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.presentation.demo.constants.Constant.*;
+import static com.presentation.demo.constants.Constants.*;
 import static com.presentation.demo.constants.enums.AUTHORITIES.ADMIN;
-import static com.presentation.demo.constants.enums.AUTHORITIES.USER;
 
 @Service
 public class InitObjects implements CommandLineRunner {
@@ -29,7 +28,6 @@ public class InitObjects implements CommandLineRunner {
 
 
     @Override
-    @Transactional
     public void run(String... args) throws Exception {
         onStartLogger.info("Application started...");
         User admin = userService.findUserByUsername(ADMIN_NAME);

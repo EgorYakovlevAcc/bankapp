@@ -3,6 +3,7 @@ package com.presentation.demo.model;
 import com.presentation.demo.service.validation.phonenumber.PhoneNumber;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "phone_numbers")
@@ -44,4 +45,13 @@ public class MobilePhoneNumber {
     public Integer getId() {
         return id;
     }
+
+    @Override
+    public boolean equals(Object target) {
+        if (this == target) return true;
+        if (target == null || getClass() != target.getClass()) return false;
+        MobilePhoneNumber that = (MobilePhoneNumber) target;
+        return Objects.equals(this.mobilePhoneNumberValue, that.mobilePhoneNumberValue);
+    }
+
 }

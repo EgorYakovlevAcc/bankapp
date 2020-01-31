@@ -10,6 +10,7 @@ public interface UserService {
     User findUserById(Integer id);
     User findUserByUsername(String username);
     User findUserByMobilePhoneNumber(MobilePhoneNumber number);
+    User findUserByEmail(String email);
     void delete(User user);
     void save(User user);
     List<User> findAll();

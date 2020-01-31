@@ -23,8 +23,7 @@ public class SecurityServiceImpl implements SecurityService{
     @Override
     public void autoLogin(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         try {
-            // Must be called from request filtered by Spring Security, otherwise SecurityContextHolder is not updated
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password,authorities);
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username,password,authorities);
             Authentication authentication = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception e) {

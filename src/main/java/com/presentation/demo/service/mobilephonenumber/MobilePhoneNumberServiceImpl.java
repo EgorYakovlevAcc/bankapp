@@ -1,7 +1,6 @@
 package com.presentation.demo.service.mobilephonenumber;
 
 import com.presentation.demo.model.MobilePhoneNumber;
-import com.presentation.demo.model.User;
 import com.presentation.demo.repository.MobilePhoneNumberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,17 +19,9 @@ public class MobilePhoneNumberServiceImpl implements MobilePhoneNumberService {
     @Autowired
     private MobilePhoneNumberRepository mobilePhoneNumberRepository;
 
-    @Transactional(rollbackForClassName = "ConstraintViolationException")
     @Override
     public void save(MobilePhoneNumber mobilePhoneNumber) {
-        try{
-            mobilePhoneNumberRepository.save(mobilePhoneNumber);
-            mobilePhoneNumberRepository.flush();
-        }
-        catch (ConstraintViolationException exp){
-            SERVICE_LOGGER.info(exp.getLocalizedMessage());
-            throw new PersistenceException();
-        }
+        mobilePhoneNumberRepository.save(mobilePhoneNumber);
     }
 
     @Override

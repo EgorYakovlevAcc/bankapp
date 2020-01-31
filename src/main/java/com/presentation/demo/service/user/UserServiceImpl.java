@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Random;
@@ -29,22 +28,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Transactional(rollbackForClassName = "ConstraintViolationException")
     @Override
     public void save(User user) throws PersistenceException {
-        try{
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            userRepository.flush();
-        }
-        catch (ConstraintViolationException exp){
-            SERVICE_LOGGER.info(exp.getLocalizedMessage());
-            StringBuilder constraintViolationsInfo = new StringBuilder();
-            for(ConstraintViolation<?> constraintViolation: exp.getConstraintViolations()){
-                constraintViolationsInfo.append(constraintViolation.getMessage());
-            }
-            throw new PersistenceException(constraintViolationsInfo.toString());
-        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     @Override
@@ -64,7 +51,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByMobilePhoneNumber(MobilePhoneNumber mobilePhoneNumber) {
-        return userRepository.findUserByMobilePhoneNumber(mobilePhoneNumber);
+             return userRepository.findUserByMobilePhoneNumber(mobilePhoneNumber);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 
     @Override

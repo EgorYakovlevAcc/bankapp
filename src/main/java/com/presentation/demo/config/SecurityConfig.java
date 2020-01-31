@@ -87,7 +87,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        return filter;
 //    }
 
-    //todo:special matchers for admin
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -99,20 +98,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/login", "/static/**", "/src/**", "/styles/**","/css/**","/js/**")
                 .permitAll()
                 .antMatchers("/admin/**")
-//                .hasAnyRole(ADMIN.getName())
                 .hasAnyAuthority(ADMIN.getAuthority())
                 .and()
                 .formLogin()
                 .loginPage("/login")
-//                .successHandler(authenticationSuccessHandler)
                 .permitAll()
                 .and()
                 .logout()
-//                .logoutSuccessHandler(logoutSuccessHandler)
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/index")
                 .permitAll();
 }
 

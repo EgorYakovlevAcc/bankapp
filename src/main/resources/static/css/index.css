@@ -1,4 +1,20 @@
 @import "common.css";
+
+.navbar-collapse{
+    position: relative;
+    margin-left: 2rem;
+}
+
+.user{
+    color: #000000;
+    font-weight: bold;
+    font-style: italic;
+}
+.user:hover{
+    color: rgba(0,0,0,0.69);
+    text-decoration: none;
+}
+
 .slider {
     height: 315px;
     overflow: hidden;
@@ -11,7 +27,7 @@
 
 .info-blocks {
     font-size: 0;
-    margin: 7.5rem 0;
+    margin: 6rem 0;
 }
 .info-blocks, .welcome-slider-2 {
     transition: opacity 1.25s;
@@ -129,4 +145,10 @@ h2 {
     color: #7f7f7f;
     font-size: 1.125rem;
     line-height: 1.5rem;
+}
+
+#footer{
+    padding-left: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
 }
