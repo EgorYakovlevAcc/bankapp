@@ -163,7 +163,7 @@ public class MainController {
 
     @GetMapping("/deleteuser/{id}")
     @ResponseBody
-    public String deleteUser(@PathVariable("id") Integer id) {
+    public String deleteUser(@PathVariable("id") Long id) {
         User user = userService.findUserById(id);
         userService.delete(user);
         return "Delete success!";
