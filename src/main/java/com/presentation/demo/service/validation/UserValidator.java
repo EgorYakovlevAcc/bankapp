@@ -1,6 +1,7 @@
 package com.presentation.demo.service.validation;
 
 import com.presentation.demo.model.User;
+import com.presentation.demo.service.mobilephonenumber.MobilePhoneNumberService;
 import com.presentation.demo.service.user.UserServiceImpl;
 import com.presentation.demo.service.validation.email.EmailValidator;
 import org.slf4j.Logger;
@@ -21,6 +22,9 @@ public class UserValidator implements org.springframework.validation.Validator {
 
     @Autowired
     private javax.validation.Validator javaxValidator;
+
+    @Autowired
+    private MobilePhoneNumberService mobilePhoneNumberService;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -44,7 +48,10 @@ public class UserValidator implements org.springframework.validation.Validator {
             errors.rejectValue("email","","This email is already been used!");
         }
         else if (userService.findUserByUsername(user.getUsername()) != null){
-            errors.rejectValue("username","","This username is already been used!");
+            errors.rejectValue("username","","User with this username already exists!");
+        }
+        else if (mobilePhoneNumberService.findMobilePhoneNumberByMobilePhoneNumberValue(user.getMobilePhoneNumber().getMobilePhoneNumberValue()) != null){//one to one
+            errors.rejectValue("mobilePhoneNumber","","This phone number is already been used!");
         }
     }
 }

@@ -17,7 +17,6 @@ public class MobilePhoneNumber {
     @OneToOne(mappedBy = "mobilePhoneNumber",cascade = CascadeType.ALL)
     private User owner;
 
-    @PhoneNumber(message = "Wrong telephone number format!")
     private String mobilePhoneNumberValue;
 
     public MobilePhoneNumber() {}

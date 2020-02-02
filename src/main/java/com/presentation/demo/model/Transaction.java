@@ -20,6 +20,9 @@ public class Transaction {
     private TransactionType transactionType;
 
     @OneToOne
+    private Card senderCard;
+
+    @OneToOne
     private Bill sender;
 
     @OneToOne

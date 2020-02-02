@@ -2,8 +2,10 @@ package com.presentation.demo.model;
 
 import com.presentation.demo.constants.enums.AUTHORITIES;
 import com.presentation.demo.service.validation.email.Email;
+import com.presentation.demo.service.validation.phonenumber.PhoneNumber;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +34,7 @@ public class User implements UserDetails {
     @Column (name = "e_mail")
     private String email;
 
+    @PhoneNumber(message = "Wrong telephone number format!")
     @OneToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "mobile_phone_number_id",referencedColumnName ="id")

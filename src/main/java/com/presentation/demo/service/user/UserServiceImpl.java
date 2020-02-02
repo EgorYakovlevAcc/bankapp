@@ -2,6 +2,7 @@ package com.presentation.demo.service.user;
 
 import com.presentation.demo.model.MobilePhoneNumber;
 import com.presentation.demo.model.User;
+import com.presentation.demo.repository.MobilePhoneNumberRepository;
 import com.presentation.demo.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +18,18 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
-    private Logger SERVICE_LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    private Logger USER_SERVICE_LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MobilePhoneNumberRepository mobilePhoneNumberRepository;
 
     @Override
     public void save(User user) throws PersistenceException {
