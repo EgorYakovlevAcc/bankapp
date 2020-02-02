@@ -7,7 +7,7 @@ import com.presentation.demo.model.User;
 import java.util.List;
 
 public interface UserService {
-    User findUserById(Integer id);
+    User findUserById(Long id);
     User findUserByUsername(String username);
     User findUserByMobilePhoneNumber(MobilePhoneNumber number);
     User findUserByEmail(String email);
