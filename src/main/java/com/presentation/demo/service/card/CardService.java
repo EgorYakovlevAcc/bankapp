@@ -1,7 +1,7 @@
 package com.presentation.demo.service.card;
 
 import com.presentation.demo.model.Bill;
-import com.presentation.demo.model.Card;
+import com.presentation.demo.model.card.Card;
 import com.presentation.demo.model.User;
 
 import java.util.List;

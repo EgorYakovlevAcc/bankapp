@@ -1,6 +1,6 @@
 package com.presentation.demo.repository;
 
-import com.presentation.demo.model.Transaction;
+import com.presentation.demo.model.transaction.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

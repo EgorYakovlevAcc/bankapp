@@ -1,6 +1,6 @@
 package com.presentation.demo.service.transaction;
 
-import com.presentation.demo.model.Transaction;
+import com.presentation.demo.model.transaction.Transaction;
 import com.presentation.demo.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

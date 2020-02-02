@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.presentation.demo.constants.Constants.*;
+import static com.presentation.demo.constants.Params.*;
 
 public class ExchangeRateParser implements ParserHTML {
 
@@ -27,27 +27,12 @@ public class ExchangeRateParser implements ParserHTML {
 
     private String statusMessage = null;
 
-    private int statusCode = -1;
+    private Integer statusCode = -1;
 
     public ExchangeRateParser(){
-        this.referrerUrl = DEFAULT_REFERRER;
-        this.useragent = null;
     }
 
-    public ExchangeRateParser(Connection connection) {
-        this.connection = connection;
-        this.referrerUrl = DEFAULT_REFERRER;
-        this.useragent = null;
-    }
-
-    public ExchangeRateParser(Connection connection, String referrerUrl) {
-        this.connection = connection;
-        this.referrerUrl = referrerUrl;
-        this.useragent = null;
-    }
-
-    public ExchangeRateParser(Connection connection, String referrerUrl, String useragent) {
-        this.connection = connection;
+    public ExchangeRateParser(String referrerUrl, String useragent) {
         this.referrerUrl = referrerUrl;
         this.useragent = useragent;
     }
@@ -107,15 +92,35 @@ public class ExchangeRateParser implements ParserHTML {
         return currencyPrice;
     }
 
-    public String getReferrerUrl(){
+    public String getUseragent() {
+        return useragent;
+    }
+
+    public void setUseragent(String useragent) {
+        this.useragent = useragent;
+    }
+
+    public String getReferrerUrl() {
         return referrerUrl;
     }
 
-    public Integer getStatusCode(){
+    public void setReferrerUrl(String referrerUrl) {
+        this.referrerUrl = referrerUrl;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
+
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public String getStatusMessage(){
-        return statusMessage;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 }

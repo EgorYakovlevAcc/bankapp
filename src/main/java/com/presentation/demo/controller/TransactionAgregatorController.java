@@ -1,9 +1,9 @@
 package com.presentation.demo.controller;
 
-import com.presentation.demo.constants.Constants;
+import com.presentation.demo.constants.Params;
 import com.presentation.demo.model.Bill;
-import com.presentation.demo.model.Transaction;
-import com.presentation.demo.model.TransactionType;
+import com.presentation.demo.model.transaction.Transaction;
+import com.presentation.demo.model.transaction.TransactionType;
 import com.presentation.demo.service.bill.BillService;
 import com.presentation.demo.service.transactionagregator.TransactionAgregatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 @Transactional
@@ -31,7 +31,7 @@ public class TransactionAgregatorController {
     public String executeTransaction(@RequestParam("id") Integer id) {
         Transaction transaction = transactionAgregatorService.findTransactionById(id);
         long diff = transaction.getDate().getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
-        if (diff >= Constants.TEN_DAYS_SEC) {
+        if (diff >= Params.TEN_DAYS_SEC) {
             transaction.setCanceled(true);
             transactionAgregatorService.save(transaction);
             return "Time for transaction is over";
@@ -39,8 +39,8 @@ public class TransactionAgregatorController {
         if (transaction.getTransactionType() == TransactionType.TRANSFER) {
             Bill sender = transaction.getSender();
             Bill recipient = transaction.getRecipient();
-            sender.setBalance(sender.getBalance().subtract(BigInteger.valueOf(transaction.getSum())));
-            recipient.setBalance(recipient.getBalance().add(BigInteger.valueOf(transaction.getSum())));
+            sender.setBalance(sender.getBalance().subtract(BigDecimal.valueOf(transaction.getSum())));
+            recipient.setBalance(recipient.getBalance().add(BigDecimal.valueOf(transaction.getSum())));
             billService.save(sender);
             billService.save(recipient);
             transaction.setCompleted(true);
@@ -48,14 +48,14 @@ public class TransactionAgregatorController {
         }
         else if (transaction.getTransactionType() == TransactionType.GET_CASH) {
             Bill sender = transaction.getSender();
-            sender.setBalance(sender.getBalance().subtract(BigInteger.valueOf(transaction.getSum())));
+            sender.setBalance(sender.getBalance().subtract(BigDecimal.valueOf(transaction.getSum())));
             billService.save(sender);
             transaction.setCompleted(true);
             transactionAgregatorService.save(transaction);
         }
         else {
             Bill sender = transaction.getSender();
-            sender.setBalance(sender.getBalance().add(BigInteger.valueOf(transaction.getSum())));
+            sender.setBalance(sender.getBalance().add(BigDecimal.valueOf(transaction.getSum())));
             billService.save(sender);
             transaction.setCompleted(true);
             transactionAgregatorService.save(transaction);

@@ -22,16 +22,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.*;
 import javax.validation.Valid;
-import java.lang.reflect.Field;
 import java.util.*;
 
-import static com.presentation.demo.constants.Constants.CB_URL;
+import static com.presentation.demo.constants.Params.CB_URL;
+import static com.presentation.demo.constants.Params.DEFAULT_REFERRER;
 import static com.presentation.demo.constants.enums.AUTHORITIES.USER;
 
 @Controller
@@ -79,6 +77,7 @@ public class MainController {
         countryAbbrevations.add("EUR");
 
         ExchangeRateParser exchangeRateParser = new ExchangeRateParser();
+        exchangeRateParser.setReferrerUrl(DEFAULT_REFERRER);
 
         exchangeRateParser.connect(CB_URL);
 

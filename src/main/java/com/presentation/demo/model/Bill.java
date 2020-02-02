@@ -1,9 +1,11 @@
 package com.presentation.demo.model;
 
+import com.presentation.demo.model.card.Card;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -13,12 +15,13 @@ import java.util.List;
 public class Bill {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "bill_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String number;
 
-    private BigInteger balance = BigInteger.ZERO;
+    private BigDecimal balance = BigDecimal.ZERO;
 
     private Date due;
 
@@ -31,7 +34,7 @@ public class Bill {
     private List<Card> cards;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "holder_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User holder;
 
@@ -47,7 +50,7 @@ public class Bill {
     public Bill() {
     }
 
-    public Bill(String number, BigInteger balance, Date due, Date lastTransaction,User holder) {
+    public Bill(String number, BigDecimal balance, Date due, Date lastTransaction, User holder) {
         this.number = number;
         this.balance = balance;
         this.due = due;
@@ -67,11 +70,11 @@ public class Bill {
         this.number = number;
     }
 
-    public BigInteger getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(BigInteger balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

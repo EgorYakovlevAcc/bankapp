@@ -1,6 +1,6 @@
 package com.presentation.demo.service.transaction;
 
-import com.presentation.demo.model.Transaction;
+import com.presentation.demo.model.transaction.Transaction;
 
 import java.util.List;
 

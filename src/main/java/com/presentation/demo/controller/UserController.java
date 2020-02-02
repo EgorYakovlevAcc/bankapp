@@ -61,25 +61,4 @@ public class UserController {
             model.addAttribute("cards", curUser.getCards());
             return "userpage";
     }
-
-
-//    @GetMapping("/userpage")
-//    public String getUserPage(@RequestParam("userid") Integer userId,Model model){
-//        User user = userService.findUserById(userId);
-//        List<Bill> bills = user.getBills();
-//        List<Map<Date,BigInteger>> billsDateBigIntegerMaps = new LinkedList<Map<Date,BigInteger>>();
-//        for(Bill bill:bills){
-//            Map<Date,BigInteger> billDateBigIntegerMap = new TreeMap<>();
-//            List<DateBalanceHistory> dateBalanceHistories = dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill);
-//            for (DateBalanceHistory dateBalanceHistory: dateBalanceHistories) {
-//                billDateBigIntegerMap.put(dateBalanceHistory.getDate(), dateBalanceHistory.getBalance());
-//            }
-//            billsDateBigIntegerMaps.add(billDateBigIntegerMap);
-//        }
-//        model.addAttribute("userId",user.getId());
-//        model.addAttribute("user",user);
-//        model.addAttribute("bills",user.getBills());
-//        model.addAttribute("billsMaps",billsDateBigIntegerMaps);
-//        return "userpage";
-//    }
 }

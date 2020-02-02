@@ -1,18 +1,17 @@
 package com.presentation.demo.model;
 
 import com.presentation.demo.constants.enums.AUTHORITIES;
+import com.presentation.demo.model.card.Card;
 import com.presentation.demo.service.validation.email.Email;
 import com.presentation.demo.service.validation.phonenumber.PhoneNumber;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,8 +23,8 @@ public class User implements UserDetails {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotEmpty(message = "Username can't be empty")
     private String username;
@@ -37,7 +36,7 @@ public class User implements UserDetails {
     @PhoneNumber(message = "Wrong telephone number format!")
     @OneToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "mobile_phone_number_id",referencedColumnName ="id")
+    @JoinColumn(name = "mobile_phone_number_id")
     private MobilePhoneNumber mobilePhoneNumber;
 
     private String  password;
@@ -81,7 +80,7 @@ public class User implements UserDetails {
         this.bills = bills;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

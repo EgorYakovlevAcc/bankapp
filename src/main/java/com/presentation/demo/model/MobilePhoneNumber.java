@@ -10,8 +10,8 @@ import java.util.Objects;
 public class MobilePhoneNumber {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "mobile_phone_number_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToOne(mappedBy = "mobilePhoneNumber",cascade = CascadeType.ALL)
