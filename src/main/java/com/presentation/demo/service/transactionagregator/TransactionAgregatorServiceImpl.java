@@ -1,9 +1,7 @@
 package com.presentation.demo.service.transactionagregator;
 
-import com.presentation.demo.model.Transaction;
+import com.presentation.demo.model.transaction.Transaction;
 import com.presentation.demo.repository.TransactionRepository;
-import com.presentation.demo.service.bill.BillService;
-import com.presentation.demo.service.transaction.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

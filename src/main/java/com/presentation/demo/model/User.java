@@ -1,7 +1,9 @@
 package com.presentation.demo.model;
 
 import com.presentation.demo.constants.enums.AUTHORITIES;
+import com.presentation.demo.model.card.Card;
 import com.presentation.demo.service.validation.email.Email;
+import com.presentation.demo.service.validation.phonenumber.PhoneNumber;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +23,7 @@ public class User implements UserDetails {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty(message = "Username can't be empty")
@@ -33,9 +34,10 @@ public class User implements UserDetails {
     @NotEmpty(message = "Email can't be empty")
     private String  email;
 
+    @PhoneNumber(message = "Wrong telephone number format!")
     @OneToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "mobile_phone_number_id",referencedColumnName ="id")
+    @JoinColumn(name = "mobile_phone_number_id")
     private MobilePhoneNumber mobilePhoneNumber;
 
     private String  password;

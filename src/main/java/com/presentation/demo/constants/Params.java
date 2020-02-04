@@ -1,6 +1,7 @@
 package com.presentation.demo.constants;
 
-public final class Constants {
+public final class Params {
+
     public static final int RANDOM_PASSWORD_LENGTH = 30;
     public static final long TEN_DAYS_SEC = 36000000;
     public static final long ONE_MINUTE_SEC = 60000;
@@ -21,6 +22,6 @@ public final class Constants {
     public static final Boolean FOLLOW_REDIRECTS = false;
     public static final String EXCHANGE_RATE_TAG = "table.data";
 
-    private Constants() {}
+    private Params() {}
 
 }

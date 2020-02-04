@@ -7,12 +7,10 @@ import com.presentation.demo.model.User;
 import com.presentation.demo.service.mobilephonenumber.MobilePhoneNumberService;
 import com.presentation.demo.service.user.UserService;
 import com.presentation.demo.service.user.security.SecurityService;
-import com.presentation.demo.service.validation.MobilePhoneNumberValidator;
 import com.presentation.demo.service.validation.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,15 +21,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.Validator;
 import java.util.*;
 
-import static com.presentation.demo.constants.Constants.CB_URL;
+import static com.presentation.demo.constants.Params.CB_URL;
+import static com.presentation.demo.constants.Params.DEFAULT_REFERRER;
 import static com.presentation.demo.constants.enums.AUTHORITIES.USER;
 
 @Controller
@@ -53,9 +51,6 @@ public class MainController {
 
     @Autowired
     private UserValidator userValidator;
-
-    @Autowired
-    private MobilePhoneNumberValidator mobilePhoneNumberValidator;
 
     @GetMapping(value = {"/index","/"})
     public String getIndex(Model model, @AuthenticationPrincipal User user) {
@@ -82,6 +77,7 @@ public class MainController {
         countryAbbrevations.add("EUR");
 
         ExchangeRateParser exchangeRateParser = new ExchangeRateParser();
+        exchangeRateParser.setReferrerUrl(DEFAULT_REFERRER);
 
         exchangeRateParser.connect(CB_URL);
 
@@ -117,7 +113,8 @@ public class MainController {
     }
 
     @PostMapping("/registration")
-    public String postRegistration(@Valid @ModelAttribute("user") User user, BindingResult resultUser, Model model) throws Exception {
+    public String postRegistration(@Valid @ModelAttribute("user") User user, BindingResult resultUser,
+                                   Model model){
 
         MobilePhoneNumber userMobilePhoneNumber = user.getMobilePhoneNumber();
         user.setAuthority(USER);
@@ -128,8 +125,16 @@ public class MainController {
 
         userValidator.validate(user,resultUser);
 
-        if (resultUser.hasErrors()){
-            MAIN_CONTROLLER_LOGGER.info(resultUser.getFieldErrors().toString());
+        if (resultUser.hasFieldErrors()){
+            List<FieldError> validationErrors = resultUser.getFieldErrors();
+            for(FieldError validationError: validationErrors){
+                MAIN_CONTROLLER_LOGGER.info("In field " + "\"" + validationError.getField() +  "\""  + " : " + validationError.getDefaultMessage());
+                model.addAttribute(validationError.getField(),validationError.getDefaultMessage());
+            }
+            return "registration";
+        }
+        else if (resultUser.hasGlobalErrors()){
+            MAIN_CONTROLLER_LOGGER.info("Global errors!");
             return "registration";
         }
         else{
@@ -141,6 +146,7 @@ public class MainController {
         }
 
     }
+
 
     @GetMapping("/login")
     public String getLogin(Model model, @AuthenticationPrincipal User authenticatedUser) {

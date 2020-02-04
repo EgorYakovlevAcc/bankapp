@@ -1,4 +1,4 @@
-package com.presentation.demo.model;
+package com.presentation.demo.model.transaction;
 
 public enum TransactionType {
     TRANSFER("TRANSFER", 1),

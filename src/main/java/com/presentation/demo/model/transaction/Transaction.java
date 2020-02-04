@@ -1,4 +1,7 @@
-package com.presentation.demo.model;
+package com.presentation.demo.model.transaction;
+
+import com.presentation.demo.model.Bill;
+import com.presentation.demo.model.card.Card;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -8,7 +11,8 @@ import java.util.Calendar;
 public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "transaction_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private boolean isCanceled;
@@ -18,6 +22,9 @@ public class Transaction {
     private Calendar date;
 
     private TransactionType transactionType;
+
+    @OneToOne
+    private Card senderCard;
 
     @OneToOne
     private Bill sender;

@@ -14,7 +14,6 @@ import java.util.Collection;
 
 
 @Service
-@Transactional
 public class SecurityServiceImpl implements SecurityService{
 
     @Autowired

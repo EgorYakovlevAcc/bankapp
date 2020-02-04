@@ -4,7 +4,7 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-import static com.presentation.demo.constants.Constants.EMAIL_PATTERN;
+import static com.presentation.demo.constants.Params.EMAIL_PATTERN;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

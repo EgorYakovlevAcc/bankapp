@@ -5,14 +5,16 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
 @Table(name = "date_balance_history")
 public class DateBalanceHistory {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "data_balance_history_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -20,7 +22,7 @@ public class DateBalanceHistory {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Bill targetBill;
 
-    private BigInteger balance;
+    private BigDecimal balance;
 
     private Date date;
 
@@ -28,17 +30,17 @@ public class DateBalanceHistory {
 
     }
 
-    public DateBalanceHistory(Bill targetBill, BigInteger balance, Date date) {
+    public DateBalanceHistory(Bill targetBill, BigDecimal balance, Date date) {
         this.targetBill = targetBill;
         this.balance = balance;
         this.date = date;
     }
 
-    public BigInteger getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(BigInteger balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

@@ -9,9 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import static com.presentation.demo.constants.Constants.*;
+import static com.presentation.demo.constants.Params.*;
 import static com.presentation.demo.constants.enums.AUTHORITIES.ADMIN;
 
 @Service

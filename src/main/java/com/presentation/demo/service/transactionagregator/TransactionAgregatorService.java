@@ -1,6 +1,6 @@
 package com.presentation.demo.service.transactionagregator;
 
-import com.presentation.demo.model.Transaction;
+import com.presentation.demo.model.transaction.Transaction;
 
 public interface TransactionAgregatorService {
     Transaction findTransactionById(Integer id);

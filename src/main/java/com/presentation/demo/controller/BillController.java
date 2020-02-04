@@ -1,7 +1,6 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.model.Bill;
-import com.presentation.demo.model.Card;
 import com.presentation.demo.model.DateBalanceHistory;
 import com.presentation.demo.model.User;
 import com.presentation.demo.service.bill.BillService;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Controller
@@ -36,6 +35,7 @@ public class BillController {
     private DateBalanceHistoryService dateBalanceHistoryService;
 
     @GetMapping("/createbill/{id}")
+    @ResponseBody
     public String createBill(@PathVariable("id") Long id) {
 
         Random rand = new Random();
@@ -62,7 +62,7 @@ public class BillController {
         Bill bill = billService.findBillById(billId);
         model.addAttribute("billId",bill.getId());
         model.addAttribute("holderId",bill.getHolder().getId());
-        Map<Date, BigInteger> dateBigIntegerMap = new TreeMap<>();
+        Map<Date, BigDecimal> dateBigIntegerMap = new TreeMap<>();
         List<DateBalanceHistory> dateBalanceHistories = dateBalanceHistoryService.findDateBalanceHistoriesByBill(bill);
         for (DateBalanceHistory dateBalanceHistory: dateBalanceHistories) {
             dateBigIntegerMap.put(dateBalanceHistory.getDate(), dateBalanceHistory.getBalance());

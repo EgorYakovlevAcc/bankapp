@@ -1,14 +1,12 @@
 package com.presentation.demo.service.card;
 
 import com.presentation.demo.model.Bill;
-import com.presentation.demo.model.Card;
+import com.presentation.demo.model.card.Card;
 import com.presentation.demo.model.User;
 import com.presentation.demo.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Constraint;
 import java.util.List;
 
 @Service
