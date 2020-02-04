@@ -35,7 +35,6 @@ public class BillController {
     private DateBalanceHistoryService dateBalanceHistoryService;
 
     @GetMapping("/createbill/{id}")
-    @ResponseBody
     public String createBill(@PathVariable("id") Long id) {
 
         Random rand = new Random();

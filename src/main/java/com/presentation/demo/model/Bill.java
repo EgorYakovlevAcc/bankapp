@@ -73,7 +73,7 @@ public class Bill {
     public BigDecimal getBalance() {
         BigDecimal result = BigDecimal.valueOf(0);
         for (Card card : this.getCards()) {
-            result = result.add(BigDecimal.valueOf((long)card.getBalance()));
+            result = result.add(card.getBalance());
         }
         return result;
     }

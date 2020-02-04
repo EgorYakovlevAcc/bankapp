@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -51,7 +52,8 @@ public class CardController {
 //    }
 
     @GetMapping("/createcard/{id}")
-    public String createCard(@PathVariable("id") Integer id) {
+    public String createCard(@PathVariable("id") Integer id, @RequestParam Integer product_offering_id) {
+
         Random random = new Random();
         Card card = new DebetCard();
         Bill bill = billService.findBillById(id);
@@ -63,7 +65,7 @@ public class CardController {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 4);
         card.setExpireDate(calendar.getTime());
-        card.setBalance(0);
+        card.setBalance(BigDecimal.valueOf(0));
         cardService.save(card);
         return "redirect:/billdetails/" + id;
     }

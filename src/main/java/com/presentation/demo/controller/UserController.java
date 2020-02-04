@@ -1,8 +1,8 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.model.Bill;
-import com.presentation.demo.model.Card;
 import com.presentation.demo.model.User;
+import com.presentation.demo.model.card.Card;
 import com.presentation.demo.repository.UserRepository;
 import com.presentation.demo.service.bill.BillService;
 import com.presentation.demo.service.datebalancehistory.DateBalanceHistoryService;
