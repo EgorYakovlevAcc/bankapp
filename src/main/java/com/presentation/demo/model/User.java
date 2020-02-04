@@ -23,14 +23,15 @@ public class User implements UserDetails {
     @Id
     @Column(name = "user_id")
     @GeneratedValue (strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @NotEmpty(message = "Username can't be empty")
     private String username;
 
     @Email(message = "Wrong email format!")
     @Column (name = "e_mail")
-    private String email;
+    @NotEmpty(message = "Email can't be empty")
+    private String  email;
 
     @OneToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -45,6 +46,12 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
     private List<Card> cards;
+
+    public List<Card> getCards() { return cards; }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
 
     @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL)
     private List<Bill> bills;
@@ -62,14 +69,6 @@ public class User implements UserDetails {
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
 
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
-
     public List<Bill> getBills() {
         return bills;
     }
@@ -78,8 +77,12 @@ public class User implements UserDetails {
         this.bills = bills;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -168,4 +171,6 @@ public class User implements UserDetails {
                 Objects.equals(mobilePhoneNumber, user.mobilePhoneNumber);
     }
 
+    public void setPasswordGoogle(String oauth2user) {
+    }
 }

@@ -16,8 +16,8 @@ public class Card {
     private String cardNum;
 
     @ManyToOne(fetch =  FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "bill_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Bill bill;
 
     private Date expirDate;
@@ -28,7 +28,7 @@ public class Card {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = true)
+    @JoinColumn(name = "user_id", nullable = false)
     private User cardHolder;
 
     public Card() {
@@ -52,6 +52,18 @@ public class Card {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
     }
 
     public String getCardNum() {
@@ -85,4 +97,6 @@ public class Card {
     public void setCvv(String cvv) {
         this.cvv = cvv;
     }
+
+    public String getHiddenNum(){ return cardNum.substring(0, 4) + "****" + cardNum.substring(cardNum.length() - 4, cardNum.length()); }
 }
