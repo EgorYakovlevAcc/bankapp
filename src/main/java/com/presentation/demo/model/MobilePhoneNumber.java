@@ -1,7 +1,5 @@
 package com.presentation.demo.model;
 
-import com.presentation.demo.service.validation.phonenumber.PhoneNumber;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -10,7 +8,7 @@ import java.util.Objects;
 public class MobilePhoneNumber {
 
     @Id
-    @Column(name = "mobile_phone_number_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -23,14 +21,6 @@ public class MobilePhoneNumber {
 
     public MobilePhoneNumber(User owner, String mobilePhoneNumber) {
         this.owner = owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public User getOwner() {
-        return owner;
     }
 
     public void setMobilePhoneNumberValue(String mobilePhoneNumber) {

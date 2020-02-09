@@ -21,11 +21,11 @@ public class DateBalanceHistoryServiceImpl implements DateBalanceHistoryService 
     }
 
     @Override
+    @Transactional
     public List<DateBalanceHistory> findDateBalanceHistoriesByBill(Bill bill) {
         return dateBalanceHistoryRepository.findDateBalanceHistoriesByTargetBill(bill);
     }
 
-    @Transactional
     @Override
     public void createNewDateBalanceHistory(Bill bill) {
         DateBalanceHistory dateBalanceHistory = new DateBalanceHistory();

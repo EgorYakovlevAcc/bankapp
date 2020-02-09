@@ -13,7 +13,7 @@ import java.util.Date;
 public class DateBalanceHistory {
 
     @Id
-    @Column(name = "data_balance_history_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

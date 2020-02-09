@@ -4,6 +4,7 @@ import com.presentation.demo.model.transaction.Transaction;
 import com.presentation.demo.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
-    TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;
 
     public TransactionServiceImpl() {
     }
@@ -32,6 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public List<Transaction> findAll() {
         return transactionRepository.findAll();
     }

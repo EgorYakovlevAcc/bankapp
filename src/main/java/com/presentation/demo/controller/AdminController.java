@@ -10,20 +10,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@RequestMapping
+@RequestMapping("/admin")
 @Controller
 public class AdminController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/admin")
+    @GetMapping("/")
     public String getAdminPage(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("user", user);
         return "/admin/admin";
     }
 
-    @GetMapping("/admin/showpassword")
+    @GetMapping("/showpassword")
     @ResponseBody
     public String showPassword(@AuthenticationPrincipal User user){
         return user.getPassword();//comes from another service

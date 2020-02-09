@@ -35,7 +35,7 @@ public class BillController {
 
     @GetMapping("/createbill/{id}")
     @ResponseBody
-    public String createBill(@PathVariable("id") Long id) {
+    public String createBill(@PathVariable("id") Integer id) {
 
         Random rand = new Random();
         Bill bill = new Bill();
