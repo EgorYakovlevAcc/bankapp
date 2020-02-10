@@ -1,64 +1,61 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Full Width/Height Modal</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Account</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" th:href="@{/css/userpage.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/billdetails.css}"/>
+    <link href="https://bootswatch.com/4/superhero/bootstrap.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 
-    <div th:insert="common :: header (First = 'Log Out',Second = 'Sign Up',Third = 'About')"></div>
+<div th:insert="common :: header (First = 'About',Second = null,Third = 'Log Out')"></div>
 
-    <div class='main'>
-        <h4>Hello, [[${user.getUsername()}]]!</h4>
-        <label>
-            Your ID is: [[${user.getId()}]]
-            <ul th:each="bill : ${bills}">
-                <li>Bill ID: [[${bill.getId()}]] </li>
-                Bill balance: [[${bill.getBalance()}]]
-                    <div class="container">
-                        <button type="button" class="btn-btn-info-btn-lg" data-toggle="modal" data-target="#myModal">More</button>
+<!--todo:separate buttons for users-->
+<div class='main'>
+    <div class="container">
+        <div class="row">
+            <div class="col-auto"></div>
+            <div class="col">
+                <label id="card-block"></label>
+                    <div class="title">Bills</div>
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th colspan="2" class="head-left table-header"> Bill number </th>
+                                <th class="head-inner table-header"> Balance </th>
+                                <th class="head-right table-header"> Operations </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr  th:each="bill : ${bills}">
+                                    <td colspan="2" class="cells"><a class="table-hrefs" th:href="'http://me.org:8080/billdetails/' + ${bill.getId()}"
+                                            th:text="'Bill number: ' + ${bill.number}"/></td>
+                                    <td class="cells" th:text="${bill.getBalance()}"/>
+                                    <td class="cells"><a class="table-hrefs" th:href="'http://me.org:8080/deletebill/' + ${bill.getId()}">Delete this bill</a></td>
+                                </tr>
+                        </tbody>
+                    </table>
+                <p>
+                    <input type="button" value="Create a new bill" class="create-card btn btn-secondary my-2 my-sm-0"
+                           th:onclick="'window.location=\'http://me.org:8080/createbill/' + ${user.getId()} + '\''"></input>
+                </p>
 
-                        <div class="modal fade" id="myModal" role="dialog">
-                            <div class="modal-dialog modal-xl">
-
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p th:text="${#dates.format(bill.getLastTransaction(), 'dd-MM-yyyy HH:mm:ss')}"></p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <ul th:each="card : ${bill.getCards()}">
-                    <li> Card ID: [[${card.getId()}]] </li>
-                </ul>
-            </ul>
-<!--            <form action="/logout" method="post">-->
-<!--                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>-->
-<!--                <input class="logout" type="submit" value="Logout"/>-->
-<!--            </form>-->
-        </label>
-
-        <p>
-            <input type="button" class="goto" onclick="location.href='index'" value="Go to main page"/>
-        </p>
-
-        <p style="color: crimson">
-            All rights reserved &copy; 2019
-        </p>
+                <a th:href="'http://me.org:8080/createbill/' + ${user.getId()}">Create a new bill</a>
+            </div>
+        </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <p style="color: crimson">
+        All rights reserved &copy; 2019
+    </p>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 </body>
 </html>

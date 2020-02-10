@@ -15,5 +15,19 @@
 }
 
 body{
-    background-color: #e4fff1 !important;
+    background-color: #f1effc !important;
+}
+
+#logout {
+    padding-left: 60px;
+}
+
+.container {
+    min-height: calc(100vh - 80px);
+}
+
+.footer {
+    text-align: right;
+    color: #495057;
+    padding-right: 1%;
 }

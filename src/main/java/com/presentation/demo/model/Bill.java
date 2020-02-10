@@ -61,7 +61,11 @@ public class Bill {
     }
 
     public BigDecimal getBalance() {
-        return balance;
+        BigDecimal result = BigDecimal.valueOf(0);
+        for (Card card : this.getCards()) {
+            result = result.add(card.getBalance());
+        }
+        return result;
     }
 
     public void setBalance(BigDecimal balance) {

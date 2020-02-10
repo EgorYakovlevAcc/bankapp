@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Account</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/billdetails.css}"/>
+    <link href="https://bootswatch.com/4/superhero/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+
+<div th:insert="common :: header (First = 'About',Second = null,Third = 'Log Out')"></div>
+
+<!--todo:separate buttons for users-->
+<div class='main'>
+    <div class="container">
+        <div class="row">
+            <div class="col-auto"></div>
+            <div class="col">
+                <label id="card-block"></label>
+				<div id="cards" class="bills-menu">
+					<div class="title">My cards</div>
+					<table class="table">
+						<thead class="thead-light">
+						<tr>
+							<th colspan="2" class="head-left table-header"> Card number </th>
+							<th class="head-inner table-header"> Balance </th>
+							<th class="head-inner table-header"> Operations </th>
+							<th colspan="6" class="head-right table-header"> Operations </th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr  th:each="card : ${cards}">
+							<td colspan="2" class="cells">
+								<a class="table-hrefs" th:href="'http://me.org:8080/billdetails/' + ${card.getId()}" th:text="'Card number: ' + ${card.getHiddenNum()}"></a>
+							</td>
+							<td class="cells" th:text="${card.getBalance()}"></td>
+							<td class="cells">
+								<a class="table-hrefs" th:href="'http://me.org:8080/deletecard/' + ${card.getId()}">Delete this card</a>
+							</td>
+							<td width="200" class="cells">
+								<ul class="drop-menu" style="position:relative; z-index:1000; list-style-type: none">
+									<li class="hide_show">
+										<span>Choose the action</span>
+										<ul class="drop-ul">
+											<li class="drop-li">Transfer</li>
+											<li class="drop-li">QR code to get a cash</li>
+											<li class="drop-li">QR code to put a cash</li>
+											<li class="drop-li">Delete the card</li>
+										</ul>
+									</li>
+								</ul>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+					<p>
+						<input type="button" value="Create a new card" class="create-card btn btn-secondary my-2 my-sm-0"
+						th:onclick="'window.location=\'http://me.org:8080/createcard/' + ${bill.getId()} + '\''"></input>
+					</p>
+				</div>
+            </div>
+        </div>
+    </div>
+
+    <div th:insert="common :: footer"></div>
+<!--    <div class="footer">-->
+<!--        All rights reserved &copy; 2020-->
+<!--    </div>-->
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>
