@@ -94,7 +94,18 @@
             <version>1.12.1</version>
         </dependency>
 
-        <!--extra-->
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots</artifactId>
+            <version>4.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambotsextensions</artifactId>
+            <version>4.6</version>
+        </dependency>
+
     </dependencies>
 
     <build>

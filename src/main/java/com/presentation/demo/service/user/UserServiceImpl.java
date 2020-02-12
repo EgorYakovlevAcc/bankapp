@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
 
         String activationMessage = String.format(" Hello, %s! \n\n " +
-                        "Welcome to NCBank! To activate your account please visit: http://localhost:"+ serverPort + "/activate/%s). " +
+                        "Welcome to NCBank! To activate your account please visit: http://localhost:"+ serverPort + "/activate/%s. " +
                         "Activation allows you to change account's password if you have forgotten it. \n\n " +
                         "Regards, NCBank team.",
                 user.getUsername(),user.getActivationCode());

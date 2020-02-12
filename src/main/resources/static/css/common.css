@@ -12,10 +12,16 @@
 
 #footer, #header{
     background-color: #2980b9;
+    display: table-row;
+    height: 0;
 }
 
 body{
-    background-color: #f1effc !important;
+    background-color: #e4fff1 !important;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: table;
 }
 
 #logout {

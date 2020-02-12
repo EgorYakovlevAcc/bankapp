@@ -14,7 +14,6 @@
 
 <div th:insert="common :: header (First = 'About',Second = null,Third = 'Log Out')"></div>
 
-<!--todo:separate buttons for users-->
 <div class='main'>
     <div class="container">
         <div class="row">
@@ -32,19 +31,21 @@
                         </thead>
                         <tbody>
                                 <tr  th:each="bill : ${bills}">
-                                    <td colspan="2" class="cells"><a class="table-hrefs" th:href="'http://me.org:8080/billdetails/' + ${bill.getId()}"
+                                    <td colspan="2" class="cells"><a class="table-hrefs" th:href="'/billdetails/' + ${bill.getId()}"
                                             th:text="'Bill number: ' + ${bill.number}"/></td>
                                     <td class="cells" th:text="${bill.getBalance()}"/>
-                                    <td class="cells"><a class="table-hrefs" th:href="'http://me.org:8080/deletebill/' + ${bill.getId()}">Delete this bill</a></td>
+                                    <td class="cells"><a class="table-hrefs" th:href="'/deletebill/' + ${bill.getId()}">Delete this bill</a></td>
                                 </tr>
                         </tbody>
                     </table>
                 <p>
                     <input type="button" value="Create a new bill" class="create-card btn btn-secondary my-2 my-sm-0"
-                           th:onclick="'window.location=\'http://me.org:8080/createbill/' + ${user.getId()} + '\''"></input>
+                           th:onclick="'window.location=\'/createbill/' + ${user.getId()} + '\''"></input>
+                    <input type="button" value="Create a new bill" class="create-card btn btn-secondary my-2 my-sm-0"
+                           th:onclick="'window.location=\'/createbill/' + ${user.getId()} + '\''"></input>
                 </p>
 
-                <a th:href="'http://me.org:8080/createbill/' + ${user.getId()}">Create a new bill</a>
+                <a th:href="'/createbill' + ${user.getId()}">Create a new bill</a>
             </div>
         </div>
     </div>
