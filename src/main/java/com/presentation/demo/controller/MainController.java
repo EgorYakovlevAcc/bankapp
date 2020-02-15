@@ -150,6 +150,7 @@ public class MainController {
 
     @GetMapping("/login")
     public String getLogin(Model model, @AuthenticationPrincipal User authenticatedUser) {
+        if (Objects.nonNull(authenticatedUser)) { return "redirect:/userpage"; }
         String authenticatedName = Objects.nonNull(authenticatedUser) ? authenticatedUser.getUsername() : null;
         model.addAttribute("authenticatedName",authenticatedName);
         model.addAttribute("user", new User());
@@ -164,7 +165,7 @@ public class MainController {
         Authentication auth = authenticationManager.authenticate(authReq);
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
-        return "redirect:/index";
+        return "redirect:/userpage";
     }
 
     @GetMapping("/deleteuser/{id}")

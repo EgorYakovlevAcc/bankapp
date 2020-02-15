@@ -30,29 +30,9 @@ public class CardController {
     @Autowired
     private ProductOfferingService productOfferingService;
 
-
-//    @GetMapping("/createcard/{id}")
-//    @ResponseBody
-//    public String createCard(@PathVariable("id") Integer id) {
-//        Random random = new Random();
-//        Card card = new DebetCard();
-//        Bill bill = billService.findBillById(id);
-//        card.setBill(bill);
-//        card.setCardHolder(bill.getHolder());
-//        card.setCardNum(String.valueOf(Math.abs(random.nextInt())));
-//        card.setCvv(String.valueOf(Math.abs(random.nextInt())));
-//
-//
-//        card.setProductOffering(new ProductOffering(10000.0,50.0,7.5));
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 4);
-//        card.setExpireDate(calendar.getTime());
-//        cardService.save(card);
-//        return card.getId().toString();
-//    }
-
-    @GetMapping("/createcard/{id}")
-    public String createCard(@PathVariable("id") Integer id, @RequestParam Integer product_offering_id) {
+    @GetMapping("/createcard")
+    public String createCard(@RequestParam Integer id,
+                             @RequestParam Integer product_offering_id) {
 
         Random random = new Random();
         Card card = new DebetCard();

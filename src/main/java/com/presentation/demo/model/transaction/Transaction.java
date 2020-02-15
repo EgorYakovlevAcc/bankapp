@@ -27,15 +27,15 @@ public class Transaction {
     private Card senderCard;
 
     @OneToOne
-    private Bill sender;
+    private Card sender;
 
     @OneToOne
-    private Bill recipient;
+    private Card recipient;
 
     private int sum;
 
     public Transaction(Calendar date, TransactionType transactionType, boolean isCanceled,
-                       boolean isCompleted, Bill sender, Bill recipient, int sum) {
+                       boolean isCompleted, Card sender, Card recipient, int sum) {
         this.isCanceled = isCanceled;
         this.isCompleted = isCompleted;
         this.sender = sender;
@@ -84,19 +84,19 @@ public class Transaction {
         isCompleted = completed;
     }
 
-    public Bill getSender() {
+    public Card getSender() {
         return sender;
     }
 
-    public void setSender(Bill sender) {
+    public void setSender(Card sender) {
         this.sender = sender;
     }
 
-    public Bill getRecipient() {
+    public Card getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(Bill recipient) {
+    public void setRecipient(Card recipient) {
         this.recipient = recipient;
     }
 

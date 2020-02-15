@@ -31,6 +31,11 @@ public class BillServiceImpl implements BillService{
     }
 
     @Override
+    public Bill findBillByNumber(String number) {
+        return billRepository.findBillByNumber(number);
+    }
+
+    @Override
     public List<Bill> findBillsByLastTransaction(Date date) {
         return billRepository.findBillsByLastTransaction(date);
     }

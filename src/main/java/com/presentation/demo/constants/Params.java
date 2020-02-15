@@ -5,6 +5,7 @@ public final class Params {
     public static final int RANDOM_PASSWORD_LENGTH = 30;
     public static final long TEN_DAYS_SEC = 36000000;
     public static final long ONE_MINUTE_SEC = 60000;
+    public static final int  TRANSACTION_EXECUTOR_DELAY = 1000;
 
     //for regex
     public static final String PHONE_NUMBER_PATTERN = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}|\\d{11}|\\+\\d{11}";

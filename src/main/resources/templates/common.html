@@ -27,7 +27,7 @@
                         <a th:case="'Sign In'" class="nav-link"  href="/login">
                             <span th:text="${First}"></span>
                         </a>
-                        <a class="nav-link disabled" href="/about" tabindex="-1" aria-disabled="true">
+                        <a th:case="About" class="nav-link" href="/about">
                             <span th:text="${First}"></span>
                         </a>
                         <a th:case="null" class="nav-link disabled" tabindex="-1" aria-disabled="true">
@@ -36,12 +36,16 @@
                     </li>
 
                     <li class="nav-item" th:if="${Second == null}">
-                        <a class="nav-link disabled" href="/registration" tabindex="-1" aria-disabled="true">
+                        <a class="nav-link disabled nav-bar-second" href="/registration" tabindex="-1" aria-disabled="true">
                             <span th:text="${Second}"></span>
                         </a>
                     </li>
-                    <li class="nav-item active" th:if="${Second != null}">
-                        <a class="nav-link" href="/registration"> <span th:text="${Second}"></span> </a>
+
+                    <li class="nav-item active" th:if="${Second == 'Sign Up'}">
+                        <a class="nav-link nav-bar-second" href="/registration"> <span th:text="${Second}"></span> </a>
+                    </li>
+                    <li class="nav-item active" th:if="${Second == 'Userpage'}">
+                        <a class="nav-link nav-bar-second" href="/userpage"> <span th:text="${Second}"></span> </a>
                     </li>
 
                     <form class="form-inline my-2 my-lg-0">
@@ -50,13 +54,11 @@
                     </form>
 
 
-                    <li id="logout" class="nav-item active" th:if="${Third != null}">
+                    <li class="nav-item active" th:if="${Third == 'About'}">
                         <a class="nav-link" href="/about"> <span th:text="${Third}"></span> </a>
                     </li>
-                    <li class="nav-item" th:if="${Third == null}">
-                        <a th:case="'Log Out'" class="nav-link"  href="/logout" >
-                            <span th:text="${Third}"></span>
-                        </a>
+                    <li class="nav-item" th:if="${Third == 'Log Out'}">
+                        <a id="logout" class="nav-link" th:text="Logout" href="/logout"></a>
                     </li>
                 </ul>
             </div>
@@ -75,7 +77,7 @@
     </div>
 
     <div th:fragment="footer">
-        <div class="footer">
+        <div id="footer" class="footer">
             All rights reserved &copy; 2020
         </div>
     </div>

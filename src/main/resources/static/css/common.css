@@ -10,10 +10,6 @@
     background-color: #e4fff1;
 }
 
-#footer, #header{
-    background-color: #2980b9;
-}
-
 body{
     background-color: #f1effc !important;
 }
@@ -30,4 +26,8 @@ body{
     text-align: right;
     color: #495057;
     padding-right: 1%;
+}
+
+.nav-bar-second {
+    padding-right: 25px !important;
 }

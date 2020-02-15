@@ -14,6 +14,8 @@ public interface BillService {
 
     Bill findBillById(Integer id);
 
+    Bill findBillByNumber(String number);
+
     List<Bill> findBillsByLastTransaction(Date date);
 
     List<Bill> findBillsByHolder(User holder);

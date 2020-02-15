@@ -25,6 +25,9 @@ public class CardServiceImpl implements CardService {
     public Card findCardById(Integer id) { return cardRepository.findCardById(id); }
 
     @Override
+    public Card findCardByCardNum(String cardNum) { return cardRepository.findCardByCardNum(cardNum); }
+
+    @Override
     public List<Card> findCardsByBill(Bill bill) { return cardRepository.findCardsByBill(bill); }
 
     @Override

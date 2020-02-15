@@ -10,6 +10,7 @@ public interface CardService {
     void save(Card card);
     void delete(Card card);
     Card findCardById(Integer id);
+    Card findCardByCardNum(String cardNum);
     List<Card> findCardsByBill(Bill bill);
     List<Card> findCardsByCartHolder(User cartHolder);
 }
