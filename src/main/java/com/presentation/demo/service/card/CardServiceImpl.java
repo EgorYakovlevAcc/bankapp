@@ -6,6 +6,7 @@ import com.presentation.demo.model.User;
 import com.presentation.demo.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,8 +29,10 @@ public class CardServiceImpl implements CardService {
     public Card findCardByCardNum(String cardNum) { return cardRepository.findCardByCardNum(cardNum); }
 
     @Override
+    @Transactional
     public List<Card> findCardsByBill(Bill bill) { return cardRepository.findCardsByBill(bill); }
 
     @Override
+    @Transactional
     public List<Card> findCardsByCartHolder(User cartHolder) { return cardRepository.findCardsByCardHolder(cartHolder); }
 }

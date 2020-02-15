@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset password success</title>
+    <link rel="stylesheet" type="text/css" href="/css/shortMessageTemplate.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"
+
+</head>
+<body>
+    <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
+
+    <div class="body-container">
+
+        <p class="message"> [[${message}]] </p>
+        <p style="color: crimson">
+            All rights reserved &copy; 2019
+        </p>
+    </div>
+
+</body>
+</html>

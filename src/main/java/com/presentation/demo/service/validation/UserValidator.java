@@ -1,21 +1,22 @@
 package com.presentation.demo.service.validation;
 
 import com.presentation.demo.model.User;
+import com.presentation.demo.service.mail.MailSendingService;
 import com.presentation.demo.service.mobilephonenumber.MobilePhoneNumberService;
 import com.presentation.demo.service.user.UserServiceImpl;
-import com.presentation.demo.service.validation.email.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;
 
 @Service
 public class UserValidator implements org.springframework.validation.Validator {
+
+    private Logger USER_VALIDATOR_LOGGER = LoggerFactory.getLogger(UserValidator.class);
 
     @Autowired
     private UserServiceImpl userService;
@@ -25,6 +26,9 @@ public class UserValidator implements org.springframework.validation.Validator {
 
     @Autowired
     private MobilePhoneNumberService mobilePhoneNumberService;
+
+    @Autowired
+    private MailSendingService mailSendingService;
 
     @Override
     public boolean supports(Class<?> aClass) {

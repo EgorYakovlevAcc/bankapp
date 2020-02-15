@@ -6,7 +6,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
 public class Bill {
 
     @Id
-    @Column(name = "bill_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -37,15 +36,6 @@ public class Bill {
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User holder;
-
-
-    public User getHolder() {
-        return holder;
-    }
-
-    public void setHolder(User holder) {
-        this.holder = holder;
-    }
 
     public Bill() {
     }
@@ -82,14 +72,6 @@ public class Bill {
         this.balance = balance;
     }
 
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
-
     public Date getDue() {
         return due;
     }
@@ -106,11 +88,19 @@ public class Bill {
         this.lastTransaction = lastTransaction;
     }
 
-    public List<DateBalanceHistory> getBalanceHistory() {
-        return balanceHistory;
+    public List<Card> getCards() {
+        return cards;
     }
 
-    public void setBalanceHistory(List<DateBalanceHistory> balanceHistory) {
-        this.balanceHistory = balanceHistory;
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public User getHolder() {
+        return holder;
+    }
+
+    public void setHolder(User holder) {
+        this.holder = holder;
     }
 }

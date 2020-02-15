@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />
+    <link rel="stylesheet" type="text/css" href="/css/registration.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"
 
 </head>
@@ -56,35 +56,4 @@
     </div>
 
 </body>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script th:inline="javascript">
-    //example of function that validate content of inputs
-    function validateFormData(formObject) {
-        //find ("input, textArea") as example...
-        //in our case we need only input
-        let pass1 = $("#password__one__signup").val();
-        let pass2 = $("#password__second__signup").val();
-        if (pass1 != pass2) {
-            alert("passwords are not equal");
-            return false;
-        }
-
-        let seria = "";
-        seria = $("#seria__signup").val();
-        let passportNum = "";
-        passportNum = $("#passport__signup").val();
-        // if (seria.length != 4 || passportNum.length != 6) {
-        //     alert("check passport data");
-        //     return false;
-        // }
-
-        if (!validation(formObject)) {
-            alert("Validation problems.");
-            return false;
-        }
-
-        return true;
-    }
-</script>
 </html>

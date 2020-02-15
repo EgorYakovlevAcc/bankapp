@@ -1,6 +1,6 @@
-package com.presentation.demo.business.parser;
+package com.presentation.demo.service.parser;
 
-import com.presentation.demo.helpers.MapEntryImpl;
+import com.presentation.demo.pojo.MapEntryImpl;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -15,9 +16,10 @@ import java.util.List;
 
 import static com.presentation.demo.constants.Params.*;
 
-public class ExchangeRateParser implements ParserHTML {
+@Service
+public class ExchangeRateParserService implements ParserHTMLService {
 
-    private Logger exchangeRateLogger = LoggerFactory.getLogger(ExchangeRateParser.class);
+    private Logger exchangeRateLogger = LoggerFactory.getLogger(ExchangeRateParserService.class);
 
     private Connection connection;
 
@@ -29,10 +31,10 @@ public class ExchangeRateParser implements ParserHTML {
 
     private Integer statusCode = -1;
 
-    public ExchangeRateParser(){
+    public ExchangeRateParserService(){
     }
 
-    public ExchangeRateParser(String referrerUrl, String useragent) {
+    public ExchangeRateParserService(String referrerUrl, String useragent) {
         this.referrerUrl = referrerUrl;
         this.useragent = useragent;
     }

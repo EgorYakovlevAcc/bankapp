@@ -3,6 +3,7 @@ package com.presentation.demo.service.appinit;
 import com.presentation.demo.model.MobilePhoneNumber;
 import com.presentation.demo.model.User;
 import com.presentation.demo.service.mobilephonenumber.MobilePhoneNumberService;
+import com.presentation.demo.service.reset_password_token.ResetPasswordTokenService;
 import com.presentation.demo.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import static com.presentation.demo.constants.Params.*;
-import static com.presentation.demo.constants.enums.AUTHORITIES.ADMIN;
+import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_ADMIN;
 
 @Service
 public class InitObjects implements CommandLineRunner {
@@ -25,6 +26,8 @@ public class InitObjects implements CommandLineRunner {
     @Autowired
     private MobilePhoneNumberService mobilePhoneNumberService;
 
+    @Autowired
+    private ResetPasswordTokenService resetPasswordTokenService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -42,7 +45,7 @@ public class InitObjects implements CommandLineRunner {
             admin = new User();
             admin.setPassword(adminPassword);
             admin.setMobilePhoneNumber(adminMobilePhoneNumber);
-            admin.setAuthority(ADMIN);
+            admin.setAuthority(ROLE_ADMIN);
             admin.setUsername(ADMIN_NAME);
             admin.setEmail(ADMIN_EMAIL);
 
@@ -50,6 +53,8 @@ public class InitObjects implements CommandLineRunner {
 
             userService.save(admin);
             mobilePhoneNumberService.save(adminMobilePhoneNumber);
+
+            resetPasswordTokenService.expireDateResetPasswordTokenAsyncDeleter();
         }
         else{
             onStartLogger.info("Admin found." + admin.getUsername());

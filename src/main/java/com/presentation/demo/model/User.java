@@ -22,17 +22,16 @@ import java.util.Objects;
 public class User implements UserDetails {
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "id")
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotEmpty(message = "Username can't be empty")
     private String username;
 
     @Email(message = "Wrong email format!")
     @Column (name = "e_mail")
-    @NotEmpty(message = "Email can't be empty")
-    private String  email;
+    private String email;
 
     @PhoneNumber(message = "Wrong telephone number format!")
     @OneToOne(cascade = CascadeType.ALL)
@@ -44,24 +43,26 @@ public class User implements UserDetails {
 
     private String  passwordConfirmation;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ResetPasswordToken resetPasswordToken;
+
+    @Column(name = "role")
     private String authority;
 
     @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
     private List<Card> cards;
 
-    public List<Card> getCards() { return cards; }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
-
     @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL)
     private List<Bill> bills;
+
+    private String activationCode;
+
 
     public User() {
     }
 
-    public User(@NotEmpty(message = "Username can't be empty") String username, @NotEmpty(message = "Email can't be empty") String email,@NotEmpty(message = "Phone number can't be empty") MobilePhoneNumber mobilePhoneNumber, String password, String passwordConfirmation,List<Bill> bills, List<Card> cards) {
+    public User(String username,String email, MobilePhoneNumber mobilePhoneNumber, String password, String passwordConfirmation,
+                List<Bill> bills, List<Card> cards, String authority, String activationCode) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -69,22 +70,12 @@ public class User implements UserDetails {
         this.bills = bills;
         this.cards = cards;
         this.mobilePhoneNumber = mobilePhoneNumber;
+        this.authority = authority;
+        this.activationCode = activationCode;
     }
 
-    public List<Bill> getBills() {
-        return bills;
-    }
-
-    public void setBills(List<Bill> bills) {
-        this.bills = bills;
-    }
-
-    public Long getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -127,8 +118,32 @@ public class User implements UserDetails {
         this.passwordConfirmation = passwordConfirmation;
     }
 
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public List<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
+    }
+
     public void setAuthority(AUTHORITIES newAuthority){
         authority = newAuthority.getAuthority();
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String registrationCode) {
+        this.activationCode = registrationCode;
     }
 
     @Override
@@ -173,6 +188,4 @@ public class User implements UserDetails {
                 Objects.equals(mobilePhoneNumber, user.mobilePhoneNumber);
     }
 
-    public void setPasswordGoogle(String oauth2user) {
-    }
 }

@@ -11,7 +11,7 @@ import java.util.Objects;
 public class ProductOffering {
 
     @Id
-    @Column(name = "product_offering_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

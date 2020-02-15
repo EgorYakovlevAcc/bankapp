@@ -11,11 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import static com.presentation.demo.constants.enums.AUTHORITIES.ADMIN;
-import static com.presentation.demo.constants.enums.AUTHORITIES.USER;
 
 @Configuration
 //@EnableOAuth2Client
@@ -25,10 +21,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
-
-    @Autowired
-    private LogoutSuccessHandler logoutSuccessHandler;
-
 
 //    @Qualifier("oauth2ClientContext")
 //    @Autowired
@@ -95,10 +87,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         "/registration","/about","/index","/","allusers",
-                        "/login", "/static/**", "/src/**", "/styles/**","/css/**","/js/**")
+                        "/login", "/static/**", "/src/**", "/styles/**","/css/**","/js/**,/activate/*,/password/reset/*,/password/change/*")
                 .permitAll()
                 .antMatchers("/admin/**")
-                .hasAnyAuthority(ADMIN.getAuthority())
+                .access("hasAnyAuthority('ROLE_ADMIN.getAuthority()')")
                 .and()
                 .formLogin()
                 .loginPage("/login")

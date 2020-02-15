@@ -1,10 +1,12 @@
 package com.presentation.demo.controller;
 
-import com.presentation.demo.business.parser.ExchangeRateParser;
-import com.presentation.demo.helpers.MapEntryImpl;
+import com.presentation.demo.exceptions.MailSendingException;
 import com.presentation.demo.model.MobilePhoneNumber;
 import com.presentation.demo.model.User;
+import com.presentation.demo.pojo.MapEntryImpl;
+import com.presentation.demo.service.mail.MailSendingService;
 import com.presentation.demo.service.mobilephonenumber.MobilePhoneNumberService;
+import com.presentation.demo.service.parser.ExchangeRateParserService;
 import com.presentation.demo.service.user.UserService;
 import com.presentation.demo.service.user.security.SecurityService;
 import com.presentation.demo.service.validation.UserValidator;
@@ -14,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,11 +27,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 import static com.presentation.demo.constants.Params.CB_URL;
 import static com.presentation.demo.constants.Params.DEFAULT_REFERRER;
-import static com.presentation.demo.constants.enums.AUTHORITIES.USER;
 
 @Controller
 public class MainController {
@@ -51,6 +54,12 @@ public class MainController {
 
     @Autowired
     private UserValidator userValidator;
+
+    @Autowired
+    private ExchangeRateParserService exchangeRateParserService;
+
+    @Autowired
+    private MailSendingService mailSendingService;
 
     @GetMapping(value = {"/index","/"})
     public String getIndex(Model model, @AuthenticationPrincipal User user) {
@@ -76,20 +85,28 @@ public class MainController {
         countryAbbrevations.add("USD");
         countryAbbrevations.add("EUR");
 
-        ExchangeRateParser exchangeRateParser = new ExchangeRateParser();
-        exchangeRateParser.setReferrerUrl(DEFAULT_REFERRER);
+        exchangeRateParserService.setReferrerUrl(DEFAULT_REFERRER);
 
-        exchangeRateParser.connect(CB_URL);
+        exchangeRateParserService.connect(CB_URL);
 
-        MAIN_CONTROLLER_LOGGER.info(exchangeRateParser.getStatusCode().toString());
-        MAIN_CONTROLLER_LOGGER.info(exchangeRateParser.getStatusMessage());
+        MAIN_CONTROLLER_LOGGER.info(exchangeRateParserService.getStatusCode().toString());
+        MAIN_CONTROLLER_LOGGER.info(exchangeRateParserService.getStatusMessage());
 
-        List<MapEntryImpl<String,String>> currenciesRates = exchangeRateParser.select(countryAbbrevations);
+        List<MapEntryImpl<String,String>> currenciesRates = exchangeRateParserService.select(countryAbbrevations);
 
         model.addAttribute("currenciesRates", currenciesRates);
         model.addAttribute("date", new Date().toString());
         model.addAttribute("namesLinksList", namesLinksList);
         return "index";
+    }
+
+    @ExceptionHandler(MailSendingException.class)
+    public final String MailSendingErrorHandler(MailSendingException mailException, Model model){
+        User newUser = new User();
+        newUser.setMobilePhoneNumber(new MobilePhoneNumber());
+        model.addAttribute("user", newUser);
+        model.addAttribute("email",String.format("Local mailbox \"%s\" is unavailable: user not found",mailException.getEmail()));
+        return "registration";
     }
 
     @GetMapping("/error")
@@ -117,12 +134,6 @@ public class MainController {
                                    Model model){
 
         MobilePhoneNumber userMobilePhoneNumber = user.getMobilePhoneNumber();
-        user.setAuthority(USER);
-
-        String newUserName = user.getUsername();
-        String newUserPassword = user.getPassword();
-        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
-
         userValidator.validate(user,resultUser);
 
         if (resultUser.hasFieldErrors()){
@@ -138,15 +149,14 @@ public class MainController {
             return "registration";
         }
         else{
-            userService.save(user);
+            String rawPassword = user.getPassword();
+            userService.createUserWithActivationCode(user);
             mobilePhoneNumberService.save(userMobilePhoneNumber);
-
-            securityService.autoLogin(newUserName,newUserPassword,authorities);
+            securityService.autoLogin(user.getUsername(),rawPassword,user.getAuthorities());
             return "redirect:/userpage";
         }
 
     }
-
 
     @GetMapping("/login")
     public String getLogin(Model model, @AuthenticationPrincipal User authenticatedUser) {
@@ -170,10 +180,16 @@ public class MainController {
 
     @GetMapping("/deleteuser/{id}")
     @ResponseBody
-    public String deleteUser(@PathVariable("id") Long id) {
+    public String deleteUser(@PathVariable("id") Integer id) {
         User user = userService.findUserById(id);
         userService.delete(user);
         return "Delete success!";
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activateAccount(@PathVariable String code, Model model){//todo:return from service - best practice?
+        model.addAttribute("activation_message",userService.activateUser(code));
+        return "activation";
     }
 
 }

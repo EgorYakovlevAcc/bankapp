@@ -23,6 +23,11 @@ public final class Params {
     public static final Boolean FOLLOW_REDIRECTS = false;
     public static final String EXCHANGE_RATE_TAG = "table.data";
 
+    //for reset password
+    public static final Integer RESET_TOKEN_VALIDITY_HOURS = 24;
+    public static final Integer ASYNC_TOKEN_VALIDITY_CHECKING_DELTA_TIME = 6;
+    public static final String DEFAULT_TEMPORARY_PASSWORD_FOR_RESET = "reseted";
+
     private Params() {}
 
 }
