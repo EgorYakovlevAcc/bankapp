@@ -17,13 +17,13 @@ import java.util.Date;
 public abstract class Card {
 
     @Id
-//    @Column(name = "card_id") MUST BE DELETED!!!!!!!!!!!!
+    @Column(name = "card_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String cardNum;
 
-    @ManyToOne(fetch =  FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch =  FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "bill_id")
     private Bill bill;

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -34,7 +35,6 @@ public class BillController {
     private DateBalanceHistoryService dateBalanceHistoryService;
 
     @GetMapping("/createbill/{id}")
-    @ResponseBody
     public String createBill(@PathVariable("id") Integer id) {
 
         Random rand = new Random();
@@ -46,15 +46,14 @@ public class BillController {
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 4);
         bill.setDue(calendar.getTime());
         billService.save(bill);
-        return bill.getId().toString();
+        return "redirect:/userpage";
     }
 
     @GetMapping("/deletebill/{id}")
-    @ResponseBody
     public String deleteBill(@PathVariable("id") Integer id){
         Bill bill = billService.findBillById(id);
         billService.delete(bill);
-        return "Delete success!";
+        return "redirect:/userpage";
     }
 
     @GetMapping("/bill")

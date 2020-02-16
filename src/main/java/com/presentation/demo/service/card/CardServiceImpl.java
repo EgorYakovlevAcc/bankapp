@@ -19,7 +19,6 @@ public class CardServiceImpl implements CardService {
     @Override
     public void save(Card card) { cardRepository.save(card); }
 
-    @Transactional
     @Override
     public void delete(Card card) { cardRepository.delete(card); }
 
@@ -30,10 +29,8 @@ public class CardServiceImpl implements CardService {
     public Card findCardByCardNum(String cardNum) { return cardRepository.findCardByCardNum(cardNum); }
 
     @Override
-    @Transactional
     public List<Card> findCardsByBill(Bill bill) { return cardRepository.findCardsByBill(bill); }
 
     @Override
-    @Transactional
     public List<Card> findCardsByCartHolder(User cartHolder) { return cardRepository.findCardsByCardHolder(cartHolder); }
 }

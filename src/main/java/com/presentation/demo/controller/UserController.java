@@ -1,7 +1,9 @@
 package com.presentation.demo.controller;
 
+import com.presentation.demo.model.Bill;
 import com.presentation.demo.model.ResetPasswordToken;
 import com.presentation.demo.model.User;
+import com.presentation.demo.model.card.Card;
 import com.presentation.demo.pojo.StringWrapper;
 import com.presentation.demo.service.bill.BillService;
 import com.presentation.demo.service.card.CardService;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -119,6 +122,18 @@ public class UserController {
             model.addAttribute("message",String.format("We've sent message with link to complete your password reset on mail: \"%s\". Please, check it.",email));
             return "shortMessageTemplate";
         }
+    }
+
+    @GetMapping("/billdetails/{billId}")
+    public String getBillsCards(@PathVariable("billId") int billId,
+                                @AuthenticationPrincipal User user,
+                                Model model){
+        Bill bill = billService.findBillById(billId);
+        List<Card> cards = bill.getCards();
+        model.addAttribute("cards", cards);
+        model.addAttribute("user", user);
+        model.addAttribute("bill", bill);
+        return "billdetails";
     }
 
     @GetMapping(value = "/password/change")

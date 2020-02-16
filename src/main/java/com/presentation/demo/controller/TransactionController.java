@@ -35,7 +35,8 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping("/createtransaction/get-put")
-    public void createGetPutTransaction(@RequestParam("type") String type,
+    @ResponseBody
+    public String createGetPutTransaction(@RequestParam("type") String type,
                                     @RequestParam("id") Integer id,
                                     @RequestParam("amount") Integer amount) {
         Transaction transaction;
@@ -45,13 +46,14 @@ public class TransactionController {
                     sender, sender, amount);
         else {
             if (sender.getBalance().subtract(BigDecimal.valueOf(amount))
-                    .compareTo(BigDecimal.valueOf(0)) == -1) { return ; }
+                    .compareTo(BigDecimal.valueOf(0)) == -1) { return "Unsuccessful"; }
                 transaction = new Transaction(Calendar.getInstance(),
                         TransactionType.GET_CASH, false,
                         false, sender, sender, amount);
         }
         transactionService.save(transaction);
         transactionAgregatorService.addTransactionToQueue(transaction);
+        return "Successful op";
     }
 
     @GetMapping("/createtransaction/transfer")

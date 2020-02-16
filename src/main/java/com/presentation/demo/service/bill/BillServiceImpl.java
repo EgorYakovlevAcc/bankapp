@@ -21,7 +21,6 @@ public class BillServiceImpl implements BillService{
         billRepository.save(bill);
     }
 
-    @Transactional
     @Override
     public void delete(Bill bill) {
         billRepository.delete(bill);
@@ -38,13 +37,11 @@ public class BillServiceImpl implements BillService{
     }
 
     @Override
-    @Transactional
     public List<Bill> findBillsByLastTransaction(Date date) {
         return billRepository.findBillsByLastTransaction(date);
     }
 
     @Override
-    @Transactional
     public List<Bill> findBillsByHolder(User holder) {
         return billRepository.findBillByHolder(holder);
     }
