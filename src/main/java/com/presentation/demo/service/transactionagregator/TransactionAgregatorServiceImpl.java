@@ -46,7 +46,7 @@ public class TransactionAgregatorServiceImpl implements TransactionAgregatorServ
     }
 
     @Scheduled(fixedDelay = Properties.TRANSACTION_EXECUTOR_DELAY)
-    @Async
+    @Async("asyncExecutor")
     public void executeTransactions() {
         Transaction transaction;
         while (!transactionQueue.isEmpty()) {

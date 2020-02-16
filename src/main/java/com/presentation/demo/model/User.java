@@ -40,7 +40,7 @@ public class User implements UserDetails {
 
     private String  passwordConfirmation;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "token_id")
     private ResetPasswordToken resetPasswordToken;
 

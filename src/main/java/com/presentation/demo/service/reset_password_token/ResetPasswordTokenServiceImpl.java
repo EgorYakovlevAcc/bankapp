@@ -15,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.presentation.demo.constants.Properties.*;
+import static com.presentation.demo.constants.Properties.FIXED_DELAY_MILLISECONDS;
+import static com.presentation.demo.constants.Properties.INITIAL_DELAY_MILLISECONDS;
 
 @Service
 public class ResetPasswordTokenServiceImpl implements ResetPasswordTokenService {

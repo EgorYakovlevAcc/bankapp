@@ -1,6 +1,5 @@
 package com.presentation.demo.model.transaction;
 
-import com.presentation.demo.model.Bill;
 import com.presentation.demo.model.card.Card;
 
 import javax.persistence.*;

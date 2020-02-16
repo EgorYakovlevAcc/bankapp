@@ -36,7 +36,7 @@ public abstract class Card {
 
     private Double maintenance;
 
-    @ManyToOne(fetch = FetchType.EAGER )
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
     private User cardHolder;

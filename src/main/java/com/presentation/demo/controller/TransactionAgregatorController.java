@@ -1,7 +1,6 @@
 package com.presentation.demo.controller;
 
 import com.presentation.demo.constants.Properties;
-import com.presentation.demo.model.Bill;
 import com.presentation.demo.model.card.Card;
 import com.presentation.demo.model.transaction.Transaction;
 import com.presentation.demo.model.transaction.TransactionType;
