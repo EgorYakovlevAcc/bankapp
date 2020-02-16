@@ -12,7 +12,7 @@ public class MobilePhoneNumber {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(mappedBy = "mobilePhoneNumber",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "mobilePhoneNumber",cascade = CascadeType.REMOVE)
     private User owner;
 
     private String mobilePhoneNumberValue;

@@ -5,6 +5,7 @@ import com.presentation.demo.model.card.product_offering.ProductOffering;
 import com.presentation.demo.repository.ProductOfferingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class ProductOfferingServiceImpl implements ProductOfferingService {
         productOfferingRepository.save(productOffering);
     }
 
+    @Transactional
     @Override
     public void delete(ProductOffering productOffering) {
         productOfferingRepository.delete(productOffering);

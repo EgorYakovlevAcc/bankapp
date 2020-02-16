@@ -32,8 +32,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.presentation.demo.constants.Params.CB_URL;
-import static com.presentation.demo.constants.Params.DEFAULT_REFERRER;
+import static com.presentation.demo.constants.Properties.CB_URL;
+import static com.presentation.demo.constants.Properties.DEFAULT_REFERRER;
+import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_ADMIN;
 
 @Controller
 public class MainController {
@@ -61,11 +62,28 @@ public class MainController {
     @Autowired
     private MailSendingService mailSendingService;
 
+    @ExceptionHandler(MailSendingException.class)
+    public final String MailSendingErrorHandler(MailSendingException mailException, Model model){
+        User newUser = new User();
+        newUser.setMobilePhoneNumber(new MobilePhoneNumber());
+        model.addAttribute("user", newUser);
+        model.addAttribute("email",String.format("Local mailbox \"%s\" is unavailable: user not found",mailException.getEmail()));
+        return "registration";
+    }
+
     @GetMapping(value = {"/index","/"})
     public String getIndex(Model model, @AuthenticationPrincipal User user) {
         boolean isAuthenticated = Objects.nonNull(user);
         String userName =  isAuthenticated ? user.getUsername() : null;
-        model.addAttribute("userName", userName);
+        model.addAttribute("username", userName);
+
+        if (user != null){
+            if (user.getRole().equals(ROLE_ADMIN.getAuthority())) {
+                model.addAttribute("userpageLink", "/admin");
+            } else {
+                model.addAttribute("userpageLink", "/userpage");
+            }
+        }
 
         List<MapEntryImpl<String,String>> namesLinksList = new LinkedList<>();
         if (isAuthenticated){
@@ -86,7 +104,6 @@ public class MainController {
         countryAbbrevations.add("EUR");
 
         exchangeRateParserService.setReferrerUrl(DEFAULT_REFERRER);
-
         exchangeRateParserService.connect(CB_URL);
 
         MAIN_CONTROLLER_LOGGER.info(exchangeRateParserService.getStatusCode().toString());
@@ -99,22 +116,7 @@ public class MainController {
         model.addAttribute("namesLinksList", namesLinksList);
         return "index";
     }
-
-    @ExceptionHandler(MailSendingException.class)
-    public final String MailSendingErrorHandler(MailSendingException mailException, Model model){
-        User newUser = new User();
-        newUser.setMobilePhoneNumber(new MobilePhoneNumber());
-        model.addAttribute("user", newUser);
-        model.addAttribute("email",String.format("Local mailbox \"%s\" is unavailable: user not found",mailException.getEmail()));
-        return "registration";
-    }
-
-    @GetMapping("/error")
-    @ResponseBody
-    public String getError() {
-        return "error";
-    }
-
+    
     @GetMapping("/about")
     public String getAbout() {
         return "about";

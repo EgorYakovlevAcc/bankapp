@@ -13,6 +13,7 @@ import com.presentation.demo.service.user.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,15 +24,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Calendar;
 import java.util.Random;
 import java.util.UUID;
 
-import static com.presentation.demo.constants.Params.DEFAULT_TEMPORARY_PASSWORD_FOR_RESET;
+import static com.presentation.demo.constants.Properties.DEFAULT_TEMPORARY_PASSWORD_FOR_RESET;
 import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_USER;
 
 @Controller
 public class UserController {
+
+    @Value(value = "${spring.security.admin.name}")
+    private String adminName;
 
     @Autowired
     private UserService userService;
@@ -65,7 +68,7 @@ public class UserController {
         user.setUsername("A" + Math.abs(rand.nextInt()));
         user.setPassword("123");
         user.setPasswordConfirmation("123");
-        user.setAuthority(ROLE_USER);
+        user.setRole(ROLE_USER);
         userService.save(user);
         return user.getId().toString();
     }
@@ -105,6 +108,10 @@ public class UserController {
             model.addAttribute("message","User is not activated! Operation is not permitted!");
             return "resetPassword";
         }
+        else if (targetUser.getUsername().equals(adminName)){
+            model.addAttribute("message","Can't change administrator's password manually!");
+            return "resetPassword";
+        }
         else{
             String randomToken = UUID.randomUUID().toString();
             resetPasswordTokenService.createResetPasswordToken(randomToken,targetUser);
@@ -117,19 +124,19 @@ public class UserController {
     @GetMapping(value = "/password/change")
     public String getChangePasswordPage(Model model, @RequestParam("user_id") Integer id, @RequestParam("reset_token") String token){
         ResetPasswordToken resetPasswordToken = resetPasswordTokenService.findResetPasswordTokenByToken(token);
-        USER_CONTROLLER_LOGGER.info("TOKEN: " + token);
-        if ((resetPasswordToken == null) || (!resetPasswordToken.getUser().getId().equals(id))){
-            model.addAttribute("reset_message","Invalid token!");
+        if (resetPasswordToken == null){
+            model.addAttribute("email",new StringWrapper());
+            model.addAttribute("message","Your password reset token has expired!");
             return "resetPassword";
         }
-        else if (Calendar.getInstance().after(resetPasswordToken.getExpireDate())){
-            resetPasswordTokenService.delete(resetPasswordTokenService.findResetPasswordTokenByToken(token));
-            model.addAttribute("reset_message","Password reset token has expired!");
+        else if (!resetPasswordToken.getUser().getId().equals(id)){
+            model.addAttribute("email",new StringWrapper());
+            model.addAttribute("message","This user do not have reset password token!");
             return "resetPassword";
         }
         else{
             User user = userService.findUserById(id);
-
+            USER_CONTROLLER_LOGGER.info(resetPasswordToken.getUser().getUsername());
             USER_CONTROLLER_LOGGER.info(user.getUsername());
 
             securityService.resetUserPassword(user, DEFAULT_TEMPORARY_PASSWORD_FOR_RESET);
@@ -139,12 +146,6 @@ public class UserController {
         }
     }
 
-//    @PostMapping(value = "/password/change")
-//    @ResponseBody
-//    public String postChangePassword(@ModelAttribute StringWrapper password,@RequestParam("user_id") Integer id, @RequestParam("reset_token") String token){
-//        return password.getTarget();
-//    }
-
     @PostMapping(value = "/password/change")
     public String postUpdatePassword(HttpServletRequest request, HttpServletResponse response, @ModelAttribute StringWrapper newPassword, @AuthenticationPrincipal User user, Model model){
         securityService.resetUserPassword(user, newPassword.getTarget());
@@ -152,6 +153,7 @@ public class UserController {
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request,response,auth);
         }
+
         model.addAttribute("message","Your password has successfully been changed.");
         return "shortMessageTemplate";
     }

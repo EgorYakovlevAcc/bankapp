@@ -3,18 +3,19 @@ package com.presentation.demo.service.reset_password_token;
 import com.presentation.demo.model.ResetPasswordToken;
 import com.presentation.demo.model.User;
 import com.presentation.demo.repository.ResetPasswordTokenRepository;
+import com.presentation.demo.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.List;
 
-import static com.presentation.demo.constants.Params.ASYNC_TOKEN_VALIDITY_CHECKING_DELTA_TIME;
-import static com.presentation.demo.constants.Params.RESET_TOKEN_VALIDITY_HOURS;
+import static com.presentation.demo.constants.Properties.*;
 
 @Service
 public class ResetPasswordTokenServiceImpl implements ResetPasswordTokenService {
@@ -24,11 +25,15 @@ public class ResetPasswordTokenServiceImpl implements ResetPasswordTokenService 
     @Autowired
     private ResetPasswordTokenRepository resetPasswordTokenRepository;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public void save(ResetPasswordToken resetPasswordToken) {
         resetPasswordTokenRepository.save(resetPasswordToken);
     }
 
+    @Transactional
     @Override
     public void delete(ResetPasswordToken resetPasswordToken) {
         resetPasswordTokenRepository.delete(resetPasswordToken);
@@ -37,11 +42,6 @@ public class ResetPasswordTokenServiceImpl implements ResetPasswordTokenService 
     @Override
     public ResetPasswordToken findResetPasswordTokenById(Integer id) {
         return resetPasswordTokenRepository.findResetPasswordTokenById(id);
-    }
-
-    @Override
-    public ResetPasswordToken findResetPasswordTokenByUser(User user) {
-        return resetPasswordTokenRepository.findResetPasswordTokenByUser(user);
     }
 
     @Override
@@ -62,21 +62,22 @@ public class ResetPasswordTokenServiceImpl implements ResetPasswordTokenService 
     }
 
     @Override
-    @Async("asyncExecutor")
+    public List<ResetPasswordToken> findResetPasswordTokensByExpireDateAfter(Calendar date) {
+        return resetPasswordTokenRepository.findResetPasswordTokensByExpireDateAfter(date);
+    }
+
+    @Override
     @Transactional
+    @Scheduled(fixedDelay = FIXED_DELAY_MILLISECONDS,initialDelay = INITIAL_DELAY_MILLISECONDS)
+    @Async("asyncExecutor")
     public void expireDateResetPasswordTokenAsyncDeleter() {
-        while(true){
-            Calendar upperLimitCheckTime = Calendar.getInstance();
-            upperLimitCheckTime.add(Calendar.HOUR,ASYNC_TOKEN_VALIDITY_CHECKING_DELTA_TIME);
-            List<ResetPasswordToken> expiredTokens = resetPasswordTokenRepository.findResetPasswordTokensByExpireDateBefore(upperLimitCheckTime);
-            for(ResetPasswordToken expiredToken: expiredTokens){
-                resetPasswordTokenRepository.delete(expiredToken);
-            }
-            try{
-                Thread.sleep(ASYNC_TOKEN_VALIDITY_CHECKING_DELTA_TIME);
-            }
-            catch (InterruptedException interruptedExc){
-                RESET_TOKEN_SERVICE_LOGGER.info(interruptedExc.getMessage());
+        RESET_TOKEN_SERVICE_LOGGER.info("ResetPasswordToken async checker is working...");
+        Calendar upperLimitCheckTime = Calendar.getInstance();
+
+        for(User user: userService.findAllByResetPasswordTokenNotNull()){
+            if (user.getResetPasswordToken().getExpireDate().before(upperLimitCheckTime)){
+                user.setResetPasswordToken(null);
+                userService.save(user);
             }
         }
     }
@@ -85,16 +86,17 @@ public class ResetPasswordTokenServiceImpl implements ResetPasswordTokenService 
     public void createResetPasswordToken(String token, User user) {
         RESET_TOKEN_SERVICE_LOGGER.info("TOKEN: " + token);
         Calendar expireDate = Calendar.getInstance();
-        expireDate.add(Calendar.HOUR,RESET_TOKEN_VALIDITY_HOURS);
+        expireDate.add(Calendar.SECOND,5);
 
-        ResetPasswordToken oldToken = findResetPasswordTokenByUser(user);
+        ResetPasswordToken oldToken = user.getResetPasswordToken();
         if (oldToken == null){
             ResetPasswordToken resetPasswordToken = new ResetPasswordToken();
-
-            resetPasswordToken.setUser(user);
             resetPasswordToken.setToken(token);
             resetPasswordToken.setExpireDate(expireDate);
+
+            user.setResetPasswordToken(resetPasswordToken);
             resetPasswordTokenRepository.save(resetPasswordToken);
+            userService.save(user);
         }
         else{
             oldToken.setToken(token);

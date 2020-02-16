@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "telegram.bot.token",
+      "type": "java.lang.String",
+      "description": "Authentication code of custom telegram bot."
+    },
+    {
+      "name": "telegram.bot.name",
+      "type": "java.lang.String",
+      "description": "Name of custom telegram bot."
+    },
+    {
+      "name": "spring.security.admin.email",
+      "type": "java.lang.String",
+      "description": "Spring admin email."
+    },
+    {
+      "name": "spring.security.admin.name",
+      "type": "java.lang.String",
+      "description": "Admin name."
+    },
+    {
+      "name": "spring.security.admin.phone",
+      "type": "java.lang.String",
+      "description": "Admin phone."
+    }
+  ] }

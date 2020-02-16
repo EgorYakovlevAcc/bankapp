@@ -1,6 +1,6 @@
 package com.presentation.demo.constants;
 
-public final class Params {
+public final class Properties {
 
     public static final int RANDOM_PASSWORD_LENGTH = 30;
     public static final long TEN_DAYS_SEC = 36000000;
@@ -11,9 +11,7 @@ public final class Params {
     public static final String EMAIL_PATTERN = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
     //for admin
-    public static final String ADMIN_NAME = "SYSADMIN";
-    public static final String ADMIN_MOBILE_PHONE_NUMBER = "89779730970";
-    public static final String ADMIN_EMAIL = "admin@mail.ru";
+    public static final long ADMIN_PASSWORD_UPDATE_FREQUENCY_MILLISECONDS = 1000 * 60 * 60 * 24;
 
     //for exchange-rate parser
     public static final String CB_URL = "https://www.cbr.ru/eng/currency_base/daily/";
@@ -24,9 +22,11 @@ public final class Params {
 
     //for reset password
     public static final Integer RESET_TOKEN_VALIDITY_HOURS = 24;
-    public static final Integer ASYNC_TOKEN_VALIDITY_CHECKING_DELTA_TIME = 6;
     public static final String DEFAULT_TEMPORARY_PASSWORD_FOR_RESET = "reseted";
+    public static final long INITIAL_DELAY_MILLISECONDS = 1000 * 60;
+    public static final long FIXED_DELAY_MILLISECONDS = 1000 * 60;
 
-    private Params() {}
+
+    private Properties() {}
 
 }

@@ -10,10 +10,10 @@ public interface ResetPasswordTokenService {
     void save(ResetPasswordToken resetPasswordToken);
     void delete(ResetPasswordToken resetPasswordToken);
     ResetPasswordToken findResetPasswordTokenById(Integer id);
-    ResetPasswordToken findResetPasswordTokenByUser(User user);
     ResetPasswordToken findResetPasswordTokenByToken(String token);
     List<ResetPasswordToken> findResetPasswordTokensByExpireDate(Calendar expireDate);
     List<ResetPasswordToken> findResetPasswordTokensByExpireDateBefore(Calendar date);
+    List<ResetPasswordToken> findResetPasswordTokensByExpireDateAfter(Calendar date);
     void expireDateResetPasswordTokenAsyncDeleter();
     void createResetPasswordToken(String token, User user);
 }

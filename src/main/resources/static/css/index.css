@@ -10,13 +10,20 @@
     margin-left: 2rem;
 }
 
-.user{
-    color: #000000;
+.user-info{
+    display: block;
+}
+
+.icon-wrapper{
+    margin-left: 0.5rem;
+}
+
+
+.user-info{
     font-weight: bold;
     font-style: italic;
 }
-.user:hover{
-    color: rgba(0,0,0,0.69);
+.user-info:hover{
     text-decoration: none;
 }
 

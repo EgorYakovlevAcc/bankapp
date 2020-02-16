@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MobilePhoneNumberServiceImpl implements MobilePhoneNumberService {
@@ -20,6 +21,7 @@ public class MobilePhoneNumberServiceImpl implements MobilePhoneNumberService {
         mobilePhoneNumberRepository.save(mobilePhoneNumber);
     }
 
+    @Transactional
     @Override
     public void delete(MobilePhoneNumber mobilePhoneNumber) {
         mobilePhoneNumberRepository.delete(mobilePhoneNumber);

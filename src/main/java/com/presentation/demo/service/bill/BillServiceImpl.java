@@ -3,12 +3,7 @@ package com.presentation.demo.service.bill;
 import com.presentation.demo.model.Bill;
 import com.presentation.demo.model.User;
 import com.presentation.demo.repository.BillRepository;
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.provider.HibernateUtils;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +21,7 @@ public class BillServiceImpl implements BillService{
         billRepository.save(bill);
     }
 
+    @Transactional
     @Override
     public void delete(Bill bill) {
         billRepository.delete(bill);

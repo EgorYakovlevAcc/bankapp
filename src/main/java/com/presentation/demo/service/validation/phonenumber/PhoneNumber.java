@@ -4,7 +4,7 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-import static com.presentation.demo.constants.Params.PHONE_NUMBER_PATTERN;
+import static com.presentation.demo.constants.Properties.PHONE_NUMBER_PATTERN;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

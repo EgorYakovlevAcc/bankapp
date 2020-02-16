@@ -1,0 +1,43 @@
+@import "/css/common.css";
+
+.user-info{
+    display: block;
+}
+
+.icon-wrapper{
+    margin-left: 0.5rem;
+}
+
+.navbar-collapse{
+    position: relative;
+    margin-left: 2rem;
+}
+
+.user-info{
+    font-weight: bold;
+    font-style: italic;
+}
+.user-info:hover{
+    text-decoration: none;
+}
+
+.title{
+    margin-top: 2rem;
+    color: crimson !important;
+    font-size: 2rem !important;
+    font-family: Baufra, serif;
+    text-align: center;
+    margin-bottom: 0 !important;
+}
+
+.table .thead-dark th{
+    background-color: #ff9a16 !important;
+    border-color: #ff9a16 !important;
+}
+
+.body-container{
+    padding-right: 1rem;
+}
+.table-container{
+    padding: 1rem 2rem 2rem;
+}

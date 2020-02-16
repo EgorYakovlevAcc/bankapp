@@ -1,8 +1,5 @@
 package com.presentation.demo.model;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 import java.util.Calendar;
 
@@ -15,9 +12,7 @@ public class ResetPasswordToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(fetch = FetchType.EAGER)//todo:one to one doesn't work?
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "resetPasswordToken")
     private User user;
 
     private String token;

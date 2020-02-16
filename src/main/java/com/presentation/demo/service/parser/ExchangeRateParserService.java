@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.presentation.demo.constants.Params.*;
+import static com.presentation.demo.constants.Properties.*;
 
 @Service
 public class ExchangeRateParserService implements ParserHTMLService {

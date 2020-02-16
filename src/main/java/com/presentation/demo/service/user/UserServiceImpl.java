@@ -1,12 +1,15 @@
 package com.presentation.demo.service.user;
 
 import com.presentation.demo.model.MobilePhoneNumber;
+import com.presentation.demo.model.ResetPasswordToken;
 import com.presentation.demo.model.User;
 import com.presentation.demo.repository.MobilePhoneNumberRepository;
 import com.presentation.demo.repository.UserRepository;
 import com.presentation.demo.service.mail.MailSendingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.util.RandomValueStringGenerator;
 import org.springframework.stereotype.Service;
@@ -17,13 +20,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import static com.presentation.demo.constants.Params.RESET_TOKEN_VALIDITY_HOURS;
-import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_USER;
+import static com.presentation.demo.constants.Properties.*;
+import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_ADMIN;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final String CHANGE_PASSWORD_FORM_PATH =  "templates/changePassword";
+
+    @Value("${spring.security.admin.name}")
+    private String adminName;
+
+    @Value("${spring.security.admin.email}")
+    private String adminEmail;
 
     @Value("${server.port}")
     private Integer serverPort;
@@ -46,6 +55,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     @Override
     public void delete(User user) {
         userRepository.delete(user);
@@ -76,6 +86,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByActivationCode(code);
     }
 
+
+    @Override
+    public User findUserByResetPasswordToken(ResetPasswordToken resetPasswordToken) {
+        return userRepository.findUserByResetPasswordToken(resetPasswordToken);
+    }
+
+    @Override
+    public List<User> findAllByResetPasswordTokenNotNull() {
+        return userRepository.findAllByResetPasswordTokenNotNull();
+    }
+
+    @Override
+    public List<User> findUsersByRoleEquals(String role) {
+        return userRepository.findUsersByRoleEquals(role);
+    }
+
+
     @Override
     @Transactional
     public List<User> findAll() {
@@ -83,7 +110,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String generateRandomPassword(Integer length) {
+    @Async("asyncExecutor")
+    @Scheduled(fixedDelay = ADMIN_PASSWORD_UPDATE_FREQUENCY_MILLISECONDS,initialDelay = ADMIN_PASSWORD_UPDATE_FREQUENCY_MILLISECONDS)
+    public void adminRandomPasswordGenerator() {
+        String newRandomPassword = generateRandomPassword(RANDOM_PASSWORD_LENGTH);
+
+        User admin = userRepository.findUserByUsername(adminName);
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        userRepository.save(admin);
+
+        mailSendingService.sendSimple(adminEmail,"Password changing.",String.format("Your administrator password has changed to %s. \n" +
+                "\n" + "Regards, NCBank team.",newRandomPassword));
+    }
+
+    @Override
+    public String generateRandomPassword(Integer length){
         RandomValueStringGenerator randomValueStringGenerator = new RandomValueStringGenerator(length);
         randomValueStringGenerator.setRandom(new Random());
         return randomValueStringGenerator.generate();
@@ -91,7 +132,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUserWithActivationCode(User user) {
-        user.setAuthority(ROLE_USER);
+        user.setRole(ROLE_ADMIN);
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

@@ -48,6 +48,7 @@ public class SecurityServiceImpl implements SecurityService{
         User targetUser = userService.findUserById(user.getId());
         if (targetUser != null){
             targetUser.setPassword(temporaryPassword);
+            targetUser.setResetPasswordToken(null);
             userService.save(targetUser);
         }
     }

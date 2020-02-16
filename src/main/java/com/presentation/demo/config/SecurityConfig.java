@@ -13,6 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_ADMIN;
+import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_USER;
+
 @Configuration
 //@EnableOAuth2Client
 
@@ -87,10 +90,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         "/registration","/about","/index","/","allusers",
-                        "/login", "/static/**", "/src/**", "/styles/**","/css/**","/js/**,/activate/*,/password/reset/*,/password/change/*")
+                        "/login", "/static/**", "/src/**", "/styles/**","/css/**","/js/**","/activate/*,/password/reset/*,/password/change/*")
                 .permitAll()
                 .antMatchers("/admin/**")
-                .access("hasAnyAuthority('ROLE_ADMIN.getAuthority()')")
+                .hasAnyAuthority(ROLE_ADMIN.getAuthority())
+                .antMatchers("/userpage/**")
+                .hasAnyAuthority(ROLE_USER.getAuthority())
                 .and()
                 .formLogin()
                 .loginPage("/login")

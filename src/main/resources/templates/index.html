@@ -27,14 +27,24 @@
                         <div class="loop" th:each="namesLinks : ${namesLinksList}">
                             <li class="nav-item active">
                                 <a class="nav-link" th:href="${namesLinks.getValue()}">
-                                    <span> [[${namesLinks.getKey()}]] </span>
+                                    <span class="nav-link-text"> [[${namesLinks.getKey()}]] </span>
                                 </a>
                             </li>
                         </div>
                     </ul>
-                    <a class="user" href="/userpage" th:if="${userName != null}">
-                        Welcome, [[${userName}]]!
-                    </a>
+
+                    <div class="user-info" th:if="${username != null}">
+                        <a class="user-welcome-wrapper" th:href="@{${userpageLink}}">
+                            <span  class="nav-link-text user">
+                                Welcome, [[${username}]]!
+                            </span>
+                        </a>
+                        <a class="icon-wrapper">
+                            <a href="/logout">
+                                <img src="images/logout.png" alt="" width="15" height="15" style="">
+                            </a>
+                        </a>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -80,19 +90,20 @@
             <div class="container-colored loaded-block">
                 <div class="news-container news-block">
                     <div class="e-title e-title--h1">
-                        <a>We suggest:</a>                    </div>
+                        <a>We suggest:</a>
+                    </div>
                     <div class="news-block__wrap">
-                        <div class="news-block__item news-block__item--one-third" id="news-block-item-1">
+                        <div class="news-block__item news-block__item--one-third">
                             <a href="/login"></a>
                             <div class="b-block-description">Individual approach </div>
                             <div class="title-news">We offer clients huge amount of offerings which our experts are thoroughly developing every day</div>
                         </div>
-                        <div class="news-block__item news-block__item--one-third" id="news-block-item-2">
+                        <div class="news-block__item news-block__item--one-third">
                             <a href="/about"></a>
                             <div class="b-block-description">High reliability</div>
                             <div class="title-news">By providing specific transactional secure system we are capable of solving any issues financial management</div>
                         </div>
-                        <div class="news-block__item news-block__item--one-third" id="news-block-item-3">
+                        <div class="news-block__item news-block__item--one-third">
                             <a href="/telegrambot/"></a>
                             <div class="b-block-description">Quality reference</div>
                             <div class="title-news">Our staff and informational system are

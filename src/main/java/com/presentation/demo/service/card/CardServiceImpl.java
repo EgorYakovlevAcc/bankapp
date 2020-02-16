@@ -19,6 +19,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public void save(Card card) { cardRepository.save(card); }
 
+    @Transactional
     @Override
     public void delete(Card card) { cardRepository.delete(card); }
 

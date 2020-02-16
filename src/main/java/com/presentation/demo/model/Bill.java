@@ -1,6 +1,7 @@
 package com.presentation.demo.model;
 
 import com.presentation.demo.model.card.Card;
+import com.presentation.demo.model.transaction.Transaction;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -26,10 +27,16 @@ public class Bill {
 
     private Date lastTransaction;
 
-    @OneToMany(mappedBy = "targetBill", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sender",cascade = CascadeType.ALL)
+    private List<Transaction> sentTransactionList;
+
+    @OneToMany(mappedBy = "recipient",cascade = CascadeType.ALL)
+    private List<Transaction> receivedTransactionList;
+
+    @OneToMany(mappedBy = "targetBill",cascade = CascadeType.ALL)
     private List<DateBalanceHistory> balanceHistory;
 
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bill",cascade = CascadeType.ALL)
     private List<Card> cards;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -94,6 +101,31 @@ public class Bill {
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
+    }
+
+
+    public List<Transaction> getSentTransactionList() {
+        return sentTransactionList;
+    }
+
+    public void setSentTransactionList(List<Transaction> sentTransactionList) {
+        this.sentTransactionList = sentTransactionList;
+    }
+
+    public List<Transaction> getReceivedTransactionList() {
+        return receivedTransactionList;
+    }
+
+    public void setReceivedTransactionList(List<Transaction> receivedTransactionList) {
+        this.receivedTransactionList = receivedTransactionList;
+    }
+
+    public List<DateBalanceHistory> getBalanceHistory() {
+        return balanceHistory;
+    }
+
+    public void setBalanceHistory(List<DateBalanceHistory> balanceHistory) {
+        this.balanceHistory = balanceHistory;
     }
 
     public User getHolder() {

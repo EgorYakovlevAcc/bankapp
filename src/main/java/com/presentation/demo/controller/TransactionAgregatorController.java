@@ -1,6 +1,6 @@
 package com.presentation.demo.controller;
 
-import com.presentation.demo.constants.Params;
+import com.presentation.demo.constants.Properties;
 import com.presentation.demo.model.Bill;
 import com.presentation.demo.model.transaction.Transaction;
 import com.presentation.demo.model.transaction.TransactionType;
@@ -31,7 +31,7 @@ public class TransactionAgregatorController {
     public String executeTransaction(@RequestParam("id") Integer id) {
         Transaction transaction = transactionAgregatorService.findTransactionById(id);
         long diff = transaction.getDate().getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
-        if (diff >= Params.TEN_DAYS_SEC) {
+        if (diff >= Properties.TEN_DAYS_SEC) {
             transaction.setCanceled(true);
             transactionAgregatorService.save(transaction);
             return "Time for transaction is over";

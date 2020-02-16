@@ -4,8 +4,6 @@ import com.presentation.demo.constants.enums.AUTHORITIES;
 import com.presentation.demo.model.card.Card;
 import com.presentation.demo.service.validation.email.Email;
 import com.presentation.demo.service.validation.phonenumber.PhoneNumber;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,8 +32,7 @@ public class User implements UserDetails {
     private String email;
 
     @PhoneNumber(message = "Wrong telephone number format!")
-    @OneToOne(cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "mobile_phone_number_id")
     private MobilePhoneNumber mobilePhoneNumber;
 
@@ -43,16 +40,17 @@ public class User implements UserDetails {
 
     private String  passwordConfirmation;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
+    @JoinColumn(name = "token_id")
     private ResetPasswordToken resetPasswordToken;
 
     @Column(name = "role")
-    private String authority;
+    private String role;
 
-    @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cardHolder",cascade = CascadeType.ALL)
     private List<Card> cards;
 
-    @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "holder",cascade = CascadeType.ALL)
     private List<Bill> bills;
 
     private String activationCode;
@@ -61,8 +59,8 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username,String email, MobilePhoneNumber mobilePhoneNumber, String password, String passwordConfirmation,
-                List<Bill> bills, List<Card> cards, String authority, String activationCode) {
+    public User(String username, String email, MobilePhoneNumber mobilePhoneNumber, String password, String passwordConfirmation,
+                List<Bill> bills, List<Card> cards, String role, String activationCode) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -70,7 +68,7 @@ public class User implements UserDetails {
         this.bills = bills;
         this.cards = cards;
         this.mobilePhoneNumber = mobilePhoneNumber;
-        this.authority = authority;
+        this.role = role;
         this.activationCode = activationCode;
     }
 
@@ -134,8 +132,20 @@ public class User implements UserDetails {
         this.bills = bills;
     }
 
-    public void setAuthority(AUTHORITIES newAuthority){
-        authority = newAuthority.getAuthority();
+    public ResetPasswordToken getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(ResetPasswordToken resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
+
+    public void setRole(AUTHORITIES newAuthority){
+        role = newAuthority.getAuthority();
+    }
+
+    public String getRole(){
+        return role;
     }
 
     public String getActivationCode() {
@@ -149,7 +159,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(authority));
+        grantedAuthorities.add(new SimpleGrantedAuthority(role));
         return grantedAuthorities;
     }
 

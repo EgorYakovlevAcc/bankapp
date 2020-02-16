@@ -22,7 +22,7 @@ public class ProductOffering {
     @Column(name = "cash_percentage")
     private Double cashbackPercentage;
 
-    @OneToMany(mappedBy = "productOffering", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productOffering",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Card> cards;
 
 

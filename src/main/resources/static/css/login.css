@@ -1,4 +1,15 @@
 @import "common.css";
+
+
+#forget-password{
+    color: #d47a1a;
+
+}
+
+#forget-password:hover{
+    color: #d4aa24;
+}
+
 .confirm{
     background-color: #0046d5;
     color: #fdfdff;

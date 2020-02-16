@@ -2,6 +2,8 @@ package com.presentation.demo.model.transaction;
 
 import com.presentation.demo.model.Bill;
 import com.presentation.demo.model.card.Card;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -23,13 +25,19 @@ public class Transaction {
 
     private TransactionType transactionType;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "card_id", nullable = false)
     private Card senderCard;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "sender_bill_id", nullable = false)
     private Bill sender;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "recipient_bill_id", nullable = false)
     private Bill recipient;
 
     private int sum;
@@ -84,9 +92,18 @@ public class Transaction {
         isCompleted = completed;
     }
 
+    public Card getSenderCard() {
+        return senderCard;
+    }
+
+    public void setSenderCard(Card senderCard) {
+        this.senderCard = senderCard;
+    }
+
     public Bill getSender() {
         return sender;
     }
+
 
     public void setSender(Bill sender) {
         this.sender = sender;

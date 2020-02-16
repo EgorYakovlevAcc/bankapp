@@ -1,10 +1,10 @@
 .body-container, #header, #footer {
     font-family: Verdana, Arial, sans-serif;
-    font-size: 14px;
     background-clip: border-box;
 }
 
 .body-container{
+    font-size: 14px;
     padding-left: 1rem;
     padding-top: 1rem;
     background-color: #e4fff1;
@@ -26,6 +26,26 @@ body{
 
 #logout {
     padding-left: 60px;
+}
+
+a{
+    color: rgba(0,0,0,.9)!important;
+}
+
+a:hover{
+    text-decoration: none !important;
+}
+
+.nav-link-text{
+    font-size: 1rem;
+}
+
+.nav-link-text:hover{
+    color: #e4fff1;
+}
+.nav-link-text.user{
+    font-style: italic;
+    font-weight: bold;
 }
 
 .container {

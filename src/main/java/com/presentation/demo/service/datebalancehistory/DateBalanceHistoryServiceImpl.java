@@ -40,6 +40,7 @@ public class DateBalanceHistoryServiceImpl implements DateBalanceHistoryService 
         dateBalanceHistoryRepository.save(dateBalanceHistory);
     }
 
+    @Transactional
     @Override
     public void delete(DateBalanceHistory dateBalanceHistory) {
         dateBalanceHistoryRepository.delete(dateBalanceHistory);
