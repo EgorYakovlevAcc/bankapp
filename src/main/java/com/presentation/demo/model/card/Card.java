@@ -17,7 +17,7 @@ import java.util.Date;
 public abstract class Card {
 
     @Id
-    @Column(name = "id")
+//    @Column(name = "card_id") MUST BE DELETED!!!!!!!!!!!!
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -126,4 +126,7 @@ public abstract class Card {
     public void setProductOffering(ProductOffering productOffering) {
         this.productOffering = productOffering;
     }
+
+    public String getHiddenNum(){ return cardNum.substring(0, 4) + "****" + cardNum.substring(cardNum.length() - 4, cardNum.length()); }
+
 }

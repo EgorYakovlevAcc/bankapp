@@ -1,8 +1,8 @@
 package com.presentation.demo.service.card;
 
 import com.presentation.demo.model.Bill;
-import com.presentation.demo.model.User;
 import com.presentation.demo.model.card.Card;
+import com.presentation.demo.model.User;
 import com.presentation.demo.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,9 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card findCardById(Integer id) { return cardRepository.findCardById(id); }
+
+    @Override
+    public Card findCardByCardNum(String cardNum) { return cardRepository.findCardByCardNum(cardNum); }
 
     @Override
     @Transactional

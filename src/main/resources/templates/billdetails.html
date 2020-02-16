@@ -1,25 +1,102 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="ru">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Account</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/billdetails.css}"/>
-    <link href="https://bootswatch.com/4/superhero/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<meta charset="UTF-8"/>
+	<title>Account</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link href="https://bootswatch.com/4/superhero/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/billdetails.css}"/>
 </head>
 
 <body>
+<div id="modals">
+	<div class="modal fade" id="exampleModalTransfer" data-card_id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Transfer money</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="recipient-card" class="col-form-label">Recipient card number:</label>
+							<input type="text" class="form-control" id="recipient-card">
+						</div>
+						<div class="form-group">
+							<label for="transfer-amount" class="col-form-label">Amount</label>
+							<input class="form-control" id="transfer-amount"></input>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button id="transfer-button"  type="button" onclick="transfer(this);" class="btn btn-primary">Transfer</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="exampleModalGetCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabelQRGet">Get cash amount</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="money-amount-get" class="col-form-label">Amount money:</label>
+							<input type="text" class="form-control" id="money-amount-get">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" onclick="getqr(this);" class="btn btn-primary">Generate QR</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="exampleModalPutCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabelQRPut">Put cash amount</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="money-amount-put" class="col-form-label">Amount money:</label>
+							<input type="text" class="form-control" id="money-amount-put">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" onclick="putqr(this);" class="btn btn-primary">Generate QR</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div th:insert="common :: header (First = 'About',Second = null,Third = 'Log Out')"></div>
 
 <!--todo:separate buttons for users-->
 <div class='main'>
-    <div class="container">
-        <div class="row">
-            <div class="col-auto"></div>
-            <div class="col">
-                <label id="card-block"></label>
+	<div class="container">
+		<div class="row">
+			<div class="col-auto"></div>
+			<div class="col">
+				<label id="card-block"></label>
 				<div id="cards" class="bills-menu">
 					<div class="title">My cards</div>
 					<table class="table">
@@ -34,45 +111,133 @@
 						<tbody>
 						<tr  th:each="card : ${cards}">
 							<td colspan="2" class="cells">
-								<a class="table-hrefs" th:href="'http://me.org:8080/billdetails/' + ${card.getId()}" th:text="'Card number: ' + ${card.getHiddenNum()}"></a>
+								<a class="table-hrefs" th:text="'Card number: ' + ${card.getHiddenNum()}"></a>
 							</td>
 							<td class="cells" th:text="${card.getBalance()}"></td>
 							<td class="cells">
 								<a class="table-hrefs" th:href="'http://me.org:8080/deletecard/' + ${card.getId()}">Delete this card</a>
 							</td>
-							<td width="200" class="cells">
-								<ul class="drop-menu" style="position:relative; z-index:1000; list-style-type: none">
-									<li class="hide_show">
-										<span>Choose the action</span>
-										<ul class="drop-ul">
-											<li class="drop-li">Transfer</li>
-											<li class="drop-li">QR code to get a cash</li>
-											<li class="drop-li">QR code to put a cash</li>
-											<li class="drop-li">Delete the card</li>
-										</ul>
-									</li>
-								</ul>
+							<td width="200" class="cells" th:attr="data-card_num=${card.getHiddenNum()}">
+								<div th:attr="data-card_id=${card.getId()}" id="dropdown-button" class="dropdown show">
+									<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Choose the action
+									</a>
+
+									<div id="dropdown-id" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+										<a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalTransfer" data-whatever="@mdo">•  Transfer</a>
+										<a class="dropdown-item" th:href="'http://me.org:8080/getqrcode?id=' + ${bill.getId()} + '&type=put_cash&amount=500'" data-toggle="modal" data-target="#exampleModalGetCash" data-whatever="@mdo">•  QR code to get a cash</a>
+										<a class="dropdown-item" th:href="'http://me.org:8080/getqrcode?id=' + ${bill.getId()} + '&type=get_cash&amount=500'" data-toggle="modal" data-target="#exampleModalPutCash" data-whatever="@mdo">•  QR code to put a cash</a>
+										<a class="dropdown-item" th:href="'http://me.org:8080/deletecard/' + ${card.getId()}">•  Delete the card</a>
+									</div>
+								</div>
 							</td>
 						</tr>
 						</tbody>
 					</table>
+
+
 					<p>
 						<input type="button" value="Create a new card" class="create-card btn btn-secondary my-2 my-sm-0"
-						th:onclick="'window.location=\'http://me.org:8080/createcard/' + ${bill.getId()} + '\''"></input>
+							   th:onclick="'window.location=\'http://me.org:8080/createcard?id=' + ${bill.getId()} + '&product_offering_id=1 \''"></input>
 					</p>
 				</div>
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 
-    <div th:insert="common :: footer"></div>
-<!--    <div class="footer">-->
-<!--        All rights reserved &copy; 2020-->
-<!--    </div>-->
+	<div th:insert="common :: footer"></div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+	function transfer(button) {
+		var card_id = button.parentElement.parentElement.parentElement.parentElement.dataset.card_id;
+		console.log(card_id);
+		/*<![CDATA[*/
+		var bill_id = /*[[${bill.getId()}]]*/'default';
+		/*]]>*/
+		var url = 'http://me.org:8080/createtransaction/transfer?id=' + card_id +
+						'&cardNumber=' + $("#recipient-card").val() +
+				'&amount=' + $("#transfer-amount").val() + '&bill=' + bill_id;
+		window.location = url;
+	}
+</script>
+
+<script th:inline="javascript">
+	function getqr(button) {
+		var card_id = button.parentElement.parentElement.parentElement.parentElement.dataset.card_id;
+		console.log(card_id);
+		var url = 'http://me.org:8080/getqrcode?id=' + card_id +
+				'&type=get_cash' +
+				'&amount=' + $("#money-amount-get").val();
+		window.open(url);
+		/*<![CDATA[*/
+		var bill_id = /*[[${bill.getId()}]]*/'default';
+		/*]]>*/
+		var href = 'http://me.org:8080/billdetails/' + bill_id;
+		window.location = href;
+
+	}
+</script>
+
+<script th:inline="javascript">
+	function putqr(button) {
+		var card_id = button.parentElement.parentElement.parentElement.parentElement.dataset.card_id;
+		console.log(card_id);
+		var url = 'http://me.org:8080/getqrcode?id=' + card_id +
+				'&type=put_cash' +
+				'&amount=' + $("#money-amount-put").val();
+		window.open(url);
+		/*<![CDATA[*/
+		var bill_id = /*[[${bill.getId()}]]*/'default';
+		/*]]>*/
+		var href = 'http://me.org:8080/billdetails/' + bill_id;
+		window.location = href;
+
+	}
+</script>
+
+<script th:inline="javascript">
+	$('#exampleModalTransfer').on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget); // Button that triggered the modal
+		var modal = $(this);
+		var card_id = button.parent().parent().data('card_id');
+		$(this).attr('data-card_id', card_id);
+		// $("#recipient-card").val(button.parent().parent().data('card_id'));
+		// var card_num = button.parent().parent().parent().data('card_num');
+		// var url = 'http://me.org:8080/createtransaction/transfer?id=' + card_num +
+		// 		'&cardNumber=' + $("#recipient-card").val() +
+		// 		'&amount=' + $("#transfer-amount").val();
+		// window.location.href = url;
+	})
+</script>
+<script th:inline="javascript">
+	$('#exampleModalGetCash').on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget); // Button that triggered the modal
+		var recipient = button.data('whatever'); // Extract info from data-* attributes
+		// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		var modal = $(this);
+		var card_id = button.parent().parent().data('card_id');
+		$(this).attr('data-card_id', card_id);
+
+	})
+</script>
+<script th:inline="javascript">
+	$('#exampleModalPutCash').on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget); // Button that triggered the modal
+		var recipient = button.data('whatever'); // Extract info from data-* attributes
+		// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		var modal = $(this);
+		var card_id = button.parent().parent().data('card_id');
+		$(this).attr('data-card_id', card_id);
+	})
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
 
 </body>
 </html>

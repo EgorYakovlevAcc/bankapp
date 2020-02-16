@@ -2,8 +2,6 @@ package com.presentation.demo.model.transaction;
 
 import com.presentation.demo.model.Bill;
 import com.presentation.demo.model.card.Card;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -25,25 +23,19 @@ public class Transaction {
 
     private TransactionType transactionType;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "card_id", nullable = false)
+    @OneToOne
     private Card senderCard;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "sender_bill_id", nullable = false)
-    private Bill sender;
+    @OneToOne
+    private Card sender;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "recipient_bill_id", nullable = false)
-    private Bill recipient;
+    @OneToOne
+    private Card recipient;
 
     private int sum;
 
     public Transaction(Calendar date, TransactionType transactionType, boolean isCanceled,
-                       boolean isCompleted, Bill sender, Bill recipient, int sum) {
+                       boolean isCompleted, Card sender, Card recipient, int sum) {
         this.isCanceled = isCanceled;
         this.isCompleted = isCompleted;
         this.sender = sender;
@@ -92,28 +84,19 @@ public class Transaction {
         isCompleted = completed;
     }
 
-    public Card getSenderCard() {
-        return senderCard;
-    }
-
-    public void setSenderCard(Card senderCard) {
-        this.senderCard = senderCard;
-    }
-
-    public Bill getSender() {
+    public Card getSender() {
         return sender;
     }
 
-
-    public void setSender(Bill sender) {
+    public void setSender(Card sender) {
         this.sender = sender;
     }
 
-    public Bill getRecipient() {
+    public Card getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(Bill recipient) {
+    public void setRecipient(Card recipient) {
         this.recipient = recipient;
     }
 

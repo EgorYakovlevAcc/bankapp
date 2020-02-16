@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>QR code</title>
+</head>
+<body>
+<div th:insert="common :: header(First = 'About',Second = null,Third = 'Log Out')"></div>
+<div class="image-place">
+    <img th:src="@{images/qrcode.jpg}" alt=""/>
+</div>
+<!--<img src="/images/qrcode.jpg"/>-->
+<div th:insert="common :: footer"></div>
+</body>
+</html>

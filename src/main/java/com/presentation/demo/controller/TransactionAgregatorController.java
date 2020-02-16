@@ -2,9 +2,11 @@ package com.presentation.demo.controller;
 
 import com.presentation.demo.constants.Properties;
 import com.presentation.demo.model.Bill;
+import com.presentation.demo.model.card.Card;
 import com.presentation.demo.model.transaction.Transaction;
 import com.presentation.demo.model.transaction.TransactionType;
 import com.presentation.demo.service.bill.BillService;
+import com.presentation.demo.service.card.CardService;
 import com.presentation.demo.service.transactionagregator.TransactionAgregatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,9 @@ public class TransactionAgregatorController {
     private BillService billService;
 
     @Autowired
+    private CardService cardService;
+
+    @Autowired
     private TransactionAgregatorService transactionAgregatorService;
 
     @GetMapping("/execute")
@@ -37,26 +42,26 @@ public class TransactionAgregatorController {
             return "Time for transaction is over";
         }
         if (transaction.getTransactionType() == TransactionType.TRANSFER) {
-            Bill sender = transaction.getSender();
-            Bill recipient = transaction.getRecipient();
+            Card sender = transaction.getSender();
+            Card recipient = transaction.getRecipient();
             sender.setBalance(sender.getBalance().subtract(BigDecimal.valueOf(transaction.getSum())));
             recipient.setBalance(recipient.getBalance().add(BigDecimal.valueOf(transaction.getSum())));
-            billService.save(sender);
-            billService.save(recipient);
+            cardService.save(sender);
+            cardService.save(recipient);
             transaction.setCompleted(true);
             transactionAgregatorService.save(transaction);
         }
         else if (transaction.getTransactionType() == TransactionType.GET_CASH) {
-            Bill sender = transaction.getSender();
+            Card sender = transaction.getSender();
             sender.setBalance(sender.getBalance().subtract(BigDecimal.valueOf(transaction.getSum())));
-            billService.save(sender);
+            cardService.save(sender);
             transaction.setCompleted(true);
             transactionAgregatorService.save(transaction);
         }
         else {
-            Bill sender = transaction.getSender();
+            Card sender = transaction.getSender();
             sender.setBalance(sender.getBalance().add(BigDecimal.valueOf(transaction.getSum())));
-            billService.save(sender);
+            cardService.save(sender);
             transaction.setCompleted(true);
             transactionAgregatorService.save(transaction);
         }

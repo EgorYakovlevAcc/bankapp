@@ -1,53 +1,24 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+ <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
     <head>
         <title>Index</title>
         <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     <body>
 
-        <div id="header">
-            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2980b9;">
+        <div id="select-nav-bar">
+            <a th:if="${userName != null}">
+                <div th:insert="common :: header (First = 'About',Second = 'Userpage',Third = 'Log Out')"></div>
+            </a>
+            <a th:if="${userName == null}">
+                <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
+            </a>
 
-                <div class="nav-logo-wrapper">
-                    <a class="navbar-logo" href="/index">
-                        <img src="/images/logo.png" height="48" alt="">
-                    </a>
-                </div>
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mr-auto">
-                        <div class="loop" th:each="namesLinks : ${namesLinksList}">
-                            <li class="nav-item active">
-                                <a class="nav-link" th:href="${namesLinks.getValue()}">
-                                    <span class="nav-link-text"> [[${namesLinks.getKey()}]] </span>
-                                </a>
-                            </li>
-                        </div>
-                    </ul>
-
-                    <div class="user-info" th:if="${username != null}">
-                        <a class="user-welcome-wrapper" th:href="@{${userpageLink}}">
-                            <span  class="nav-link-text user">
-                                Welcome, [[${username}]]!
-                            </span>
-                        </a>
-                        <a class="icon-wrapper">
-                            <a href="/logout">
-                                <img src="images/logout.png" alt="" width="15" height="15" style="">
-                            </a>
-                        </a>
-                    </div>
-                </div>
-            </nav>
         </div>
+<!--        <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>-->
 
         <div class="wrapper">
             <div class="slider" style="background-image:url(/images/background.png)"></div>
@@ -78,53 +49,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-image">
-                        <img src="/images/bank_image.jpeg" alt=""/>
-                        <div class="semi-centered">
-                            <a href="/registration" class="btn btn-5">Start cooperation with us!</a>
-                        </div>
-                    </div>
                 </div>
             </div>
-
-            <div class="container-colored loaded-block">
-                <div class="news-container news-block">
-                    <div class="e-title e-title--h1">
-                        <a>We suggest:</a>
-                    </div>
-                    <div class="news-block__wrap">
-                        <div class="news-block__item news-block__item--one-third">
-                            <a href="/login"></a>
-                            <div class="b-block-description">Individual approach </div>
-                            <div class="title-news">We offer clients huge amount of offerings which our experts are thoroughly developing every day</div>
-                        </div>
-                        <div class="news-block__item news-block__item--one-third">
-                            <a href="/about"></a>
-                            <div class="b-block-description">High reliability</div>
-                            <div class="title-news">By providing specific transactional secure system we are capable of solving any issues financial management</div>
-                        </div>
-                        <div class="news-block__item news-block__item--one-third">
-                            <a href="/telegrambot/"></a>
-                            <div class="b-block-description">Quality reference</div>
-                            <div class="title-news">Our staff and informational system are
-                                always ready to help and consult you on the provision of services in our bank </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <div id="footer">
-            <div class="footer-inner">
-                <p style="margin-top: 1rem; margin-left: 1rem;">
-                    Using of materials is permitted with written application to copyrighter only.
-                </p>
-                <p style="color: crimson; margin-top: 1rem; margin-left: 1rem; margin-bottom: 1rem">
-                    All rights reserved &copy; 2019 - 2020
-                </p>
-            </div>
-        </div>
+        <div th:insert="common :: footer"></div>
+<!--        <div id="footer">-->
+<!--            <div class="footer-inner">-->
+<!--                Using of materials is permitted with written application to copyrighter only.-->
+<!--                <p style="color: crimson; margin-top: 1rem; margin-bottom: 0">-->
+<!--                    All rights reserved &copy; 2019 - 2020-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
     </body>
 </html>
 

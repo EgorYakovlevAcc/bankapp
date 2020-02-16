@@ -13,4 +13,5 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
     Bill findBillById(Integer id);
     List<Bill> findBillsByLastTransaction(Date lastTransaction);
     List<Bill> findBillByHolder(User holder);
+    Bill findBillByNumber(String number);
 }
