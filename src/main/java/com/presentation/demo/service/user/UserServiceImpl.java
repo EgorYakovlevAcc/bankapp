@@ -6,6 +6,8 @@ import com.presentation.demo.model.User;
 import com.presentation.demo.repository.MobilePhoneNumberRepository;
 import com.presentation.demo.repository.UserRepository;
 import com.presentation.demo.service.mail.MailSendingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -16,17 +18,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import static com.presentation.demo.constants.Properties.*;
-import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_ADMIN;
+import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_USER;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final String CHANGE_PASSWORD_FORM_PATH =  "templates/changePassword";
+
+    private static final Logger USER_SERVICE_LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    private static final String CHANGE_PASSWORD_FORM_PATH =  "templates/changePassword";
 
     @Value("${spring.security.admin.name}")
     private String adminName;
@@ -109,6 +116,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+
+    private String getIp(){
+        try{
+            return InetAddress.getLocalHost().toString();
+        }
+        catch (UnknownHostException unkExc){
+            USER_SERVICE_LOGGER.info(unkExc.getMessage());
+        }
+        return null;
+    }
+
     @Override
     @Async("asyncExecutor")
     @Scheduled(fixedDelay = ADMIN_PASSWORD_UPDATE_FREQUENCY_MILLISECONDS,initialDelay = ADMIN_PASSWORD_UPDATE_FREQUENCY_MILLISECONDS)
@@ -132,13 +150,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUserWithActivationCode(User user) {
-        user.setRole(ROLE_ADMIN);
+        user.setRole(ROLE_USER);
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
 
         String activationMessage = String.format(" Hello, %s! \n\n " +
-                        "Welcome to NCBank! To activate your account please visit: http://localhost:"+ serverPort + "/activate/%s. " +
+                        "Welcome to NCBank! To activate your account please visit: " + getIp() + serverPort + "/activate/%s. " +
                         "Activation allows you to change account's password if you have forgotten it. \n\n " +
                         "Regards, NCBank team.",
                 user.getUsername(),user.getActivationCode());
@@ -162,7 +180,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void processUserPasswordReset(String targetUserToken, User targetUser) {
-        String link = String.format("http://localhost:"+ serverPort + "/password/change%s","?user_id=" + targetUser.getId() + "&reset_token=" + targetUserToken);
+        String link = String.format(getIp() + serverPort + "/password/change%s","?user_id=" + targetUser.getId() + "&reset_token=" + targetUserToken);
         String resetMessage = String.format(" Hello, %s! \n\n " +
                         "Welcome to NCBank! To reset your account password visit: %s. " +
                         "This link would be available for " + RESET_TOKEN_VALIDITY_HOURS + " hours so if you did't make a request ignore it. \n\n " +

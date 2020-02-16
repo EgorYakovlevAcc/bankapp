@@ -115,7 +115,7 @@
 							</td>
 							<td class="cells" th:text="${card.getBalance()}"></td>
 							<td class="cells">
-								<a class="table-hrefs" th:href="'http://me.org:8080/deletecard/' + ${card.getId()}">Delete this card</a>
+								<a class="table-hrefs" th:href="'/deletecard/' + ${card.getId()}">Delete this card</a>
 							</td>
 							<td width="200" class="cells" th:attr="data-card_num=${card.getHiddenNum()}">
 								<div th:attr="data-card_id=${card.getId()}" id="dropdown-button" class="dropdown show">
@@ -125,9 +125,9 @@
 
 									<div id="dropdown-id" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 										<a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalTransfer" data-whatever="@mdo">•  Transfer</a>
-										<a class="dropdown-item" th:href="'http://me.org:8080/getqrcode?id=' + ${bill.getId()} + '&type=put_cash&amount=500'" data-toggle="modal" data-target="#exampleModalGetCash" data-whatever="@mdo">•  QR code to get a cash</a>
-										<a class="dropdown-item" th:href="'http://me.org:8080/getqrcode?id=' + ${bill.getId()} + '&type=get_cash&amount=500'" data-toggle="modal" data-target="#exampleModalPutCash" data-whatever="@mdo">•  QR code to put a cash</a>
-										<a class="dropdown-item" th:href="'http://me.org:8080/deletecard/' + ${card.getId()}">•  Delete the card</a>
+										<a class="dropdown-item" th:href="'/getqrcode?id=' + ${bill.getId()} + '&type=put_cash&amount=500'" data-toggle="modal" data-target="#exampleModalGetCash" data-whatever="@mdo">•  QR code to get a cash</a>
+										<a class="dropdown-item" th:href="'/getqrcode?id=' + ${bill.getId()} + '&type=get_cash&amount=500'" data-toggle="modal" data-target="#exampleModalPutCash" data-whatever="@mdo">•  QR code to put a cash</a>
+										<a class="dropdown-item" th:href="'/deletecard/' + ${card.getId()}">•  Delete the card</a>
 									</div>
 								</div>
 							</td>
@@ -138,7 +138,7 @@
 
 					<p>
 						<input type="button" value="Create a new card" class="create-card btn btn-secondary my-2 my-sm-0"
-							   th:onclick="'window.location=\'http://me.org:8080/createcard?id=' + ${bill.getId()} + '&product_offering_id=1 \''"></input>
+							   th:onclick="'window.location=\'/createcard?id=' + ${bill.getId()} + '&product_offering_id=1 \''"></input>
 					</p>
 				</div>
 			</div>
@@ -155,7 +155,7 @@
 		/*<![CDATA[*/
 		var bill_id = /*[[${bill.getId()}]]*/'default';
 		/*]]>*/
-		var url = 'http://me.org:8080/createtransaction/transfer?id=' + card_id +
+		var url = '/createtransaction/transfer?id=' + card_id +
 						'&cardNumber=' + $("#recipient-card").val() +
 				'&amount=' + $("#transfer-amount").val() + '&bill=' + bill_id;
 		window.location = url;
@@ -166,14 +166,14 @@
 	function getqr(button) {
 		var card_id = button.parentElement.parentElement.parentElement.parentElement.dataset.card_id;
 		console.log(card_id);
-		var url = 'http://me.org:8080/getqrcode?id=' + card_id +
+		var url = '/getqrcode?id=' + card_id +
 				'&type=get_cash' +
 				'&amount=' + $("#money-amount-get").val();
 		window.open(url);
 		/*<![CDATA[*/
 		var bill_id = /*[[${bill.getId()}]]*/'default';
 		/*]]>*/
-		var href = 'http://me.org:8080/billdetails/' + bill_id;
+		var href = '/billdetails/' + bill_id;
 		window.location = href;
 
 	}
@@ -183,14 +183,14 @@
 	function putqr(button) {
 		var card_id = button.parentElement.parentElement.parentElement.parentElement.dataset.card_id;
 		console.log(card_id);
-		var url = 'http://me.org:8080/getqrcode?id=' + card_id +
+		var url = '/getqrcode?id=' + card_id +
 				'&type=put_cash' +
 				'&amount=' + $("#money-amount-put").val();
 		window.open(url);
 		/*<![CDATA[*/
 		var bill_id = /*[[${bill.getId()}]]*/'default';
 		/*]]>*/
-		var href = 'http://me.org:8080/billdetails/' + bill_id;
+		var href = '/billdetails/' + bill_id;
 		window.location = href;
 
 	}
@@ -204,7 +204,7 @@
 		$(this).attr('data-card_id', card_id);
 		// $("#recipient-card").val(button.parent().parent().data('card_id'));
 		// var card_num = button.parent().parent().parent().data('card_num');
-		// var url = 'http://me.org:8080/createtransaction/transfer?id=' + card_num +
+		// var url = '/createtransaction/transfer?id=' + card_num +
 		// 		'&cardNumber=' + $("#recipient-card").val() +
 		// 		'&amount=' + $("#transfer-amount").val();
 		// window.location.href = url;

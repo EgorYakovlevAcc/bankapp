@@ -4,6 +4,7 @@ import com.presentation.demo.model.MobilePhoneNumber;
 import com.presentation.demo.model.ResetPasswordToken;
 import com.presentation.demo.model.User;
 
+import java.net.InetAddress;
 import java.util.List;
 
 public interface UserService {

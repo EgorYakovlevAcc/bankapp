@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import static com.presentation.demo.constants.Properties.RANDOM_PASSWORD_LENGTH;
 import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_ADMIN;
 
@@ -74,5 +77,9 @@ public class InitObjects implements CommandLineRunner {
 
             onStartLogger.info("Admin found." + admin.getUsername());
         }
+    }
+
+    public InetAddress getIp() throws UnknownHostException {
+        return InetAddress.getLocalHost();
     }
 }
