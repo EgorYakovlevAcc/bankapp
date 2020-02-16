@@ -88,15 +88,15 @@
         </dependency>
 
         <dependency>
-            <groupId>com.facebook.android</groupId>
-            <artifactId>facebook-android-sdk</artifactId>
-            <version>6.0.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.4.0</version>
         </dependency>
 
         <dependency>

@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 
-import javax.validation.constraints.Pattern;
-
 @Configuration
 @ConfigurationProperties(value = "telegram.bot")
 public class TelegramBotConfig {
