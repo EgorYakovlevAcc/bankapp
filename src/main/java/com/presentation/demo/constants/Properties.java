@@ -1,7 +1,5 @@
 package com.presentation.demo.constants;
 
-import java.net.InetAddress;
-
 public final class Properties {
 
     public static final int RANDOM_PASSWORD_LENGTH = 30;

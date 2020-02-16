@@ -6,7 +6,6 @@ import com.presentation.demo.model.card.Card;
 import com.presentation.demo.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
