@@ -71,7 +71,11 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.5</version>
         </dependency>
-        <!--extra-->
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots</artifactId>
+            <version>3.5</version>
+        </dependency>
     </dependencies>
 
 
