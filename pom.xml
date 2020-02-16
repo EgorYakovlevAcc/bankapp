@@ -90,6 +90,7 @@
         <dependency>
             <groupId>com.facebook.android</groupId>
             <artifactId>facebook-android-sdk</artifactId>
+            <version>4.31.0</version>
         </dependency>
 
         <dependency>
