@@ -11,7 +11,7 @@
         <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="/index">NetCracker Bank</a>
+            <a class="navbar-brand" href="/index">NCBestBank</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -25,36 +25,38 @@
                     </li>
                     <li class="nav-item active" th:switch="${First}"  >
                         <a th:case="'Sign In'" class="nav-link"  href="/login">
-                            <span th:text="${First}"></span>
+                            <span class="span-text-navbar" th:text="${First}"></span>
                         </a>
                         <a th:case="About" class="nav-link" href="/about">
-                            <span th:text="${First}"></span>
+                            <span class="span-text-navbar" th:text="${First}"></span>
                         </a>
                         <a th:case="null" class="nav-link disabled" tabindex="-1" aria-disabled="true">
-                            <span th:text="${First}"></span>
+                            <span class="span-text-navbar" th:text="${First}"></span>
                         </a>
                     </li>
 
                     <li class="nav-item" th:if="${Second == null}">
-                        <a class="nav-link disabled nav-bar-second" href="/registration" tabindex="-1" aria-disabled="true">
-                            <span th:text="${Second}"></span>
+                        <a class="nav-link disabled " href="/registration" tabindex="-1" aria-disabled="true">
+                            <span class="span-text-navbar" th:text="${Second}"></span>
                         </a>
                     </li>
 
                     <li class="nav-item active" th:if="${Second == 'Sign Up'}">
-                        <a class="nav-link nav-bar-second" href="/registration"> <span th:text="${Second}"></span> </a>
+                        <a class="nav-link " href="/registration"> <span class="span-text-navbar" th:text="${Second}"></span> </a>
                     </li>
                     <li class="nav-item active" th:if="${Second == 'Userpage'}">
-                        <a class="nav-link nav-bar-second" href="/userpage"> <span th:text="${Second}"></span> </a>
+                        <a class="nav-link " href="/userpage">
+                            <span class="span-text-navbar" th:text="${Second}"></span> </a>
                     </li>
-
 
 
                     <li class="nav-item active" th:if="${Third == 'About'}">
-                        <a class="nav-link" href="/about"> <span th:text="${Third}"></span> </a>
+                        <a class="nav-link " href="/about"> <span class="span-text-navbar" th:text="${Third}"></span> </a>
                     </li>
                     <li class="nav-item" th:if="${Third == 'Log Out'}">
-                        <a id="logout" class="nav-link" th:text="Logout" href="/logout"></a>
+                        <a id="logout" class="nav-link" href="/logout">
+                            <img src="images/logout.png" alt="" width="23" height="23" style="">
+                        </a>
                     </li>
                 </ul>
             </div>

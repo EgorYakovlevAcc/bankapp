@@ -9,88 +9,88 @@
 </head>
 
 <body>
-<div id="modals">
-	<div class="modal fade" id="exampleModalTransfer" data-card_id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Transfer money</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+	<div id="modals">
+		<div class="modal fade" id="exampleModalTransfer" data-card_id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Transfer money</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label for="recipient-card" class="col-form-label">Recipient card number:</label>
+								<input type="text" class="form-control" id="recipient-card">
+							</div>
+							<div class="form-group">
+								<label for="transfer-amount" class="col-form-label">Amount</label>
+								<input class="form-control" id="transfer-amount"></input>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button id="transfer-button"  type="button" onclick="transfer(this);" class="btn btn-primary">Transfer</button>
+					</div>
 				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="recipient-card" class="col-form-label">Recipient card number:</label>
-							<input type="text" class="form-control" id="recipient-card">
-						</div>
-						<div class="form-group">
-							<label for="transfer-amount" class="col-form-label">Amount</label>
-							<input class="form-control" id="transfer-amount"></input>
-						</div>
-					</form>
+			</div>
+		</div>
+
+		<div class="modal fade" id="exampleModalGetCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabelQRGet">Get cash amount</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label for="money-amount-get" class="col-form-label">Amount money:</label>
+								<input type="text" class="form-control" id="money-amount-get">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" onclick="getqr(this);" class="btn btn-primary">Generate QR</button>
+					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button id="transfer-button"  type="button" onclick="transfer(this);" class="btn btn-primary">Transfer</button>
+			</div>
+		</div>
+		<div class="modal fade" id="exampleModalPutCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabelQRPut">Put cash amount</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label for="money-amount-put" class="col-form-label">Amount money:</label>
+								<input type="text" class="form-control" id="money-amount-put">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" onclick="putqr(this);" class="btn btn-primary">Generate QR</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="exampleModalGetCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabelQRGet">Get cash amount</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="money-amount-get" class="col-form-label">Amount money:</label>
-							<input type="text" class="form-control" id="money-amount-get">
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" onclick="getqr(this);" class="btn btn-primary">Generate QR</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="exampleModalPutCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabelQRPut">Put cash amount</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="money-amount-put" class="col-form-label">Amount money:</label>
-							<input type="text" class="form-control" id="money-amount-put">
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" onclick="putqr(this);" class="btn btn-primary">Generate QR</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
 <div th:insert="common :: header (First = 'About',Second = null,Third = 'Log Out')"></div>
 
-<!--todo:separate buttons for users-->
 <div class='main'>
 	<div class="container">
 		<div class="row">

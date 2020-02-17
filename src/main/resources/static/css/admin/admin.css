@@ -1,22 +1,7 @@
 @import "/css/common.css";
-
-.user-info{
-    display: block;
-}
-
-.icon-wrapper{
-    margin-left: 0.5rem;
-}
+@import "/css/navbar.css";
 
 .navbar-collapse{
     position: relative;
     margin-left: 2rem;
-}
-
-.user-info{
-    font-weight: bold;
-    font-style: italic;
-}
-.user-info:hover{
-    text-decoration: none;
 }

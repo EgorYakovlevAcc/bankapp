@@ -12,42 +12,29 @@
     <body>
 
         <div id="header">
-            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2980b9;">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <a class="navbar-brand" href="/index">NCBestBank</a>
 
-                <div class="nav-logo-wrapper">
-                    <a class="navbar-logo" href="/index">
-                        <img src="/images/logo.png" height="48" alt="">
-                    </a>
-                </div>
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav">
                         <div class="loop" th:each="namesLinks : ${namesLinksList}">
                             <li class="nav-item active">
                                 <a class="nav-link" th:href="${namesLinks.getValue()}">
-                                    <span class="nav-link-text"> [[${namesLinks.getKey()}]] </span>
+                                    <span class="span-text-navbar"> [[${namesLinks.getKey()}]] </span>
                                 </a>
                             </li>
                         </div>
-                    </ul>
 
-                    <div class="user-info">
-                        <a class="user-welcome-wrapper" href="/admin/">
-                                <span class="nav-link-text">
-                                    [[${user.getUsername()}]]
-                                </span>
-                        </a>
-                        <a class="icon-wrapper">
-                            <a href="/logout">
-                                <img src="/images/logout.png" alt="" width="15" height="15">
+                        <li class="nav-item" th:if="${user != null}">
+                            <a id="logout" class="nav-link" href="/logout">
+                                <img src="images/logout.png" alt="" width="23" height="23" style="">
                             </a>
-                        </a>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
             </nav>
         </div>
@@ -56,7 +43,7 @@
             <div th:if="${nonAdmins.isEmpty() != true}">
 
                 <p class="title">
-                    Users
+                    Registered users.
                 </p>
 
                 <div class="table-container">
@@ -67,6 +54,7 @@
                                 <th scope="col">Username</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Mobile Phone</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,20 +64,35 @@
                                 <td>[[${user.getEmail()}]]</td>
                                 <td>[[${user.getMobilePhoneNumber().getMobilePhoneNumberValue()}]]</td>
                             </tr>
+                            <tr th:each="admin : ${admins}">
+                                <th scope="row">[[${admin.getId()}]]</th>
+                                <td>[[${admin.getUsername()}]]</td>
+                                <td>[[${admin.getEmail()}]]</td>
+                                <td>[[${admin.getMobilePhoneNumber().getMobilePhoneNumberValue()}]]</td>
+                            </tr>
                         </tbody>
                     </table>
+
+                    <input type="button" value="Create a new bill" th:onclick="'window.location=\'/createbill/' + ${user.getId()} + ' \''">
+
                 </div>
             </div>
 
             <div th:if="${nonAdmins.isEmpty() == true}">
                 <p class="title no-users-message">
-                    No users are existing.
+                    No users are currently registered.
                 </p>
+            </div>
 
-            <p style="color: crimson">
-                All rights reserved &copy; 2019
-            </p>
-
+            <div th:if="${nonAdmins.isEmpty() != true}">
+                <div th:if="${admins.isEmpty() != true}"
+                    <p class="title no-users-message">
+                        No users are currently registered.
+                    </p>
+            </div>
         </div>
+
+        <div th:insert="common :: footer"></div>
+
     </body>
 </html>

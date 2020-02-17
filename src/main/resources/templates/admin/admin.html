@@ -2,50 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
     <head>
         <title>Admin page</title>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/admin/admin.css}">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/admin/admin.css}">
     </head>
     <body>
 
         <div id="header">
-            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2980b9;">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <a class="navbar-brand" href="/index">NCBestBank</a>
 
-                <div class="nav-logo-wrapper">
-                    <a class="navbar-logo" href="/index">
-                        <img src="/images/logo.png" height="48" alt="">
-                    </a>
-                </div>
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav">
                         <div class="loop" th:each="namesLinks : ${namesLinksList}">
                             <li class="nav-item active">
                                 <a class="nav-link" th:href="${namesLinks.getValue()}">
-                                    <span class="nav-link-text"> [[${namesLinks.getKey()}]] </span>
+                                    <span class="span-text-navbar"> [[${namesLinks.getKey()}]] </span>
                                 </a>
                             </li>
                         </div>
-                    </ul>
 
-                    <div class="user-info">
-                        <a class="user-welcome-wrapper" href="/admin/">
-                            <span class="nav-link-text">
-                                [[${user.getUsername()}]]
-                            </span>
-                        </a>
-                        <a class="icon-wrapper">
-                            <a href="/logout">
-                                <img src="/images/logout.png" alt="" width="15" height="15">
+                        <li class="nav-item" th:if="${user != null}">
+                            <a id="logout" class="nav-link" href="/logout">
+                                <img src="images/logout.png" alt="" width="23" height="23" style="">
                             </a>
-                        </a>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
             </nav>
         </div>
@@ -53,5 +40,7 @@
         <div class="body-container">
 
         </div>
+
+        <div th:insert="common :: footer"></div>
     </body>
 </html>

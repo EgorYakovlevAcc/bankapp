@@ -27,11 +27,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import static com.presentation.demo.constants.Properties.DEFAULT_TEMPORARY_PASSWORD_FOR_RESET;
-import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_USER;
 
 @Controller
 public class UserController {
@@ -61,26 +59,6 @@ public class UserController {
     private CardService cardService;
 
     private Logger USER_CONTROLLER_LOGGER = LoggerFactory.getLogger(UserController.class);
-
-    @GetMapping("/createuser")
-    @ResponseBody
-    public String createUser(){
-        User user = new User();
-        Random rand = new Random();
-        user.setEmail("a@a"+ Math.abs(rand.nextInt()) +".com");
-        user.setUsername("A" + Math.abs(rand.nextInt()));
-        user.setPassword("123");
-        user.setPasswordConfirmation("123");
-        user.setRole(ROLE_USER);
-        userService.save(user);
-        return user.getId().toString();
-    }
-
-    @GetMapping("/allusers")
-    public String getAllUsers(Model model){
-        model.addAttribute("users",userService.findAll());
-        return "allusers";
-    }
 
     @GetMapping(value = {"/userpage"})
     public String getUserPage(@AuthenticationPrincipal User principal, Model model) {

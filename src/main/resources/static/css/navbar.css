@@ -17,3 +17,11 @@
     right: 8px;
     font-size: 1.2rem;
 }
+
+.span-text-navbar:hover{
+    text-shadow: 0 0 5px #ffffff;
+}
+
+.span-text-navbar-logout{
+    text-shadow: 0 0 5px #080319;
+}

@@ -87,7 +87,12 @@ public class MainController {
 
         List<MapEntryImpl<String,String>> namesLinksList = new LinkedList<>();
         if (isAuthenticated){
-            namesLinksList.add(new MapEntryImpl<String,String>("Userpage","/userpage"));
+            if (user.getRole().equals(ROLE_ADMIN.getAuthority())){
+                namesLinksList.add(new MapEntryImpl<String,String>("Userpage","/admin"));
+            }
+            else{
+                namesLinksList.add(new MapEntryImpl<String,String>("Userpage","/userpage"));
+            }
             namesLinksList.add(new MapEntryImpl<String,String>("Home","/index"));
             namesLinksList.add(new MapEntryImpl<String,String>("Sign up","/registration"));
         }
@@ -97,7 +102,6 @@ public class MainController {
             namesLinksList.add(new MapEntryImpl<String,String>("Sign in","/login"));
         }
         namesLinksList.add(new MapEntryImpl<String,String>("About","/about"));
-
 
         List<String> countryAbbrevations = new LinkedList<String>();
         countryAbbrevations.add("USD");

@@ -1,24 +1,42 @@
- <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
     <head>
         <title>Index</title>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
-        <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <link href="https://bootswatch.com/4/superhero/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
+
     </head>
     <body>
 
-        <div id="select-nav-bar">
-            <a th:if="${userName != null}">
-                <div th:insert="common :: header (First = 'About',Second = 'Userpage',Third = 'Log Out')"></div>
-            </a>
-            <a th:if="${userName == null}">
-                <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
-            </a>
+        <div id="header">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <a class="navbar-brand" href="/index">NCBestBank</a>
 
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <div class="loop" th:each="namesLinks : ${namesLinksList}">
+                                <li class="nav-item active">
+                                    <a class="nav-link" th:href="${namesLinks.getValue()}">
+                                        <span class="span-text-navbar"> [[${namesLinks.getKey()}]] </span>
+                                    </a>
+                                </li>
+                            </div>
+
+                            <li class="nav-item" th:if="${username != null}">
+                                <a id="logout" class="nav-link" href="/logout">
+                                    <img src="images/logout.png" alt="" width="23" height="23" style="">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
         </div>
-<!--        <div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>-->
 
         <div class="wrapper">
             <div class="slider" style="background-image:url(/images/background.png)"></div>
@@ -49,19 +67,44 @@
                             </div>
                         </div>
                     </div>
+                    <div class="text-image">
+                        <img src="/images/bank_image.jpeg" alt=""/>
+                        <div class="semi-centered">
+                            <a href="/registration" class="btn btn-5">Start cooperation with us!</a>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="container-colored loaded-block">
+                <div class="news-container news-block">
+                    <div class="e-title e-title--h1">
+                        <a>We suggest:</a>
+                    </div>
+                    <div class="news-block__wrap">
+                        <div class="news-block__item news-block__item--one-third">
+                            <a href="/login"></a>
+                            <div class="b-block-description">Individual approach </div>
+                            <div class="title-news">We offer clients huge amount of offerings which our experts are thoroughly developing every day</div>
+                        </div>
+                        <div class="news-block__item news-block__item--one-third">
+                            <a href="/registration"></a>
+                            <div class="b-block-description">High reliability</div>
+                            <div class="title-news">By providing specific transactional secure system we are capable of solving any issues financial management</div>
+                        </div>
+                        <div class="news-block__item news-block__item--one-third">
+                            <a href="/about"></a>
+                            <div class="b-block-description">Quality reference</div>
+                            <div class="title-news">Our staff and informational system are
+                                always ready to help and consult you on the provision of services in our bank </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div th:insert="common :: footer"></div>
-<!--        <div id="footer">-->
-<!--            <div class="footer-inner">-->
-<!--                Using of materials is permitted with written application to copyrighter only.-->
-<!--                <p style="color: crimson; margin-top: 1rem; margin-bottom: 0">-->
-<!--                    All rights reserved &copy; 2019 - 2020-->
-<!--                </p>-->
-<!--            </div>-->
-<!--        </div>-->
     </body>
 </html>
 

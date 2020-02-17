@@ -1,24 +1,13 @@
 @import "/css/common.css";
-
-.user-info{
-    display: block;
-}
-
-.icon-wrapper{
-    margin-left: 0.5rem;
-}
+@import "/css/navbar.css";
 
 .navbar-collapse{
     position: relative;
     margin-left: 2rem;
 }
 
-.user-info{
-    font-weight: bold;
-    font-style: italic;
-}
-.user-info:hover{
-    text-decoration: none;
+.table-hrefs {
+    color: #495057 !important;
 }
 
 .title{
@@ -31,8 +20,8 @@
 }
 
 .table .thead-dark th{
-    background-color: #ff9a16 !important;
-    border-color: #ff9a16 !important;
+    background-color: rgb(213, 222, 215) !important;
+    border-color: rgb(213, 222, 215) !important;
 }
 
 .body-container{

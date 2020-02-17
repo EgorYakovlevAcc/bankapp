@@ -1,4 +1,9 @@
 @import "common.css";
+@import "navbar.css";
+
+.body-container{
+    color: #080319 !important;
+}
 
 #index-signin {
     border: 8px;
@@ -8,23 +13,6 @@
 .navbar-collapse{
     position: relative;
     margin-left: 2rem;
-}
-
-.user-info{
-    display: block;
-}
-
-.icon-wrapper{
-    margin-left: 0.5rem;
-}
-
-
-.user-info{
-    font-weight: bold;
-    font-style: italic;
-}
-.user-info:hover{
-    text-decoration: none;
 }
 
 .slider {
@@ -233,7 +221,7 @@ h2 {
 }
 
 .e-title a {
-    color: #03031c;
+    color: #ffffff;
     text-shadow: 4px 4px 4px #03031c;
 }
 
