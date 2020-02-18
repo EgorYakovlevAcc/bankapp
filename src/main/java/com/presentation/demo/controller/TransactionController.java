@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-//todo: bind transaction to card, not only to bill
-
 @Controller
 public class TransactionController {
 

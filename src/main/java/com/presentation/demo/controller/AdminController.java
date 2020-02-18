@@ -16,10 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.LinkedList;
@@ -145,9 +142,10 @@ public class AdminController {
 
     }
 
-//    @GetMapping("/deleteuser/{id}")
-//    public String createBill(@PathVariable("id") Integer id) {
-//        userService.de
-//    }
+    @GetMapping("/deleteuser/{id}")
+    public String deleteUser(@PathVariable("id") Integer id) {
+        userService.delete(userService.findUserById(id));
+        return "redirect:/admin/users";
+    }
 
 }

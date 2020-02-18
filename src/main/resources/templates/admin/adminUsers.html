@@ -1,98 +1,154 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Users</title>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/admin/adminUsers.css}"/>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    </head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://bootswatch.com/4/superhero/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/adminUsers.css}"/>
+</head>
 
-    <body>
+<body>
 
-        <div id="header">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                <a class="navbar-brand" href="/index">NCBestBank</a>
 
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <div class="loop" th:each="namesLinks : ${namesLinksList}">
-                            <li class="nav-item active">
-                                <a class="nav-link" th:href="${namesLinks.getValue()}">
-                                    <span class="span-text-navbar"> [[${namesLinks.getKey()}]] </span>
-                                </a>
-                            </li>
-                        </div>
-
-                        <li class="nav-item" th:if="${user != null}">
-                            <a id="logout" class="nav-link" href="/logout">
-                                <img src="images/logout.png" alt="" width="23" height="23" style="">
-                            </a>
-                        </li>
-                    </ul>
+<div id="modals">
+    <div class="modal fade" id="exampleModalTransfer" data-card_id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Transfer money</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </nav>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-card" class="col-form-label">Recipient card number:</label>
+                            <input type="text" class="form-control" id="recipient-card">
+                        </div>
+                        <div class="form-group">
+                            <label for="transfer-amount" class="col-form-label">Amount</label>
+                            <input class="form-control" id="transfer-amount"></input>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="transfer-button"  type="button" onclick="transfer(this);" class="btn btn-primary">Transfer</button>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <div class='body-container'>
-            <div th:if="${nonAdmins.isEmpty() != true}">
+    <div class="modal fade" id="exampleModalGetCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelQRGet">Get cash amount</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="money-amount-get" class="col-form-label">Amount money:</label>
+                            <input type="text" class="form-control" id="money-amount-get">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="getqr(this);" class="btn btn-primary">Generate QR</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <p class="title">
-                    Registered users.
-                </p>
+    <div class="modal fade" id="exampleModalPutCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelQRPut">Put cash amount</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="money-amount-put" class="col-form-label">Amount money:</label>
+                            <input type="text" class="form-control" id="money-amount-put">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="putqr(this);" class="btn btn-primary">Generate QR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <div class="table-container">
-                    <table class="table table-bordered">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Mobile Phone</th>
-                                <th scope="col">Actions</th>
-                            </tr>
+<div th:insert="common :: header (First = 'About',Second = null,Third = 'Log Out')"></div>
+
+<div class='main'>
+    <div class="container">
+        <div class="row">
+            <div class="col-auto"></div>
+            <div class="col">
+                <label id="card-block"></label>
+                <div id="cards" class="bills-menu">
+                    <div class="title">Application users</div>
+                    <table class="table">
+                        <thead class="thead-light">
+                        <tr>
+                            <th colspan="2" class="head-left table-header"> Id </th>
+                            <th class="head-inner table-header"> Username </th>
+                            <th class="head-inner table-header"> Email </th>
+                            <th class="head-inner table-header"> Mobile Phone </th>
+                            <th colspan="6" class="head-right table-header"> Actions </th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="user : ${nonAdmins}">
-                                <th scope="row">[[${user.getId()}]]</th>
-                                <td>[[${user.getUsername()}]]</td>
-                                <td>[[${user.getEmail()}]]</td>
-                                <td>[[${user.getMobilePhoneNumber().getMobilePhoneNumberValue()}]]</td>
-                            </tr>
-                            <tr th:each="admin : ${admins}">
-                                <th scope="row">[[${admin.getId()}]]</th>
-                                <td>[[${admin.getUsername()}]]</td>
-                                <td>[[${admin.getEmail()}]]</td>
-                                <td>[[${admin.getMobilePhoneNumber().getMobilePhoneNumberValue()}]]</td>
-                            </tr>
+                        <tr  th:each="user : ${nonAdmins}">
+                            <td colspan="2" class="cells" th:text="${user.getId()}"></td>
+                            <td class="cells" th:text="${user.getUsername()}"></td>
+                            <td class="cells" th:text="${user.getEmail()}"></td>
+                            <td class="cells" th:text=" '+' + ${user.getMobilePhoneNumber().getMobilePhoneNumberValue()}"></td>
+
+
+                            <td width="200" class="cells" th:attr="data-card_num=${user.getId()}">
+                                <div th:attr="data-card_id=${user.getId()}" id="dropdown-button" class="dropdown show">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Choose the action
+                                    </a>
+
+                                    <div id="dropdown-id" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalTransfer" data-whatever="@mdo">•  Transfer</a>
+                                        <a class="dropdown-item" th:href="'/getqrcode?id=' + ${user.getId()} + '&type=put_cash&amount=500'" data-toggle="modal" data-target="#exampleModalGetCash" data-whatever="@mdo">•  QR code to get a cash</a>
+                                        <a class="dropdown-item" th:href="'/getqrcode?id=' + ${user.getId()} + '&type=get_cash&amount=500'" data-toggle="modal" data-target="#exampleModalPutCash" data-whatever="@mdo">•  QR code to put a cash</a>
+                                        <a class="dropdown-item" th:href="'/admin/deleteuser/' + ${user.getId()}">•  Delete user</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 
-                    <input type="button" value="Create a new bill" th:onclick="'window.location=\'/createbill/' + ${user.getId()} + ' \''">
 
+                    <p>
+                        <input type="button" value="Add user" class="create-card btn btn-secondary my-2 my-sm-0"
+                               th:onclick="'window.location=\'/registration'"></input>
+                    </p>
                 </div>
             </div>
-
-            <div th:if="${nonAdmins.isEmpty() == true}">
-                <p class="title no-users-message">
-                    No users are currently registered.
-                </p>
-            </div>
-
-            <div th:if="${nonAdmins.isEmpty() != true}">
-                <div th:if="${admins.isEmpty() != true}"
-                    <p class="title no-users-message">
-                        No users are currently registered.
-                    </p>
-            </div>
         </div>
+    </div>
 
-        <div th:insert="common :: footer"></div>
-
-    </body>
+    <div th:insert="common :: footer"></div>
+</div>
+</body>
 </html>

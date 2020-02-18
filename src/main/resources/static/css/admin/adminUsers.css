@@ -1,32 +1,208 @@
 @import "/css/common.css";
-@import "/css/navbar.css";
 
-.navbar-collapse{
-    position: relative;
-    margin-left: 2rem;
+.container{
+    position: static;
+    padding: .10em 2.5em;
+}
+.goto{
+    background-color: #0046d5;
+    color: #fdfdff;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 10px;
+    padding: .5em 1em;
+}
+
+.goto:hover,
+.goto:focus {
+    background: #0046d5;
+    box-shadow: 0 1px 2px rgba(0,0,0, .2) inset;
+}
+
+.btn-default {
+    background-color: #b00400;
+    color: #fdfdff;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 10px;
+    padding: .5em 1em;
+}
+.btn-default:hover,
+.btn-default:focus {
+    background: #b0232c;
+    color: #fdfdff;
+    box-shadow: 0 1px 2px rgba(0,0,0, .2) inset;
+}
+
+.btn-btn-info-btn-lg{
+    background-color: #ea0c5b;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 10px;
+    padding: .3em 3em;
+}
+
+.btn-btn-info-btn-lg:hover,
+.btn-btn-info-btn-lg:focus {
+    background: #ea0c5b;
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(0,0,0, .2) inset;
+}
+
+.logout{
+    background-color: #ca0074;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 10px;
+    padding: .3em 3em;
+}
+
+.bills-menu {
+    color: #0046d5;
+}
+
+
+#cards {
+    font-family: "Lato";
+}
+
+.title {
+    font-size: 30px;
+    color: #3b8289;
+    font-weight: bolder;
+    padding-left: 15px;
+    padding-top: 8%;
+    padding-bottom: 2%;
+    text-align: center;
+}
+
+#ul-cards {
+    font-size: 20px;
+}
+
+#username{
+    font-family: "Lato";
+    font-size: 30px;
+    color: #0007f4;
+}
+
+#card-block{
+    margin-left: 15%;
+}
+
+.hide_show ul{
+    display: none;   // скрываем все дочерние списки
+}
+.hide_show:hover ul{
+    display: block;   // скрываем все дочерние
+
+position:relative;
+    width:100%;
+    height:0px;
+    margin-top:0;
+}
+
+.thead-light {
+    font-size: large;
+    border-top: hidden;
+}
+
+.head-left {
+    border-top-left-radius: 20px;
+}
+
+.head-right {
+    border-top-right-radius: 20px;
+}
+
+.cells {
+    padding: 3px;
+    border: 1px solid rgb(171, 182, 194);
+    background-color: white;
+    color: #495057;
+    font-size: 15px;
+}
+
+.table {
+    border-collapse: collapse;
+    text-align: center;
+    padding: 1.75rem !important;
+}
+
+td {
+    padding: 1.75rem !important;
+}
+
+.table-header {
+    background-color: rgb(213, 222, 215) !important;
+}
+
+.head-inner {
+    border-left: 1px solid rgb(171, 182, 194) !important;
+    border-right: 1px solid rgb(171, 182, 194) !important;
 }
 
 .table-hrefs {
     color: #495057 !important;
 }
 
-.title{
-    margin-top: 2rem;
-    color: crimson !important;
-    font-size: 2rem !important;
-    font-family: Baufra, serif;
-    text-align: center;
-    margin-bottom: 0 !important;
+.drop-menu {
+    padding-left: 0;
 }
 
-.table .thead-dark th{
-    background-color: rgb(213, 222, 215) !important;
-    border-color: rgb(213, 222, 215) !important;
+.create-card {
+    border-radius: 16px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    padding-left: 2% !important;
+    padding-right: 2% !important;
+    border: none !important;
+    color: #495057 !important;
+    background-color: #fbb76b !important;
+    font-weight: bolder !important;
 }
 
-.body-container{
-    padding-right: 1rem;
+* {
+    margin: 0;
+    padding: 0;
 }
-.table-container{
-    padding: 1rem 2rem 2rem;
+
+.drop-ul {
+    list-style-type: none;
+}
+
+.drop-li {
+    background-color: white;
+}
+
+.dropdown-toggle {
+    background-color: #7f8d9a !important;
+    color: white !important;
+    width: 106% !important;
+    border-radius: 30px !important;
+    border: none !important;
+}
+
+.drop-menu.show {
+    background-color: #4e5d6c5c !important;
+    color: #495057 !important;
+    /*width: 107%;*/
+    /*border-radius: 30px;*/
+}
+
+#dropdown-id {
+    background-color: #c6d0d9f5 !important;
+    color: #495057 !important;
+    border-radius: 18px !important;
+    transform: translate3d(-7px, 36px, 0px) !important;
+}
+
+.dropdown-item {
+    color: rgb(73, 80, 87) !important;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(243, 243, 243, 0.94) !important;
 }

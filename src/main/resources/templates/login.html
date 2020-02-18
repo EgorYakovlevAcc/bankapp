@@ -18,7 +18,7 @@
                 <label id="lable">Sign In</label>
             </div>
 
-            <form th:if="${authenticatedName == null}" th:userDto="${user}" th:action="@{/login}" th:method="post">
+            <form th:userDto="${user}" th:action="@{/login}" th:method="post">
                 <input type="text" id="login" class="fadeIn second" name="login" placeholder="Login" required autofocus th:field="*{user.username}">
                 <input type="password" id="password" class="fadeIn third" name="login" placeholder="Password" required th:field="*{user.password}">
 <!--                 <button class="confirm"> Sign in</button>-->
