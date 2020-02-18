@@ -3,10 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <title>Users</title>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/admin/adminUsers.css}"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="https://bootswatch.com/4/superhero/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/admin/adminUsers.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/billdetails.css}"/>
     </head>
 
     <body>
@@ -59,25 +62,27 @@
                     Users
                 </p>
 
-                <div class="table-container">
-                    <table class="table table-bordered">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Mobile Phone</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="user : ${nonAdmins}">
-                                <th scope="row">[[${user.getId()}]]</th>
-                                <td>[[${user.getUsername()}]]</td>
-                                <td>[[${user.getEmail()}]]</td>
-                                <td>[[${user.getMobilePhoneNumber().getMobilePhoneNumberValue()}]]</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="container">
+                    <div class="col">
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col" class="head-left table-header">Id</th>
+                                    <th scope="col" class="head-inner table-header">Username</th>
+                                    <th scope="col" class="head-inner table-header">Email</th>
+                                    <th scope="col" class="head-right table-header">Mobile Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="user : ${nonAdmins}">
+                                    <th scope="row" class="cells">[[${user.getId()}]]</th>
+                                    <td class="cells">[[${user.getUsername()}]]</td>
+                                    <td class="cells">[[${user.getEmail()}]]</td>
+                                    <td class="cells">[[${user.getMobilePhoneNumber().getMobilePhoneNumberValue()}]]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 

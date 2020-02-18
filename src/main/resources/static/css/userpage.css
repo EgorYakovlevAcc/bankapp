@@ -115,7 +115,7 @@ td {
     border-right: 2px solid #56433D;
 }
 td:first-child {
-    border-left: 2px solid #56433D;
+    border-left: 1px solid rgb(171, 182, 194);
     border-right: none;
 }
 td:nth-child(2){
