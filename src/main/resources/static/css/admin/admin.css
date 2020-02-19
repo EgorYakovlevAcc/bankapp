@@ -1,6 +1,14 @@
 @import "/css/common.css";
 @import "/css/navbar.css";
 
+.btn{
+    border-radius: 10px 10px 10px 10px;
+}
+
+.btn{
+    font-size: 2rem;
+}
+
 .navbar-collapse{
     position: relative;
     margin-left: 2rem;

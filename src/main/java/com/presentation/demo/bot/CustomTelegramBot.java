@@ -73,6 +73,7 @@ public class CustomTelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         Message inputMessage = update.getMessage();
+        TELEGRAM_LOGGER.info("Here");
         if (Objects.nonNull(inputMessage) && !inputMessage.hasText()) {
             TELEGRAM_LOGGER.info("Get message: " + inputMessage + ". From: " + inputMessage.getAuthorSignature());
             Long chatId = inputMessage.getChatId();

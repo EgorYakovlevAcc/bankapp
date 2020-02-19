@@ -11,6 +11,7 @@ public interface CardService {
     void delete(Card card);
     Card findCardById(Integer id);
     Card findCardByCardNum(String cardNum);
+    List<Card> findAll();
     List<Card> findCardsByBill(Bill bill);
     List<Card> findCardsByCartHolder(User cartHolder);
 }

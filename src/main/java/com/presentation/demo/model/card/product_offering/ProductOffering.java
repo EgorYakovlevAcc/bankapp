@@ -15,6 +15,8 @@ public class ProductOffering {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String name;
+
     private Double limits;
 
     private Double percentage;
@@ -29,14 +31,24 @@ public class ProductOffering {
     public ProductOffering() {
     }
 
-    public ProductOffering(Double limits, Double percentage, Double cashbackPercentage) {
+    public ProductOffering(String name, Double limits, Double percentage, Double cashbackPercentage, List<Card> cards) {
+        this.name = name;
         this.limits = limits;
         this.percentage = percentage;
         this.cashbackPercentage = cashbackPercentage;
+        this.cards = cards;
     }
 
     public Integer getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Card> getCards() {
@@ -51,8 +63,8 @@ public class ProductOffering {
         return limits;
     }
 
-    public void setLimits(Double limit) {
-        this.limits = limit;
+    public void setLimits(Double limits) {
+        this.limits = limits;
     }
 
     public Double getPercentage() {

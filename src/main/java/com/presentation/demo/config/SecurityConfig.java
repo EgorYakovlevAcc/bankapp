@@ -90,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         "/registration","/about","/index","/","allusers",
-                        "/login", "/static/**", "/src/**", "/styles/**","/css/**","/js/**","/activate/*,/password/reset/*,/password/change/*")
+                        "/login", "/static/**", "/src/**", "/styles/**","/css/**","/js/**","/activate/*,/password/reset/**,/password/change/**")
                 .permitAll()
                 .antMatchers("/admin/**")
                 .hasAnyAuthority(ROLE_ADMIN.getAuthority())

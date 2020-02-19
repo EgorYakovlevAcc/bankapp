@@ -32,6 +32,21 @@ public class ProductOfferingServiceImpl implements ProductOfferingService {
     }
 
     @Override
+    public ProductOffering findProductOfferingsByName(String name) {
+        return productOfferingRepository.findProductOfferingByName(name);
+    }
+
+    @Override
+    public ProductOffering findProductOfferingByCashbackPercentageAndLimitsAndPercentage(Double cashback, Double limits, Double percentage) {
+        return productOfferingRepository.findProductOfferingByCashbackPercentageIsAndLimitsIsAndPercentageIs(cashback,limits,percentage);
+    }
+
+    @Override
+    public List<ProductOffering> findAll() {
+        return productOfferingRepository.findAll();
+    }
+
+    @Override
     public List<ProductOffering> findProductOfferingsByPercentage(Double percentage) {
         return productOfferingRepository.findProductOfferingsByPercentage(percentage);
     }

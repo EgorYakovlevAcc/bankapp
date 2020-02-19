@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger USER_SERVICE_LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    private static final String CHANGE_PASSWORD_FORM_PATH =  "templates/changePassword";
+    private static final String CHANGE_PASSWORD_FORM_PATH =  "templates/changePassword-dev";
 
     @Value("${spring.security.admin.name}")
     private String adminName;
@@ -154,12 +154,11 @@ public class UserServiceImpl implements UserService {
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        String activationMessage = String.format(" Hello, %s! \n\n " +
-                        "Welcome to NCBank! To activate your account please visit: %s:%s/activate/%s. " +
-                        "Activation allows you to change account's password if you have forgotten it. \n\n " +
-                        "Regards, NCBank team.",
-                user.getUsername(), getIp(), serverPort, user.getActivationCode());
-        mailSendingService.sendSimple(user.getEmail(),"Activation code.",activationMessage);
+        String link = String.format("http://%s:%s/activate/%s", getIp(), serverPort, user.getActivationCode());
+        String content = String.format("<p> %s, welcome to NCBank!</p> <p> To activate your account please visit: <a href=\"%s\"> Reset password</a>." +
+                "<p> \n\nActivation allows you to change account's password if you have forgotten it.</p> " +
+                "<p> \n\nRegards, NCBank team. </p>",user.getUsername(), link);
+        mailSendingService.sendMime(user.getEmail(),"Activate user.", content);
         userRepository.save(user);
     }
 
@@ -179,18 +178,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void processUserPasswordReset(String targetUserToken, User targetUser) {
-        String link = String.format("%s:%s/password/change%s", getIp(), serverPort, "?user_id=" + targetUser.getId() + "&reset_token=" + targetUserToken);
-        String resetMessage = String.format(" Hello, %s! \n\n " +
-                        "Welcome to NCBank! To reset your account password visit: %s. " +
-                        "This link would be available for " + RESET_TOKEN_VALIDITY_HOURS + " hours so if you did't make a request ignore it. \n\n " +
-                        "Regards, NCBank team.", targetUser.getUsername(), link);
-        mailSendingService.sendSimple(targetUser.getEmail(),"Password reset.", resetMessage);
-//        Doesn't work yet
-
-//        HashMap<String, Object> modelAttributes = new HashMap<>();
-//        modelAttributes.put("user_id", targetUser.getId());
-//        modelAttributes.put("reset_token",targetUserToken);
-//        modelAttributes.put("password",new StringWrapper());
-//        mailSendingService.sendMime(targetUser.getEmail(),"Password reset.", CHANGE_PASSWORD_FORM_PATH, modelAttributes);
+        String link = String.format("http://%s:%s/password/change%s", getIp(), serverPort, "?user_id=" + targetUser.getId() + "&reset_token=" + targetUserToken);
+        String content = String.format("<p> %s, welcome to NCBank!</p> <p> To reset your account password visit: <a href=\"%s\"> Reset password</a>." +
+                "<p> \n\nThis link would be available for " + RESET_TOKEN_VALIDITY_HOURS + " hours so if you did't make a request ignore it.</p>" +
+                "\n\n Regards, NCBank team. </p>",targetUser.getUsername(), link);
+        mailSendingService.sendMime(targetUser.getEmail(),"Password reset.", content);
     }
+
 }

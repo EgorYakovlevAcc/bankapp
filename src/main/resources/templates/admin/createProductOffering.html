@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create User Form</title>
+
+    <link rel="stylesheet" type="text/css" href="/css/registration.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+</head>
+<body>
+<div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div class="fadeIn first">
+            <label id="lable">Create offering</label>
+        </div>
+
+        <form th:object="${offering}" th:action="@{/admin/offerings/create}" method="post">
+            <input type="text" id="login" class="fadeIn second" placeholder="Name" required autofocus
+                   th:field="*{name}">
+            <span class="validation_message" th:if="${name != null}">
+                             [[${name}]]
+            </span>
+
+            <input type="text" id="inputPassword" class="fadeIn third" placeholder="Cashback Percentage" required
+                   th:field="*{cashbackPercentage}">
+
+            <input type="text" id="inputEmail" class="fadeIn third" placeholder="Limit" required
+                   th:field="*{limits}">
+
+            <input type="text" id="inputPhoneNumber" class="fadeIn third" placeholder="Percentage" required
+                   th:field="*{percentage}">
+
+            <input id="button-sub" type="submit" class="fadeIn fourth" value="Sign Up">
+
+        </form>
+    </div>
+</div>
+<div th:insert="common :: footer"></div>
+
+</body>
+</html>

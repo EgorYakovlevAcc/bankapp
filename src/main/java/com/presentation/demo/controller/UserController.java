@@ -8,7 +8,6 @@ import com.presentation.demo.pojo.StringWrapper;
 import com.presentation.demo.service.bill.BillService;
 import com.presentation.demo.service.card.CardService;
 import com.presentation.demo.service.datebalancehistory.DateBalanceHistoryService;
-import com.presentation.demo.service.mail.MailSendingService;
 import com.presentation.demo.service.reset_password_token.ResetPasswordTokenService;
 import com.presentation.demo.service.user.UserService;
 import com.presentation.demo.service.user.security.SecurityService;
@@ -45,9 +44,6 @@ public class UserController {
 
     @Autowired
     private ResetPasswordTokenService resetPasswordTokenService;
-
-    @Autowired
-    private MailSendingService mailSendingService;
 
     @Autowired
     private SecurityService securityService;

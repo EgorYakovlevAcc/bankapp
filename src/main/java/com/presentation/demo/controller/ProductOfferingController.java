@@ -17,6 +17,7 @@ public class ProductOfferingController {
     @ResponseBody
     public String createOffering() {
        ProductOffering productOffering = new ProductOffering();
+       productOffering.setName("Default");
        productOffering.setPercentage(50.0);
        productOffering.setLimits(100000.0);
        productOffering.setCashbackPercentage(1.5);

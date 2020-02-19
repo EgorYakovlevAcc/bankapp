@@ -17,7 +17,6 @@ import org.thymeleaf.context.Context;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
-import java.util.Map;
 
 @Service
 public class MailSendingService {
@@ -53,19 +52,42 @@ public class MailSendingService {
         }
     }
 
-    public void sendMime(String target, String title, String contentPath, Map<String,Object> modelAttributes) throws MailSendingException {
+//    public void sendMime(String target, String title, String contentPath, Map<String,Object> modelAttributes) throws MailSendingException {
+//        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+//        Context htmlThymeleafContext = new Context();
+//        htmlThymeleafContext.setVariables(modelAttributes);
+//        try{
+//            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
+//            mimeMessageHelper.setFrom(sender);
+//            mimeMessageHelper.setTo(target);
+//            mimeMessageHelper.setSubject(title);
+//            mimeMessageHelper.setSentDate(new Date());
+//
+//            String postTemplateResolveContent = htmlTemplateEngine.process(contentPath, htmlThymeleafContext);
+//            mimeMessageHelper.setText(postTemplateResolveContent,true);
+//
+//            javaMailSender.send(mimeMessage);
+//        }
+//        catch (MessagingException messExc){
+//            MAIL_SERVICE_LOGGER.info(messExc.getMessage());
+//        }
+//        catch (MailException mailExc){
+//            MAIL_SERVICE_LOGGER.info(mailExc.getMessage());
+//            throw new MailSendingException(target,mailExc.getMessage());
+//        }
+//    }
+
+    public void sendMime(String target, String title, String content) throws MailSendingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         Context htmlThymeleafContext = new Context();
-        htmlThymeleafContext.setVariables(modelAttributes);
         try{
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
             mimeMessageHelper.setFrom(sender);
             mimeMessageHelper.setTo(target);
             mimeMessageHelper.setSubject(title);
             mimeMessageHelper.setSentDate(new Date());
 
-            String postTemplateResolveContent = htmlTemplateEngine.process(contentPath, htmlThymeleafContext);
-            mimeMessageHelper.setText(postTemplateResolveContent,true);
+            mimeMessage.setContent(content,"text/html");
 
             javaMailSender.send(mimeMessage);
         }

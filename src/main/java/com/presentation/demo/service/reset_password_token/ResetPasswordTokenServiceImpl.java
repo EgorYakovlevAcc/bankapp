@@ -15,8 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.presentation.demo.constants.Properties.FIXED_DELAY_MILLISECONDS;
-import static com.presentation.demo.constants.Properties.INITIAL_DELAY_MILLISECONDS;
+import static com.presentation.demo.constants.Properties.*;
 
 @Service
 public class ResetPasswordTokenServiceImpl implements ResetPasswordTokenService {
@@ -87,7 +86,7 @@ public class ResetPasswordTokenServiceImpl implements ResetPasswordTokenService 
     public void createResetPasswordToken(String token, User user) {
         RESET_TOKEN_SERVICE_LOGGER.info("TOKEN: " + token);
         Calendar expireDate = Calendar.getInstance();
-        expireDate.add(Calendar.SECOND,5);
+        expireDate.add(Calendar.HOUR,RESET_TOKEN_VALIDITY_HOURS);
 
         ResetPasswordToken oldToken = user.getResetPasswordToken();
         if (oldToken == null){

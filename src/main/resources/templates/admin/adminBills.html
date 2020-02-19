@@ -1,10 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Bills</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/userpage.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/billdetails.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin/admin.css}">
+    <link href="https://bootswatch.com/4/superhero/bootstrap.min.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
+
+    <div id="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="/index">NCBestBank</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <div class="loop" th:each="namesLinks : ${namesLinksList}">
+                        <li class="nav-item active">
+                            <a class="nav-link" th:href="${namesLinks.getValue()}">
+                                <span class="span-text-navbar"> [[${namesLinks.getKey()}]] </span>
+                            </a>
+                        </li>
+                    </div>
+
+                    <li class="nav-item" th:if="${user != null}">
+                        <a id="logout" class="nav-link" href="/logout">
+                            <img src="/images/logout.png" alt="" width="23" height="23" style="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class='main'>
+        <div class="container">
+            <div class="row">
+                <div class="col-auto"></div>
+                <div class="col">
+                    <label id="card-block"></label>
+                    <div class="title">Bills</div>
+                    <table class="table">
+                        <thead class="thead-light">
+                        <tr>
+                            <th colspan="2" class="head-left table-header"> Bill number </th>
+                            <th class="head-inner table-header"> Balance </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="bill : ${bills}">
+                            <td colspan="2" class="cells" th:text="'Bill number: ' + ${bill.getNumber()}">
+                            <td class="cells" th:text="${bill.getBalance()}">
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        <div th:insert="common :: footer"></div>
+
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 </body>
 </html>
