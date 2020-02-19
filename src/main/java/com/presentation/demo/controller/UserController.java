@@ -71,6 +71,17 @@ public class UserController {
         return "userpage";
     }
 
+    @GetMapping("/billdetails/{billId}")
+    public String getBillsCards(@PathVariable("billId") int billId,
+                                @AuthenticationPrincipal User user,
+                                Model model){
+        Bill bill = billService.findBillById(billId);
+        List<Card> cards = bill.getCards();
+        model.addAttribute("cards", cards);
+        model.addAttribute("user", user);
+        model.addAttribute("bill", bill);
+        return "billdetails";
+    }
 
     @GetMapping(value = "/password/reset")
     public String getResetPasswordPage(Model model){
@@ -102,18 +113,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/billdetails/{billId}")
-    public String getBillsCards(@PathVariable("billId") int billId,
-                                @AuthenticationPrincipal User user,
-                                Model model){
-        Bill bill = billService.findBillById(billId);
-        List<Card> cards = bill.getCards();
-        model.addAttribute("cards", cards);
-        model.addAttribute("user", user);
-        model.addAttribute("bill", bill);
-        return "billdetails";
-    }
-
     @GetMapping(value = "/password/change")
     public String getChangePasswordPage(Model model, @RequestParam("user_id") Integer id, @RequestParam("reset_token") String token){
         ResetPasswordToken resetPasswordToken = resetPasswordTokenService.findResetPasswordTokenByToken(token);
@@ -135,6 +134,7 @@ public class UserController {
             securityService.resetUserPassword(user, DEFAULT_TEMPORARY_PASSWORD_FOR_RESET);
             securityService.autoLogin(user.getUsername(),DEFAULT_TEMPORARY_PASSWORD_FOR_RESET, user.getAuthorities());
             model.addAttribute("password", new StringWrapper());
+
             return "changePassword";
         }
     }

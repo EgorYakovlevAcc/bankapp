@@ -71,6 +71,7 @@ public class MainController {
         return "registration";
     }
 
+
     @GetMapping(value = {"/index","/"})
     public String getIndex(Model model, @AuthenticationPrincipal User user) {
         boolean isAuthenticated = Objects.nonNull(user);

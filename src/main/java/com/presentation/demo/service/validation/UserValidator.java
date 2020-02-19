@@ -49,13 +49,13 @@ public class UserValidator implements org.springframework.validation.Validator {
         }
 
         if (userService.findUserByEmail(user.getEmail()) != null){
-            errors.rejectValue("email","","This email is already been used!");
+            errors.rejectValue("email","","This email has already been used!");
         }
         else if (userService.findUserByUsername(user.getUsername()) != null){
             errors.rejectValue("username","","User with this username already exists!");
         }
         else if (mobilePhoneNumberService.findMobilePhoneNumberByMobilePhoneNumberValue(user.getMobilePhoneNumber().getMobilePhoneNumberValue()) != null){//one to one
-            errors.rejectValue("mobilePhoneNumber","","This phone number is already been used!");
+            errors.rejectValue("mobilePhoneNumber","","This phone number has already been used!");
         }
     }
 }

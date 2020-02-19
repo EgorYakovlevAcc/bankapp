@@ -1,4 +1,31 @@
 @import "/css/common.css";
+@import "/css/navbar.css";
+
+.notify{
+    position:absolute;
+    top:0px;
+    width:100%;
+    height:0;
+    box-sizing:border-box;
+    color:white;
+    text-align:center;
+    font-size: 1.25rem;
+    background:#7f8d9a;
+    overflow:hidden;
+    box-sizing:border-box;
+    transition:height .2s;
+}
+
+
+#notifyType:before{
+    display:block;
+    margin-top:15px;
+}
+
+
+.active{
+    height:2rem;
+}
 
 .container{
     position: static;

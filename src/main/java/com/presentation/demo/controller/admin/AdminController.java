@@ -1,6 +1,5 @@
-package com.presentation.demo.controller;
+package com.presentation.demo.controller.admin;
 
-import com.presentation.demo.model.MobilePhoneNumber;
 import com.presentation.demo.model.User;
 import com.presentation.demo.pojo.MapEntryImpl;
 import com.presentation.demo.service.bill.BillService;
@@ -14,16 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_ADMIN;
-import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_USER;
 
 @Controller
 @RequestMapping("/admin")
@@ -61,24 +55,6 @@ public class AdminController {
         return "admin/admin";
     }
 
-    @GetMapping("/users")
-    public String getAdminUsers(@AuthenticationPrincipal User user, Model model){
-        model.addAttribute("user", user);
-
-        List<MapEntryImpl<String,String>> namesLinksList = new LinkedList<>();
-        namesLinksList.add(new MapEntryImpl<String,String>("Admin","/admin/"));
-        namesLinksList.add(new MapEntryImpl<String, String>("Home","/index"));
-        namesLinksList.add(new MapEntryImpl<String,String>("About","/about"));
-        model.addAttribute("namesLinksList",namesLinksList);
-
-        List<User> nonAdminUsers = userService.findUsersByRoleEquals(ROLE_USER.getAuthority());
-        List<User> adminUsers = userService.findUsersByRoleEquals(ROLE_ADMIN.getAuthority());
-
-        model.addAttribute("admins",adminUsers);
-        model.addAttribute("nonAdmins",nonAdminUsers);
-
-        return "admin/adminUsers";
-    }
 
     @GetMapping("/bills")
     public String getAdminBills(@AuthenticationPrincipal User user, Model model){
@@ -107,45 +83,6 @@ public class AdminController {
         return "admin/adminCards";
     }
 
-    @GetMapping("/createuser/")
-    public String getCreateUser(Model model){
-        User newUser = new User();
-        newUser.setMobilePhoneNumber(new MobilePhoneNumber());
-        model.addAttribute("user", newUser);
-        return "createUserForm";//maybe simple registration
-    }
 
-    @PostMapping("/createuser")
-    public String postRegistration(@Valid @ModelAttribute("user") User user, BindingResult resultUser,
-                                   Model model){
-
-        MobilePhoneNumber userMobilePhoneNumber = user.getMobilePhoneNumber();
-        userValidator.validate(user,resultUser);
-
-        if (resultUser.hasFieldErrors()){
-            List<FieldError> validationErrors = resultUser.getFieldErrors();
-            for(FieldError validationError: validationErrors){
-                ADMIN_LOGGER.info("In field " + "\"" + validationError.getField() +  "\""  + " : " + validationError.getDefaultMessage());
-                model.addAttribute(validationError.getField(),validationError.getDefaultMessage());
-            }
-            return "registration";
-        }
-        else if (resultUser.hasGlobalErrors()){
-            ADMIN_LOGGER.info("Global errors!");
-            return "registration";
-        }
-        else{
-            userService.createUserWithActivationCode(user);
-            mobilePhoneNumberService.save(userMobilePhoneNumber);
-            return "redirect:/userpage";
-        }
-
-    }
-
-    @GetMapping("/deleteuser/{id}")
-    public String deleteUser(@PathVariable("id") Integer id) {
-        userService.delete(userService.findUserById(id));
-        return "redirect:/admin/users";
-    }
 
 }
