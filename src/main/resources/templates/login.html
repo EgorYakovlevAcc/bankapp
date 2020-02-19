@@ -20,9 +20,9 @@
 
             <form th:userDto="${user}" th:action="@{/login}" th:method="post">
                 <input type="text" id="login" class="fadeIn second" name="login" placeholder="Login" required autofocus th:field="*{user.username}">
-                <input type="password" id="password" class="fadeIn third" name="login" placeholder="Password" required th:field="*{user.password}">
+                <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" required th:field="*{user.password}">
 <!--                 <button class="confirm"> Sign in</button>-->
-                <input type="submit" class="fadeIn fourth" value="Log In">
+                <input id="button-sub" type="submit" class="fadeIn fourth" value="Log In">
             </form>
 
             <div id="formFooter">

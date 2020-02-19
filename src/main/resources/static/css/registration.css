@@ -15,3 +15,7 @@
 .validation_message{
     color: #ff342a;
 }
+
+#formFooter {
+    min-width: 300px;
+}
