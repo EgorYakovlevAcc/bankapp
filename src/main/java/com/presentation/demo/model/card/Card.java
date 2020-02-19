@@ -17,7 +17,6 @@ import java.util.Date;
 public abstract class Card {
 
     @Id
-    @Column(name = "card_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

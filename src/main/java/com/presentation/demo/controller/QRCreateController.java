@@ -7,6 +7,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.presentation.demo.model.card.Card;
 import com.presentation.demo.service.card.CardService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,8 @@ import java.util.Locale;
 @Controller
 public class QRCreateController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger("QRCreateController.class");
+
     @Autowired
     private CardService cardService;
 
@@ -43,6 +47,7 @@ public class QRCreateController {
                             Model model,
                             HttpServletResponse response) {
         Card card = cardService.findCardById(id);
+        LOGGER.debug(card.toString());
         if (card != null &&
                 ("PUT_CASH".equals(type.toUpperCase()) || ("" +
                         "GET_CASH").equals(type.toUpperCase()))) {
