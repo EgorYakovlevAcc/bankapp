@@ -11,7 +11,7 @@
 }
 
 body{
-    background-color: #e4fff1 !important;
+    background-color: #f1effc !important;
 }
 
 
@@ -26,7 +26,7 @@ body{
 
 .footer {
     text-align: right;
-    color: crimson;
+    color: #495057;
     padding-right: 1%;
 }
 
