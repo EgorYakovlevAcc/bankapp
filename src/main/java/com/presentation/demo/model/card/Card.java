@@ -128,5 +128,4 @@ public abstract class Card {
     }
 
     public String getHiddenNum(){ return cardNum.substring(0, 4) + "****" + cardNum.substring(cardNum.length() - 4, cardNum.length()); }
-
 }

@@ -135,4 +135,8 @@ public class Bill {
     public void setHolder(User holder) {
         this.holder = holder;
     }
+
+    public int cardsAmount() {
+        return cards.size();
+    }
 }

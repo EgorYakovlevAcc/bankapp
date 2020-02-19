@@ -54,7 +54,10 @@ public class CardController {
     @GetMapping("/deletecard/{id}")
     public String deleteCard(@PathVariable("id") Integer id) {
         Card card = cardService.findCardById(id);
+        Bill bill = card.getBill();
         Integer billId = card.getBill().getId();
+        if (card.getBalance().compareTo(BigDecimal.valueOf(0.0)) == 1)
+            return "redirect:/billdetails/" + billId;
         cardService.delete(card);
         return "redirect:/billdetails/" + billId;
     }
