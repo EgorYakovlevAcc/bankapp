@@ -71,6 +71,7 @@ public class MainController {
         return "registration";
     }
 
+
     @GetMapping(value = {"/index","/"})
     public String getIndex(Model model, @AuthenticationPrincipal User user) {
         boolean isAuthenticated = Objects.nonNull(user);
@@ -87,7 +88,12 @@ public class MainController {
 
         List<MapEntryImpl<String,String>> namesLinksList = new LinkedList<>();
         if (isAuthenticated){
-            namesLinksList.add(new MapEntryImpl<String,String>("Userpage","/userpage"));
+            if (user.getRole().equals(ROLE_ADMIN.getAuthority())){
+                namesLinksList.add(new MapEntryImpl<String,String>("Userpage","/admin"));
+            }
+            else{
+                namesLinksList.add(new MapEntryImpl<String,String>("Userpage","/userpage"));
+            }
             namesLinksList.add(new MapEntryImpl<String,String>("Home","/index"));
             namesLinksList.add(new MapEntryImpl<String,String>("Sign up","/registration"));
         }
@@ -97,7 +103,6 @@ public class MainController {
             namesLinksList.add(new MapEntryImpl<String,String>("Sign in","/login"));
         }
         namesLinksList.add(new MapEntryImpl<String,String>("About","/about"));
-
 
         List<String> countryAbbrevations = new LinkedList<String>();
         countryAbbrevations.add("USD");
@@ -163,8 +168,6 @@ public class MainController {
     @GetMapping("/login")
     public String getLogin(Model model, @AuthenticationPrincipal User authenticatedUser) {
         if (Objects.nonNull(authenticatedUser)) { return "redirect:/userpage"; }
-        String authenticatedName = Objects.nonNull(authenticatedUser) ? authenticatedUser.getUsername() : null;
-        model.addAttribute("authenticatedName",authenticatedName);
         model.addAttribute("user", new User());
         return "login";
     }
@@ -180,16 +183,8 @@ public class MainController {
         return "redirect:/userpage";
     }
 
-    @GetMapping("/deleteuser/{id}")
-    @ResponseBody
-    public String deleteUser(@PathVariable("id") Integer id) {
-        User user = userService.findUserById(id);
-        userService.delete(user);
-        return "Delete success!";
-    }
-
     @GetMapping("/activate/{code}")
-    public String activateAccount(@PathVariable String code, Model model){//todo:return from service - best practice?
+    public String activateAccount(@PathVariable String code, Model model){
         model.addAttribute("activation_message",userService.activateUser(code));
         return "activation";
     }

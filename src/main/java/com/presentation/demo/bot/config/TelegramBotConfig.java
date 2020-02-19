@@ -18,6 +18,12 @@ public class TelegramBotConfig {
 
     private String name;
 
+    private Boolean proxy;
+
+    private String proxyHost;
+
+    private String proxyPort;
+
     public String getToken() {
         return token;
     }
@@ -32,5 +38,29 @@ public class TelegramBotConfig {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getProxy() {
+        return proxy;
+    }
+
+    public void setProxy(Boolean proxy) {
+        this.proxy = proxy;
+    }
+
+    public String getProxyHost() {
+        return proxyHost;
+    }
+
+    public void setProxyHost(String proxyHost) {
+        this.proxyHost = proxyHost;
+    }
+
+    public String getProxyPort() {
+        return proxyPort;
+    }
+
+    public void setProxyPort(String proxyPort) {
+        this.proxyPort = proxyPort;
     }
 }

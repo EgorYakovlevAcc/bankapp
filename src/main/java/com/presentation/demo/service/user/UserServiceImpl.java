@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
 
     private String getIp(){
         try{
-            return InetAddress.getLocalHost().toString();
+            return InetAddress.getLocalHost().getCanonicalHostName();
         }
         catch (UnknownHostException unkExc){
             USER_SERVICE_LOGGER.info(unkExc.getMessage());
@@ -154,12 +154,11 @@ public class UserServiceImpl implements UserService {
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-
         String activationMessage = String.format(" Hello, %s! \n\n " +
-                        "Welcome to NCBank! To activate your account please visit: " + getIp() + serverPort + "/activate/%s. " +
+                        "Welcome to NCBank! To activate your account please visit: %s:%s/activate/%s. " +
                         "Activation allows you to change account's password if you have forgotten it. \n\n " +
                         "Regards, NCBank team.",
-                user.getUsername(),user.getActivationCode());
+                user.getUsername(), getIp(), serverPort, user.getActivationCode());
         mailSendingService.sendSimple(user.getEmail(),"Activation code.",activationMessage);
         userRepository.save(user);
     }
@@ -180,7 +179,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void processUserPasswordReset(String targetUserToken, User targetUser) {
-        String link = String.format(getIp() + serverPort + "/password/change%s","?user_id=" + targetUser.getId() + "&reset_token=" + targetUserToken);
+        String link = String.format("%s:%s/password/change%s", getIp(), serverPort, "?user_id=" + targetUser.getId() + "&reset_token=" + targetUserToken);
         String resetMessage = String.format(" Hello, %s! \n\n " +
                         "Welcome to NCBank! To reset your account password visit: %s. " +
                         "This link would be available for " + RESET_TOKEN_VALIDITY_HOURS + " hours so if you did't make a request ignore it. \n\n " +

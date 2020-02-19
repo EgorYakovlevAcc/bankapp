@@ -1,10 +1,12 @@
-package com.presentation.demo.controller;
+package com.presentation.demo.controller.admin;
 
 import com.presentation.demo.model.User;
 import com.presentation.demo.pojo.MapEntryImpl;
 import com.presentation.demo.service.bill.BillService;
 import com.presentation.demo.service.card.CardService;
+import com.presentation.demo.service.mobilephonenumber.MobilePhoneNumberService;
 import com.presentation.demo.service.user.UserService;
+import com.presentation.demo.service.validation.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_ADMIN;
-import static com.presentation.demo.constants.enums.AUTHORITIES.ROLE_USER;
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -30,10 +29,16 @@ public class AdminController {
     private UserService userService;
 
     @Autowired
+    private MobilePhoneNumberService mobilePhoneNumberService;
+
+    @Autowired
     private BillService billService;
 
     @Autowired
     private CardService cardService;
+
+    @Autowired
+    private UserValidator userValidator;
 
     @GetMapping("")
     public String getAdminPage(Model model, @AuthenticationPrincipal User user) {
@@ -50,24 +55,6 @@ public class AdminController {
         return "admin/admin";
     }
 
-    @GetMapping("/users")
-    public String getAdminUsers(@AuthenticationPrincipal User user, Model model){
-        model.addAttribute("user", user);
-
-        List<MapEntryImpl<String,String>> namesLinksList = new LinkedList<>();
-        namesLinksList.add(new MapEntryImpl<String,String>("Admin","/admin/"));
-        namesLinksList.add(new MapEntryImpl<String, String>("Home","/index"));
-        namesLinksList.add(new MapEntryImpl<String,String>("About","/about"));
-        model.addAttribute("namesLinksList",namesLinksList);
-
-        List<User> nonAdminUsers = userService.findUsersByRoleEquals(ROLE_USER.getAuthority());
-        List<User> adminUsers = userService.findUsersByRoleEquals(ROLE_ADMIN.getAuthority());
-
-        model.addAttribute("admins",adminUsers);
-        model.addAttribute("nonAdmins",nonAdminUsers);
-
-        return "admin/adminUsers";
-    }
 
     @GetMapping("/bills")
     public String getAdminBills(@AuthenticationPrincipal User user, Model model){
@@ -96,6 +83,6 @@ public class AdminController {
         return "admin/adminCards";
     }
 
-//    @GetMapping("")
+
 
 }

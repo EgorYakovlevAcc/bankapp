@@ -19,4 +19,6 @@ public interface BillService {
     List<Bill> findBillsByLastTransaction(Date date);
 
     List<Bill> findBillsByHolder(User holder);
+
+    List<Bill> findBillsByDueBefore(Date date);
 }

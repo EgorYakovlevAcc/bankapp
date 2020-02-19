@@ -1,0 +1,55 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create User Form</title>
+
+    <link rel="stylesheet" type="text/css" href="/css/registration.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+</head>
+<body>
+<div th:insert="common :: header (First = 'Sign In',Second = 'Sign Up',Third = 'About')"></div>
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div class="fadeIn first">
+            <label id="lable">Create user</label>
+        </div>
+
+        <form th:userDo="${user}" th:action="@{/admin/users/createuser}" method="post">
+            <input type="text" id="login" class="fadeIn second" name="login" placeholder="Login" required autofocus
+                   th:field="*{user.username}">
+            <span class="validation_message" th:if="${username != null}">
+                             [[${username}]]
+                    </span>
+
+            <input type="password" id="inputPassword" class="fadeIn third" placeholder="Password" required
+                   th:field="*{user.password}">
+
+            <input type="email" id="inputEmail" class="fadeIn third" placeholder="Email address" required
+                   th:field="*{user.email}">
+            <span class="validation_message" th:if="${email != null}">
+                             [[${email}]]
+                    </span>
+
+
+            <input type="text" id="inputPhoneNumber" class="fadeIn third" placeholder="Mobile phone number" required
+                   th:field="*{user.mobilePhoneNumber.mobilePhoneNumberValue}">
+            <span class="validation_message" th:if="${mobilePhoneNumber != null}">
+                             [[${mobilePhoneNumber}]]
+                    </span>
+
+            <input id="button-sub" type="submit" class="fadeIn fourth" value="Sign Up">
+
+        </form>
+    </div>
+</div>
+<div th:insert="common :: footer"></div>
+
+</body>
+</html>

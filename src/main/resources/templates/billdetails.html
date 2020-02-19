@@ -3,94 +3,98 @@
 <head>
 	<meta charset="UTF-8"/>
 	<title>Account</title>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"  integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<link href="https://bootswatch.com/4/superhero/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/billdetails.css}"/>
 </head>
 
 <body>
-<div id="modals">
-	<div class="modal fade" id="exampleModalTransfer" data-card_id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Transfer money</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+	<div id="modals">
+		<div class="modal fade" id="exampleModalTransfer" data-card_id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Transfer money</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label for="recipient-card" class="col-form-label">Recipient card number:</label>
+								<input type="text" class="form-control" id="recipient-card">
+							</div>
+							<div class="form-group">
+								<label for="transfer-amount" class="col-form-label">Amount</label>
+								<input class="form-control" id="transfer-amount">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button id="transfer-button"  type="button" onclick="transfer(this);" class="btn btn-primary">Transfer</button>
+					</div>
 				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="recipient-card" class="col-form-label">Recipient card number:</label>
-							<input type="text" class="form-control" id="recipient-card">
-						</div>
-						<div class="form-group">
-							<label for="transfer-amount" class="col-form-label">Amount</label>
-							<input class="form-control" id="transfer-amount"></input>
-						</div>
-					</form>
+			</div>
+		</div>
+
+		<div class="modal fade" id="exampleModalGetCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabelQRGet">Get cash amount</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label for="money-amount-get" class="col-form-label">Amount money:</label>
+								<input type="text" class="form-control" id="money-amount-get">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" onclick="getqr(this);" class="btn btn-primary">Generate QR</button>
+					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button id="transfer-button"  type="button" onclick="transfer(this);" class="btn btn-primary">Transfer</button>
+			</div>
+		</div>
+		<div class="modal fade" id="exampleModalPutCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabelQRPut">Put cash amount</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label for="money-amount-put" class="col-form-label">Amount money:</label>
+								<input type="text" class="form-control" id="money-amount-put">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" onclick="putqr(this);" class="btn btn-primary">Generate QR</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="exampleModalGetCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabelQRGet">Get cash amount</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="money-amount-get" class="col-form-label">Amount money:</label>
-							<input type="text" class="form-control" id="money-amount-get">
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" onclick="getqr(this);" class="btn btn-primary">Generate QR</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="exampleModalPutCash" tabindex="-1" data-card_id="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabelQRPut">Put cash amount</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="money-amount-put" class="col-form-label">Amount money:</label>
-							<input type="text" class="form-control" id="money-amount-put">
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" onclick="putqr(this);" class="btn btn-primary">Generate QR</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
 <div th:insert="common :: header (First = 'About',Second = 'Userpage',Third = 'Log Out')"></div>
 
-<!--todo:separate buttons for users-->
 <div class='main'>
 	<div class="container">
 		<div class="row">
@@ -233,11 +237,5 @@
 		$(this).attr('data-card_id', card_id);
 	})
 </script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
-<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
-
 </body>
 </html>

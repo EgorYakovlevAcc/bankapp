@@ -44,4 +44,9 @@ public class BillServiceImpl implements BillService{
     public List<Bill> findBillsByHolder(User holder) {
         return billRepository.findBillByHolder(holder);
     }
+
+    @Override
+    public List<Bill> findBillsByDueBefore(Date date) {
+        return billRepository.findBillsByDueBefore(date);
+    }
 }

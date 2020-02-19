@@ -11,6 +11,21 @@
       "description": "Name of custom telegram bot."
     },
     {
+      "name": "telegram.bot.proxy",
+      "type": "java.lang.String",
+      "description": "Telegram proxy."
+    },
+    {
+      "name": "telegram.bot.proxyHost",
+      "type": "java.lang.String",
+      "description": "Proxy host for telegram bot."
+    },
+    {
+      "name": "telegram.bot.proxyPort",
+      "type": "java.lang.String",
+      "description": "Proxy port for telegram bot."
+    },
+    {
       "name": "spring.security.admin.email",
       "type": "java.lang.String",
       "description": "Spring admin email."
