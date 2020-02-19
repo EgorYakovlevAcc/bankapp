@@ -6,6 +6,7 @@ import com.presentation.demo.model.User;
 import com.presentation.demo.service.bill.BillService;
 import com.presentation.demo.service.card.CardService;
 import com.presentation.demo.service.datebalancehistory.DateBalanceHistoryService;
+import com.presentation.demo.service.generators.RangeGenerator;
 import com.presentation.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,7 +40,10 @@ public class BillController {
         Bill bill = new Bill();
         User user = userService.findUserById(id);
         bill.setHolder(user);
-        bill.setNumber(String.valueOf(Math.abs(rand.nextInt())));
+        bill.setNumber("" + RangeGenerator.nextInt(10000, 99999)
+                + RangeGenerator.nextInt(10000, 99999)
+                + RangeGenerator.nextInt(10000, 99999)
+                + RangeGenerator.nextInt(10000, 99999));
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 4);
         bill.setDue(calendar.getTime());

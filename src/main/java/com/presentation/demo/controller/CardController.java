@@ -46,7 +46,7 @@ public class CardController {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 4);
         card.setExpireDate(calendar.getTime());
-        card.setBalance(BigDecimal.valueOf(0));
+        card.setBalance(BigDecimal.valueOf(0.0));
         cardService.save(card);
         return "redirect:/billdetails/" + id;
     }
