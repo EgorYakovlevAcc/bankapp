@@ -161,7 +161,6 @@
 
 <script th:inline="javascript">
 	function getqr(button) {
-		alert("begin");
 		var card_id = button.parentElement.parentElement.parentElement.parentElement.dataset.card_id;
 		console.log(card_id);
 		var url = '/getqrcode?id=' + card_id +
@@ -174,7 +173,6 @@
 		/*]]>*/
 		var href = '/billdetails/' + bill_id;
 		window.location = href;
-		alert("end");
 	}
 </script>
 

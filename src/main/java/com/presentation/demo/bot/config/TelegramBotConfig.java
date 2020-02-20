@@ -22,7 +22,7 @@ public class TelegramBotConfig {
 
     private String proxyHost;
 
-    private String proxyPort;
+    private Integer proxyPort;
 
     public String getToken() {
         return token;
@@ -56,11 +56,11 @@ public class TelegramBotConfig {
         this.proxyHost = proxyHost;
     }
 
-    public String getProxyPort() {
+    public Integer getProxyPort() {
         return proxyPort;
     }
 
-    public void setProxyPort(String proxyPort) {
+    public void setProxyPort(Integer proxyPort) {
         this.proxyPort = proxyPort;
     }
 }

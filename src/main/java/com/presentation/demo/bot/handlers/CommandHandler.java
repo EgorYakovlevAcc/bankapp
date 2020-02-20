@@ -1,44 +1,42 @@
-package com.presentation.demo.bot;
+package com.presentation.demo.bot.handlers;
 
+import com.presentation.demo.bot.commands.StartCommand;
 import com.presentation.demo.bot.config.TelegramBotConfig;
-import com.presentation.demo.service.user.UserService;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
+import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
+import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
+import org.telegram.telegrambots.extensions.bots.commandbot.commands.CommandRegistry;
+import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
-@Component
-public class CustomTelegramBot extends TelegramLongPollingBot {
+//@Component
+public class CommandHandler extends TelegramLongPollingCommandBot {
 
-    private static Logger TELEGRAM_LOGGER = LoggerFactory.getLogger(CustomTelegramBot.class);
-
-
-    @Autowired
-    private TelegramBotConfig telegramBotConfig;
+    private static final Logger COMMAND_HANDLER_LOGGER = LoggerFactory.getLogger(CommandHandler.class);
 
     @Autowired
     private TelegramBotsApi telegramBotsApi;
+
+    @Autowired
+    private TelegramBotConfig telegramBotConfig;
 
     private DefaultBotOptions botOptions;
 
@@ -51,9 +49,10 @@ public class CustomTelegramBot extends TelegramLongPollingBot {
     }
 
     @PostConstruct
-    @Transactional
     public void register(){
         try{
+            Boolean registered = register(new StartCommand());
+            COMMAND_HANDLER_LOGGER.info(registered.toString());
             DefaultBotOptions myBotOptions = ApiContext.getInstance(DefaultBotOptions.class);
             if (telegramBotConfig.getProxy()) {
                 myBotOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
@@ -69,43 +68,25 @@ public class CustomTelegramBot extends TelegramLongPollingBot {
         }
     }
 
-
     @Override
-    public void onUpdateReceived(Update update) {
-        Message inputMessage = update.getMessage();
-        if (Objects.nonNull(inputMessage) && inputMessage.hasText()) {
-            SendMessage sendMessage = commandHandler(inputMessage.getText(),inputMessage.getChatId(),inputMessage.getForwardFrom());
-            TELEGRAM_LOGGER.info("Get message: " + inputMessage + ". From: " + inputMessage.getAuthorSignature());
+    public void processNonCommandUpdate(Update update) {
+        Message message = update.getMessage();
+        if  (Objects.nonNull(message) && message.hasText()) {
+            COMMAND_HANDLER_LOGGER.info("Get message: " + message + ". From: " + message.getAuthorSignature());
+            SendMessage echoMessage = new SendMessage();
+            echoMessage.setChatId(message.getChatId());
+            echoMessage.setText("Echo:\n" + message.getText());
+
             try {
-                this.execute(sendMessage);
+                execute(echoMessage);
             } catch (TelegramApiException e) {
-                TELEGRAM_LOGGER.info(e.getLocalizedMessage());
+                COMMAND_HANDLER_LOGGER.info(e.getLocalizedMessage());
             }
         }
     }
 
-    public SendMessage commandHandler(String command, Long chatId, User botUser){
-        SendMessage message = new SendMessage();
-        message.setChatId(chatId);
-        TELEGRAM_LOGGER.info(command);
-        if (command.equals("/start")){
-            String welcomeOutputText = "Welcome to NCBestBankBot, \n I will help you to know everything about your bank account!";
-            message.setText(welcomeOutputText);
-        }
-        else{
-            message.setText("This is the end of work activity");
-        }
-        return message;
-
-    }
-
-    @Override
-    public String getBotUsername() {
-        return "NcBestBankBot";
-    }
-
     @Override
     public String getBotToken() {
-        return "853292773:AAGFEDW4EPL1W8WiGEALuFf-bolauMPfjoQ";
+        return telegramBotConfig.getToken();
     }
 }

@@ -59,6 +59,8 @@ public class InitObjects implements CommandLineRunner {
 
             String adminPassword = userService.generateRandomPassword(RANDOM_PASSWORD_LENGTH);
 
+            onStartLogger.info(adminPassword);
+
             admin = new User();
             admin.setPassword(adminPassword);
             admin.setMobilePhoneNumber(adminMobilePhoneNumber);

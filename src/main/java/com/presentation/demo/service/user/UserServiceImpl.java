@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         String link = String.format("http://%s:%s/activate/%s", getIp(), serverPort, user.getActivationCode());
-        String content = String.format("<p> %s, welcome to NCBank!</p> <p> To activate your account please visit: <a href=\"%s\"> Reset password</a>." +
+        String content = String.format("<p> %s, welcome to NCBank!</p> <p> To activate your account please visit: <a href=\"%s\"> Activate user</a>." +
                 "<p> \n\nActivation allows you to change account's password if you have forgotten it.</p> " +
                 "<p> \n\nRegards, NCBank team. </p>",user.getUsername(), link);
         mailSendingService.sendMime(user.getEmail(),"Activate user.", content);

@@ -104,7 +104,7 @@ public class UserController {
             String randomToken = UUID.randomUUID().toString();
             resetPasswordTokenService.createResetPasswordToken(randomToken,targetUser);
             userService.processUserPasswordReset(randomToken,targetUser);
-            model.addAttribute("message",String.format("We've sent message with link to complete your password reset on mail: \"%s\". Please, check it.",email));
+            model.addAttribute("message",String.format("We've sent message with link to complete your password reset on mail: \"%s\". Please, check it.",email.getTarget()));
             return "shortMessageTemplate";
         }
     }
